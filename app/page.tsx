@@ -104,11 +104,7 @@ const premiumProducts: Product[] = [
     airlineCode: "LH",
     aircraft: "A350-900 / 787-9",
     cabinType: "First",
-    routes: [
-      "Munich → New York JFK",
-      "Munich → Chicago",
-      "Munich → San Francisco",
-    ],
+    routes: ["Munich → New York JFK", "Munich → Chicago", "Munich → San Francisco"],
     bestFor: ["Privacy", "Solo"],
     seatInsight: "Private suite with doors and a fully lie-flat bed, designed for maximum privacy.",
     description: "Lufthansa’s newest flagship first class suite under Allegris. Verify live by aircraft because rollout is still selective.",
@@ -124,12 +120,7 @@ const premiumProducts: Product[] = [
     airlineCode: "LH",
     aircraft: "A350-900 / 787-9",
     cabinType: "Business",
-    routes: [
-      "Munich → New York JFK",
-      "Munich → Chicago",
-      "Munich → San Francisco",
-      "Munich → Shanghai",
-    ],
+    routes: ["Munich → New York JFK", "Munich → Chicago", "Munich → San Francisco", "Munich → Shanghai"],
     bestFor: ["Privacy", "Choice"],
     seatInsight: "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
     description: "Lufthansa’s new Allegris business class with a more flexible premium seat concept.",
@@ -191,11 +182,7 @@ const premiumProducts: Product[] = [
     airlineCode: "SQ",
     aircraft: "A380-800",
     cabinType: "First",
-    routes: [
-      "Singapore → London Heathrow",
-      "Singapore → Sydney",
-      "Singapore → Shanghai",
-    ],
+    routes: ["Singapore → London Heathrow", "Singapore → Sydney", "Singapore → Shanghai"],
     bestFor: ["Luxury", "Space"],
     seatInsight: "Large private suite concept on the A380 with one of the most spacious first class products in the sky.",
     description: "Singapore Airlines flagship Suites product. Only available on A380 service, so aircraft check matters most.",
@@ -211,9 +198,7 @@ const premiumProducts: Product[] = [
     airlineCode: "EY",
     aircraft: "A380-800",
     cabinType: "First",
-    routes: [
-      "Abu Dhabi → London Heathrow",
-    ],
+    routes: ["Abu Dhabi → London Heathrow"],
     bestFor: ["Space", "Luxury"],
     seatInsight: "A380 first class with a separate seat and bed concept, offering exceptional personal space.",
     description: "Etihad’s iconic A380 First Apartment experience.",
@@ -229,10 +214,7 @@ const premiumProducts: Product[] = [
     airlineCode: "NH",
     aircraft: "777-300ER",
     cabinType: "First",
-    routes: [
-      "Tokyo Haneda → New York JFK",
-      "Tokyo Haneda → London Heathrow",
-    ],
+    routes: ["Tokyo Haneda → New York JFK", "Tokyo Haneda → London Heathrow"],
     bestFor: ["Privacy", "Luxury"],
     seatInsight: "Wide enclosed suite with strong privacy and a modern residential-style design.",
     description: "ANA’s premium first class suite on selected flagship 777-300ER flights.",
@@ -248,11 +230,7 @@ const premiumProducts: Product[] = [
     airlineCode: "EK",
     aircraft: "777-300ER",
     cabinType: "First",
-    routes: [
-      "Dubai → Brussels",
-      "Dubai → Geneva",
-      "Dubai → Tokyo Haneda",
-    ],
+    routes: ["Dubai → Brussels", "Dubai → Geneva", "Dubai → Tokyo Haneda"],
     bestFor: ["Privacy", "Solo"],
     seatInsight: "Fully enclosed suite with very high privacy and a more futuristic first class feel.",
     description: "Emirates’ newest fully enclosed first class suite on selected 777-300ER aircraft.",
@@ -576,10 +554,7 @@ export default function HomePage() {
   );
 
   const routeOptions = useMemo(
-    () =>
-      Array.from(
-        new Set(premiumProducts.flatMap((item) => item.routes))
-      ).sort(),
+    () => Array.from(new Set(premiumProducts.flatMap((item) => item.routes))).sort(),
     []
   );
 
@@ -591,6 +566,7 @@ export default function HomePage() {
   const filteredProducts = useMemo(() => {
     return premiumProducts.filter((item) => {
       const query = search.trim().toLowerCase();
+
       const matchesSearch =
         query === "" ||
         item.productName.toLowerCase().includes(query) ||
@@ -863,14 +839,13 @@ export default function HomePage() {
                     key={`${item.id}-featured`}
                     className="overflow-hidden rounded-[24px] border border-cyan-400/10 bg-gradient-to-b from-white/10 to-white/5"
                   >
-                    <div className="relative h-56">
+                    <div className="relative h-56 overflow-hidden">
                       <img
                         src={item.image}
                         alt={item.productName}
-                        className="h-full w-full object-cover"
+                        className="block h-full w-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                      <div className="absolute left-4 top-4 flex items-center gap-2">
+                      <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
                         <span className="rounded-full bg-cyan-300 px-3 py-1 text-xs font-semibold text-slate-950">
                           #{item.rank}
                         </span>
@@ -918,10 +893,10 @@ export default function HomePage() {
                   <img
                     src={item.image}
                     alt={item.productName}
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    className="block h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-                  <div className="absolute left-4 top-4 flex items-center gap-2">
+
+                  <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
                     <span className="rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur">
                       #{item.rank}
                     </span>
