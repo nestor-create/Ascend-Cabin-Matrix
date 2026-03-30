@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useMemo, useState } from "react";
 
 type CabinType = "Business" | "First";
@@ -13,7 +12,7 @@ type Product = {
   airlineCode: string;
   aircraft: string;
   cabinType: CabinType;
-  route: string;
+  routes: string[];
   bestFor: string[];
   seatInsight: string;
   description: string;
@@ -105,10 +104,14 @@ const premiumProducts: Product[] = [
     airlineCode: "LH",
     aircraft: "A350-900 / 787-9",
     cabinType: "First",
-    route: "Munich → New York JFK",
+    routes: [
+      "Munich → New York JFK",
+      "Munich → Chicago",
+      "Munich → San Francisco",
+    ],
     bestFor: ["Privacy", "Solo"],
     seatInsight: "Private suite with doors and a fully lie-flat bed, designed for maximum privacy.",
-    description: "Lufthansa’s newest flagship first class suite under Allegris.",
+    description: "Lufthansa’s newest flagship first class suite under Allegris. Verify live by aircraft because rollout is still selective.",
     image: "/images/allegris-first.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
     aerolopaUrl: "https://www.aerolopa.com/lh",
@@ -121,7 +124,12 @@ const premiumProducts: Product[] = [
     airlineCode: "LH",
     aircraft: "A350-900 / 787-9",
     cabinType: "Business",
-    route: "Munich → New York JFK",
+    routes: [
+      "Munich → New York JFK",
+      "Munich → Chicago",
+      "Munich → San Francisco",
+      "Munich → Shanghai",
+    ],
     bestFor: ["Privacy", "Choice"],
     seatInsight: "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
     description: "Lufthansa’s new Allegris business class with a more flexible premium seat concept.",
@@ -137,10 +145,17 @@ const premiumProducts: Product[] = [
     airlineCode: "NH",
     aircraft: "777-300ER",
     cabinType: "Business",
-    route: "Tokyo Haneda → London Heathrow",
+    routes: [
+      "Tokyo Haneda → London Heathrow",
+      "Tokyo Haneda → New York JFK",
+      "Tokyo Haneda → Chicago",
+      "Tokyo Narita → Chicago",
+      "Tokyo Haneda → San Francisco",
+      "Tokyo Narita → San Francisco",
+    ],
     bestFor: ["Space", "Solo"],
     seatInsight: "Extra-wide 1-2-1 business class seat with direct aisle access and exceptional personal space.",
-    description: "ANA’s flagship business class suite.",
+    description: "ANA’s flagship business class suite. Always verify exact seat map and flight because assignments can rotate.",
     image: "/images/the-room.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/nh-ana/",
     aerolopaUrl: "https://www.aerolopa.com/nh",
@@ -153,10 +168,17 @@ const premiumProducts: Product[] = [
     airlineCode: "QR",
     aircraft: "A350-1000 / 777-300ER / 787-9",
     cabinType: "Business",
-    route: "Doha → New York JFK",
+    routes: [
+      "Doha → New York JFK",
+      "Doha → London Heathrow",
+      "Doha → Paris",
+      "Doha → Singapore",
+      "Doha → Sydney",
+      "Doha → Los Angeles",
+    ],
     bestFor: ["Couples", "Privacy"],
     seatInsight: "Enclosed suite with doors and flexible seating for couples or groups.",
-    description: "Qatar Airways’ flagship business class product.",
+    description: "Qatar Airways’ flagship business class product. Qsuite is select-routes-only and can disappear with aircraft swaps.",
     image: "/images/qsuite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/qr-qatar-airways/",
     aerolopaUrl: "https://www.aerolopa.com/qr",
@@ -169,10 +191,14 @@ const premiumProducts: Product[] = [
     airlineCode: "SQ",
     aircraft: "A380-800",
     cabinType: "First",
-    route: "Singapore → London Heathrow",
+    routes: [
+      "Singapore → London Heathrow",
+      "Singapore → Sydney",
+      "Singapore → Shanghai",
+    ],
     bestFor: ["Luxury", "Space"],
     seatInsight: "Large private suite concept on the A380 with one of the most spacious first class products in the sky.",
-    description: "Singapore Airlines flagship Suites product.",
+    description: "Singapore Airlines flagship Suites product. Only available on A380 service, so aircraft check matters most.",
     image: "/images/singapore-suites.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/sq-singapore-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/sq",
@@ -185,7 +211,9 @@ const premiumProducts: Product[] = [
     airlineCode: "EY",
     aircraft: "A380-800",
     cabinType: "First",
-    route: "Abu Dhabi → London Heathrow",
+    routes: [
+      "Abu Dhabi → London Heathrow",
+    ],
     bestFor: ["Space", "Luxury"],
     seatInsight: "A380 first class with a separate seat and bed concept, offering exceptional personal space.",
     description: "Etihad’s iconic A380 First Apartment experience.",
@@ -201,10 +229,13 @@ const premiumProducts: Product[] = [
     airlineCode: "NH",
     aircraft: "777-300ER",
     cabinType: "First",
-    route: "Tokyo Haneda → New York JFK",
+    routes: [
+      "Tokyo Haneda → New York JFK",
+      "Tokyo Haneda → London Heathrow",
+    ],
     bestFor: ["Privacy", "Luxury"],
     seatInsight: "Wide enclosed suite with strong privacy and a modern residential-style design.",
-    description: "ANA’s premium first class suite product.",
+    description: "ANA’s premium first class suite on selected flagship 777-300ER flights.",
     image: "/images/the-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/nh-ana/boeing-777-300er/",
     aerolopaUrl: "https://www.aerolopa.com/nh",
@@ -217,10 +248,14 @@ const premiumProducts: Product[] = [
     airlineCode: "EK",
     aircraft: "777-300ER",
     cabinType: "First",
-    route: "Dubai → Brussels",
+    routes: [
+      "Dubai → Brussels",
+      "Dubai → Geneva",
+      "Dubai → Tokyo Haneda",
+    ],
     bestFor: ["Privacy", "Solo"],
     seatInsight: "Fully enclosed suite with very high privacy and a more futuristic first class feel.",
-    description: "Emirates’ newest fully enclosed first class suite.",
+    description: "Emirates’ newest fully enclosed first class suite on selected 777-300ER aircraft.",
     image: "/images/emirates-game-changer.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ek-emirates/",
     aerolopaUrl: "https://www.aerolopa.com/ek",
@@ -233,10 +268,16 @@ const premiumProducts: Product[] = [
     airlineCode: "AF",
     aircraft: "777-300ER",
     cabinType: "First",
-    route: "Paris CDG → Los Angeles",
+    routes: [
+      "Paris CDG → Los Angeles",
+      "Paris CDG → New York JFK",
+      "Paris CDG → Tokyo Haneda",
+      "Paris CDG → Singapore",
+      "Paris CDG → San Francisco",
+    ],
     bestFor: ["Luxury", "Exclusivity"],
     seatInsight: "Highly exclusive first class experience with a spacious personal area and refined soft product.",
-    description: "Air France’s exclusive long-haul first class product.",
+    description: "Air France’s exclusive long-haul first class product. JFK and LAX are especially strong current reference routes.",
     image: "/images/la-premiere.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/af-air-france/",
     aerolopaUrl: "https://www.aerolopa.com/af",
@@ -249,10 +290,15 @@ const premiumProducts: Product[] = [
     airlineCode: "BA",
     aircraft: "A350-1000 / 777-300ER / 787-10",
     cabinType: "Business",
-    route: "London Heathrow → New York JFK",
+    routes: [
+      "London Heathrow → New York JFK",
+      "London Heathrow → Los Angeles",
+      "London Heathrow → Dubai",
+      "London Heathrow → San Francisco",
+    ],
     bestFor: ["Privacy", "Network"],
     seatInsight: "1-2-1 layout with doors and direct aisle access across the cabin.",
-    description: "British Airways’ modern suite-style business class.",
+    description: "British Airways’ modern suite-style business class. Verify live because not every aircraft on a route will match.",
     image: "/images/club-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ba-british-airways/",
     aerolopaUrl: "https://www.aerolopa.com/ba",
@@ -265,7 +311,12 @@ const premiumProducts: Product[] = [
     airlineCode: "DL",
     aircraft: "A350-900 / A330-900neo",
     cabinType: "Business",
-    route: "Los Angeles → Sydney",
+    routes: [
+      "Los Angeles → Sydney",
+      "New York JFK → London Heathrow",
+      "Detroit → Tokyo Haneda",
+      "Atlanta → Johannesburg",
+    ],
     bestFor: ["Privacy", "Consistency"],
     seatInsight: "Suite-style seat with door and direct aisle access on key long-haul aircraft.",
     description: "Delta’s enclosed suite-style long-haul business class.",
@@ -281,10 +332,15 @@ const premiumProducts: Product[] = [
     airlineCode: "CX",
     aircraft: "777-300ER",
     cabinType: "Business",
-    route: "Hong Kong → London Heathrow",
+    routes: [
+      "Hong Kong → London Heathrow",
+      "Hong Kong → Sydney",
+      "Hong Kong → Vancouver",
+      "Hong Kong → San Francisco",
+    ],
     bestFor: ["Privacy", "Storage"],
     seatInsight: "Next-generation suite with door, improved storage, and a refined Cathay design.",
-    description: "Cathay Pacific’s newest flagship business class suite.",
+    description: "Cathay Pacific’s newest flagship business class suite, still rolling out on selected 777-300ER aircraft.",
     image: "/images/cathay-aria.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/cx-cathay-pacific/",
     aerolopaUrl: "https://www.aerolopa.com/cx",
@@ -297,10 +353,15 @@ const premiumProducts: Product[] = [
     airlineCode: "JL",
     aircraft: "777-300ER / 787-9",
     cabinType: "Business",
-    route: "Tokyo Haneda → San Francisco",
+    routes: [
+      "Tokyo Haneda → San Francisco",
+      "Tokyo Haneda → New York JFK",
+      "Tokyo Haneda → London Heathrow",
+      "Tokyo Haneda → Dallas/Fort Worth",
+    ],
     bestFor: ["Comfort", "Solo"],
     seatInsight: "Direct aisle access layout with a strong balance of privacy and comfort.",
-    description: "Japan Airlines’ well-known Sky Suite business class product.",
+    description: "Japan Airlines’ well-known Sky Suite business class product. Route and subfleet can vary.",
     image: "/images/jal-sky-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/jl-japan-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/jl",
@@ -313,7 +374,13 @@ const premiumProducts: Product[] = [
     airlineCode: "BR",
     aircraft: "777-300ER",
     cabinType: "Business",
-    route: "Taipei → New York JFK",
+    routes: [
+      "Taipei → New York JFK",
+      "Taipei → Los Angeles",
+      "Taipei → San Francisco",
+      "Taipei → Paris",
+      "Taipei → London Heathrow",
+    ],
     bestFor: ["Comfort", "Sleep"],
     seatInsight: "Reverse herringbone seat with direct aisle access and a strong comfort reputation.",
     description: "EVA Air’s highly rated long-haul business class cabin.",
@@ -329,7 +396,12 @@ const premiumProducts: Product[] = [
     airlineCode: "KE",
     aircraft: "787-9 / 777-300ER",
     cabinType: "Business",
-    route: "Seoul Incheon → Paris CDG",
+    routes: [
+      "Seoul Incheon → Paris CDG",
+      "Seoul Incheon → New York JFK",
+      "Seoul Incheon → Los Angeles",
+      "Seoul Incheon → London Heathrow",
+    ],
     bestFor: ["Privacy", "Solo"],
     seatInsight: "Suite-style premium seat with direct aisle access on long-haul aircraft.",
     description: "Korean Air’s modern long-haul business class suite.",
@@ -345,7 +417,12 @@ const premiumProducts: Product[] = [
     airlineCode: "VS",
     aircraft: "A330-900neo / A350-1000",
     cabinType: "Business",
-    route: "London Heathrow → New York JFK",
+    routes: [
+      "London Heathrow → New York JFK",
+      "London Heathrow → Los Angeles",
+      "London Heathrow → San Francisco",
+      "London Heathrow → Delhi",
+    ],
     bestFor: ["Couples", "Social"],
     seatInsight: "1-2-1 seat configuration with direct aisle access. Features The Loft lounge at the back of the aircraft.",
     description: "Virgin Atlantic’s stylish and modern Upper Class suite.",
@@ -361,10 +438,15 @@ const premiumProducts: Product[] = [
     airlineCode: "B6",
     aircraft: "A321LR / A321XLR",
     cabinType: "Business",
-    route: "New York JFK → Paris CDG",
+    routes: [
+      "New York JFK → Paris CDG",
+      "New York JFK → London Heathrow",
+      "New York JFK → Amsterdam",
+      "Boston → Paris CDG",
+    ],
     bestFor: ["Space", "Solo"],
     seatInsight: "Front-row Mint Studio offers more space and a larger suite-style experience than standard Mint seats.",
-    description: "JetBlue’s spacious front-row Mint Studio product.",
+    description: "JetBlue’s spacious front-row Mint Studio product on selected Mint-equipped transatlantic flights.",
     image: "/images/jetblue-mint-studio.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/b6-jetblue-airways/",
     aerolopaUrl: "https://www.aerolopa.com/b6",
@@ -377,7 +459,12 @@ const premiumProducts: Product[] = [
     airlineCode: "QF",
     aircraft: "A380-800 / 787-9",
     cabinType: "Business",
-    route: "Sydney → Singapore",
+    routes: [
+      "Sydney → Singapore",
+      "Sydney → London Heathrow",
+      "Melbourne → Dallas/Fort Worth",
+      "Perth → London Heathrow",
+    ],
     bestFor: ["Comfort", "Practicality"],
     seatInsight: "Direct aisle access layout with a practical and comfortable long-haul design.",
     description: "Qantas’ modern long-haul business class suite.",
@@ -393,10 +480,15 @@ const premiumProducts: Product[] = [
     airlineCode: "TK",
     aircraft: "787-9 / A350-900",
     cabinType: "Business",
-    route: "Istanbul → San Francisco",
+    routes: [
+      "Istanbul → San Francisco",
+      "Istanbul → New York JFK",
+      "Istanbul → Los Angeles",
+      "Istanbul → Tokyo Haneda",
+    ],
     bestFor: ["Network", "Value"],
     seatInsight: "Modern long-haul seat with direct aisle access and improved privacy over older fleet types.",
-    description: "Turkish Airlines’ long-haul business class cabin.",
+    description: "Turkish Airlines’ preferred long-haul business product on the 787-9 and A350-900.",
     image: "/images/turkish-business.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/tk-turkish-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/tk",
@@ -409,10 +501,15 @@ const premiumProducts: Product[] = [
     airlineCode: "AA",
     aircraft: "787-9",
     cabinType: "Business",
-    route: "Dallas Fort Worth → Brisbane",
+    routes: [
+      "Chicago O'Hare → London Heathrow",
+      "Philadelphia → London Heathrow",
+      "Dallas/Fort Worth → Brisbane",
+      "Dallas/Fort Worth → Auckland",
+    ],
     bestFor: ["Privacy", "New Product"],
     seatInsight: "New suite-style business class with doors on American’s latest premium configuration.",
-    description: "American Airlines’ newest Flagship Suite product.",
+    description: "American Airlines’ newest Flagship Suite product. Chicago–London is the strongest anchor route.",
     image: "/images/american-flagship.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/aa-american-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/aa",
@@ -425,7 +522,12 @@ const premiumProducts: Product[] = [
     airlineCode: "UA",
     aircraft: "787-9 / 787-10 / 777-300ER",
     cabinType: "Business",
-    route: "San Francisco → Singapore",
+    routes: [
+      "San Francisco → Singapore",
+      "Newark → London Heathrow",
+      "Washington Dulles → Tokyo Haneda",
+      "San Francisco → Sydney",
+    ],
     bestFor: ["Consistency", "Network"],
     seatInsight: "United’s flagship long-haul seat with direct aisle access and a consistent premium layout.",
     description: "United’s Polaris long-haul business class product.",
@@ -440,12 +542,12 @@ const boardRows = [
   "QR 701  DOHA              NEW YORK JFK      09:20   A04   ON TIME ",
   "SQ 322  SINGAPORE         LONDON LHR        10:05   C19   FINAL   ",
   "EY 011  ABU DHABI         LONDON LHR        11:10   B07   GATE OPEN",
-  "AF 006  PARIS CDG         LOS ANGELES       11:35   D21   ON TIME ",
+  "AF 022  PARIS CDG         LOS ANGELES       11:35   D21   ON TIME ",
   "VS 003  LONDON LHR        NEW YORK JFK      12:15   E09   BOARDING",
   "CX 251  HONG KONG         LONDON LHR        12:55   F11   ON TIME ",
   "NH 211  TOKYO HND         LONDON LHR        13:40   G03   FINAL   ",
   "UA 001  SAN FRANCISCO     SINGAPORE         14:20   H05   ON TIME ",
-  "AA 007  DALLAS FT WORTH   BRISBANE          15:00   J16   GATE OPEN",
+  "AA 098  CHICAGO ORD       LONDON LHR        15:00   J16   GATE OPEN",
   "TK 079  ISTANBUL          SAN FRANCISCO     15:45   K08   ON TIME ",
   "QF 001  SYDNEY            SINGAPORE         16:20   L14   BOARDING",
 ];
@@ -474,7 +576,10 @@ export default function HomePage() {
   );
 
   const routeOptions = useMemo(
-    () => Array.from(new Set(premiumProducts.map((item) => item.route))).sort(),
+    () =>
+      Array.from(
+        new Set(premiumProducts.flatMap((item) => item.routes))
+      ).sort(),
     []
   );
 
@@ -491,13 +596,13 @@ export default function HomePage() {
         item.productName.toLowerCase().includes(query) ||
         item.airline.toLowerCase().includes(query) ||
         item.aircraft.toLowerCase().includes(query) ||
-        item.route.toLowerCase().includes(query) ||
+        item.routes.some((value) => value.toLowerCase().includes(query)) ||
         item.bestFor.some((value) => value.toLowerCase().includes(query));
 
       const matchesAirline = airline === "" || item.airline === airline;
       const matchesAircraft = aircraft === "" || item.aircraft === aircraft;
       const matchesCabin = cabin === "" || item.cabinType === cabin;
-      const matchesRoute = route === "" || item.route === route;
+      const matchesRoute = route === "" || item.routes.includes(route);
       const matchesTag = tag === "" || item.bestFor.includes(tag);
 
       return matchesSearch && matchesAirline && matchesAircraft && matchesCabin && matchesRoute && matchesTag;
@@ -540,12 +645,12 @@ export default function HomePage() {
       <div className="content-layer">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
           <div className="top-brand">
-            <Image
+            <img
               src="/images/ascend-logo.png"
               alt="Ascend Logo"
               width={90}
               height={90}
-              className="brand-logo"
+              className="brand-logo h-[90px] w-[90px] object-contain"
             />
             <h1 className="brand-title">Ascend Cabin Matrix</h1>
           </div>
@@ -566,6 +671,10 @@ export default function HomePage() {
                   Ascend Cabin Matrix helps advisors compare premium Business and First Class products by airline,
                   aircraft, privacy profile, route, and use case — with direct links to AeroLOPA and SeatMaps for quick seat validation.
                 </p>
+
+                <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-100">
+                  Route lists below are current reference routes only. Always double-check AeroLOPA and the live airline seat map before sharing with clients or booking.
+                </div>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-3">
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
@@ -592,7 +701,7 @@ export default function HomePage() {
                 <div className="mt-4 space-y-3 text-sm leading-6 text-white/75">
                   <p>Search by product, airline, aircraft, or route when you already know the trip pattern.</p>
                   <p>Use route plus cabin filters to narrow down the best long-haul product for a client.</p>
-                  <p>Open AeroLOPA for layout accuracy, then SeatMaps for a second public reference.</p>
+                  <p>Open AeroLOPA for layout accuracy, then compare with the airline’s live seat map before recommending.</p>
                 </div>
 
                 <div className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-sm text-cyan-100">
@@ -755,7 +864,11 @@ export default function HomePage() {
                     className="overflow-hidden rounded-[24px] border border-cyan-400/10 bg-gradient-to-b from-white/10 to-white/5"
                   >
                     <div className="relative h-56">
-                      <Image src={item.image} alt={item.productName} fill className="object-cover" />
+                      <img
+                        src={item.image}
+                        alt={item.productName}
+                        className="h-full w-full object-cover"
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
                       <div className="absolute left-4 top-4 flex items-center gap-2">
                         <span className="rounded-full bg-cyan-300 px-3 py-1 text-xs font-semibold text-slate-950">
@@ -775,7 +888,7 @@ export default function HomePage() {
                       </div>
                       <h3 className="mt-2 text-2xl font-semibold">{item.productName}</h3>
                       <p className="mt-1 text-sm text-white/55">{item.aircraft}</p>
-                      <p className="mt-2 text-sm text-cyan-200/80">{item.route}</p>
+                      <p className="mt-2 text-sm text-cyan-200/80">{item.routes[0]}</p>
                       <p className="mt-4 text-sm leading-6 text-white/70">{item.description}</p>
 
                       <div className="mt-4 flex flex-wrap gap-2">
@@ -802,11 +915,10 @@ export default function HomePage() {
                 className="group overflow-hidden rounded-[24px] border border-cyan-400/10 bg-white/5 transition duration-200 hover:-translate-y-1 hover:border-cyan-400/20 hover:bg-white/[0.07]"
               >
                 <div className="relative h-52 overflow-hidden">
-                  <Image
+                  <img
                     src={item.image}
                     alt={item.productName}
-                    fill
-                    className="object-cover transition duration-500 group-hover:scale-105"
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
                   <div className="absolute left-4 top-4 flex items-center gap-2">
@@ -837,11 +949,20 @@ export default function HomePage() {
                   <div className="mt-4 rounded-2xl border border-cyan-400/10 bg-black/20 p-4">
                     <div className="flex items-start gap-3">
                       <RouteIcon />
-                      <div>
+                      <div className="w-full">
                         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">
-                          Current route serviced
+                          Current route list
                         </p>
-                        <p className="mt-2 text-sm leading-6 text-cyan-100/85">{item.route}</p>
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {item.routes.map((value) => (
+                            <span
+                              key={value}
+                              className="rounded-full border border-cyan-400/10 bg-white/5 px-3 py-1 text-xs text-cyan-100/85"
+                            >
+                              {value}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
