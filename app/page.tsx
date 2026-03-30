@@ -461,345 +461,356 @@ export default function HomePage() {
 
   return (
     <main className="app-shell text-white">
-  <div className="matrix-bg"></div>
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.16),transparent_35%),radial-gradient(circle_at_right,rgba(251,191,36,0.12),transparent_25%)]" />
+      <div className="matrix-bg" />
 
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-        <div className="top-brand">
-  <Image
-    src="/images/ascend-logo.png"
-    alt="Ascend Logo"
-    width={90}
-    height={90}
-    className="brand-logo"
-  />
-  <h1 className="brand-title">Ascend Cabin Matrix</h1>
-</div>
-        <section className="overflow-hidden rounded-[28px] border border-white/10 bg-white/5 shadow-2xl shadow-black/30 backdrop-blur">
-          <div className="grid gap-10 px-6 py-8 sm:px-8 lg:grid-cols-[1.25fr_0.75fr] lg:px-10 lg:py-10">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-white/70">
-                <SparklesIcon />
-                Premium cabin intelligence
-              </div>
-
-              <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-                Find the right premium cabin in seconds.
-              </h1>
-
-              <p className="mt-4 max-w-2xl text-sm leading-6 text-white/70 sm:text-base">
-                Ascend Cabin Matrix helps advisors compare premium Business and First Class products by airline,
-                aircraft, privacy profile, and use case — with direct links to AeroLOPA and SeatMaps for quick seat validation.
-              </p>
-
-              <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                  <p className="text-2xl font-semibold">{premiumProducts.length}</p>
-                  <p className="mt-1 text-sm text-white/60">curated cabin products</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                  <p className="text-2xl font-semibold">{airlineOptions.length}</p>
-                  <p className="mt-1 text-sm text-white/60">airlines covered</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                  <p className="text-2xl font-semibold">{filteredProducts.length}</p>
-                  <p className="mt-1 text-sm text-white/60">matching results</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-[24px] border border-white/10 bg-[#0b1728] p-5">
-              <p className="flex items-center gap-2 text-sm font-medium text-white">
-                <StarIcon />
-                How to use this
-              </p>
-
-              <div className="mt-4 space-y-3 text-sm leading-6 text-white/70">
-                <p>Use search when you already know the product, airline, aircraft, or travel style.</p>
-                <p>Filter by cabin type or “best for” tags to quickly narrow the shortlist.</p>
-                <p>Open AeroLOPA for layout accuracy, then SeatMaps for a second look and public reference.</p>
-              </div>
-
-              <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm text-amber-100">
-                Best for client-facing use: start with the top-ranked shortlist, then verify aircraft-specific seating before recommending a product.
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-8 rounded-[28px] border border-white/10 bg-white/5 p-4 shadow-xl shadow-black/20 backdrop-blur sm:p-6">
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
-            <div className="xl:col-span-2">
-              <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
-                <SearchIcon />
-                Search cabins
-              </label>
-              <input
-                type="text"
-                placeholder="Product, airline, aircraft, best for..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full rounded-2xl border border-white/10 bg-[#08101d] px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-sky-400/40"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
-                <PlaneIcon />
-                Airline
-              </label>
-              <select
-                value={airline}
-                onChange={(e) => setAirline(e.target.value)}
-                className="w-full rounded-2xl border border-white/10 bg-[#08101d] px-4 py-3 text-sm text-white outline-none focus:border-sky-400/40"
-              >
-                <option value="">All airlines</option>
-                {airlineOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
-                <PlaneIcon />
-                Aircraft
-              </label>
-              <select
-                value={aircraft}
-                onChange={(e) => setAircraft(e.target.value)}
-                className="w-full rounded-2xl border border-white/10 bg-[#08101d] px-4 py-3 text-sm text-white outline-none focus:border-sky-400/40"
-              >
-                <option value="">All aircraft</option>
-                {aircraftOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
-                <SeatIcon />
-                Cabin
-              </label>
-              <select
-                value={cabin}
-                onChange={(e) => setCabin(e.target.value)}
-                className="w-full rounded-2xl border border-white/10 bg-[#08101d] px-4 py-3 text-sm text-white outline-none focus:border-sky-400/40"
-              >
-                <option value="">All cabins</option>
-                <option value="Business">Business</option>
-                <option value="First">First</option>
-              </select>
-            </div>
+      <div className="content-layer">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+          <div className="top-brand">
+            <Image
+              src="/images/ascend-logo.png"
+              alt="Ascend Logo"
+              width={90}
+              height={90}
+              className="brand-logo"
+            />
+            <h1 className="brand-title">Ascend Cabin Matrix</h1>
           </div>
 
-          <div className="mt-3 grid gap-3 md:grid-cols-[1fr_auto]">
-            <div>
-              <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
-                <StarIcon />
-                Best for
-              </label>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => setTag("")}
-                  className={`rounded-full px-3 py-2 text-sm transition ${
-                    tag === ""
-                      ? "bg-white text-slate-900"
-                      : "border border-white/10 bg-white/5 text-white/70 hover:bg-white/10"
-                  }`}
+          <section className="overflow-hidden rounded-[28px] border border-white/10 bg-white/5 shadow-2xl shadow-black/30 backdrop-blur">
+            <div className="grid gap-10 px-6 py-8 sm:px-8 lg:grid-cols-[1.25fr_0.75fr] lg:px-10 lg:py-10">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-white/70">
+                  <SparklesIcon />
+                  Premium cabin intelligence
+                </div>
+
+                <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+                  Find the right premium cabin in seconds.
+                </h1>
+
+                <p className="mt-4 max-w-2xl text-sm leading-6 text-white/70 sm:text-base">
+                  Ascend Cabin Matrix helps advisors compare premium Business and First Class products by airline,
+                  aircraft, privacy profile, and use case — with direct links to AeroLOPA and SeatMaps for quick seat validation.
+                </p>
+
+                <div className="mt-8 grid gap-4 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                    <p className="text-2xl font-semibold">{premiumProducts.length}</p>
+                    <p className="mt-1 text-sm text-white/60">curated cabin products</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                    <p className="text-2xl font-semibold">{airlineOptions.length}</p>
+                    <p className="mt-1 text-sm text-white/60">airlines covered</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                    <p className="text-2xl font-semibold">{filteredProducts.length}</p>
+                    <p className="mt-1 text-sm text-white/60">matching results</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-[24px] border border-white/10 bg-[#0b1728] p-5">
+                <p className="flex items-center gap-2 text-sm font-medium text-white">
+                  <StarIcon />
+                  How to use this
+                </p>
+
+                <div className="mt-4 space-y-3 text-sm leading-6 text-white/70">
+                  <p>Use search when you already know the product, airline, aircraft, or travel style.</p>
+                  <p>Filter by cabin type or “best for” tags to quickly narrow the shortlist.</p>
+                  <p>Open AeroLOPA for layout accuracy, then SeatMaps for a second look and public reference.</p>
+                </div>
+
+                <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm text-amber-100">
+                  Best for client-facing use: start with the top-ranked shortlist, then verify aircraft-specific seating before recommending a product.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="mt-8 rounded-[28px] border border-white/10 bg-white/5 p-4 shadow-xl shadow-black/20 backdrop-blur sm:p-6">
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+              <div className="xl:col-span-2">
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
+                  <SearchIcon />
+                  Search cabins
+                </label>
+                <input
+                  type="text"
+                  placeholder="Product, airline, aircraft, best for..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full rounded-2xl border border-white/10 bg-[#08101d] px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-sky-400/40"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
+                  <PlaneIcon />
+                  Airline
+                </label>
+                <select
+                  value={airline}
+                  onChange={(e) => setAirline(e.target.value)}
+                  className="w-full rounded-2xl border border-white/10 bg-[#08101d] px-4 py-3 text-sm text-white outline-none focus:border-sky-400/40"
                 >
-                  All
-                </button>
-                {tagOptions.map((option) => (
+                  <option value="">All airlines</option>
+                  {airlineOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
+                  <PlaneIcon />
+                  Aircraft
+                </label>
+                <select
+                  value={aircraft}
+                  onChange={(e) => setAircraft(e.target.value)}
+                  className="w-full rounded-2xl border border-white/10 bg-[#08101d] px-4 py-3 text-sm text-white outline-none focus:border-sky-400/40"
+                >
+                  <option value="">All aircraft</option>
+                  {aircraftOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
+                  <SeatIcon />
+                  Cabin
+                </label>
+                <select
+                  value={cabin}
+                  onChange={(e) => setCabin(e.target.value)}
+                  className="w-full rounded-2xl border border-white/10 bg-[#08101d] px-4 py-3 text-sm text-white outline-none focus:border-sky-400/40"
+                >
+                  <option value="">All cabins</option>
+                  <option value="Business">Business</option>
+                  <option value="First">First</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="mt-3 grid gap-3 md:grid-cols-[1fr_auto]">
+              <div>
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
+                  <StarIcon />
+                  Best for
+                </label>
+                <div className="flex flex-wrap gap-2">
                   <button
-                    key={option}
-                    onClick={() => setTag(option)}
+                    onClick={() => setTag("")}
                     className={`rounded-full px-3 py-2 text-sm transition ${
-                      tag === option
-                        ? "bg-sky-400 text-slate-950"
+                      tag === ""
+                        ? "bg-white text-slate-900"
                         : "border border-white/10 bg-white/5 text-white/70 hover:bg-white/10"
                     }`}
                   >
-                    {option}
+                    All
                   </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex items-end">
-              <button
-                onClick={resetFilters}
-                className="w-full rounded-2xl border border-white/10 px-4 py-3 text-sm font-medium text-white transition hover:bg-white/10 md:w-auto"
-              >
-                Reset filters
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {filteredProducts.length > 0 && (
-          <section className="mt-8">
-            <div className="mb-4 flex items-center justify-between gap-4">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-[0.24em] text-white/45">Top matches</p>
-                <h2 className="mt-1 text-2xl font-semibold">Best shortlist right now</h2>
-              </div>
-              <p className="text-sm text-white/55">
-                Showing {filteredProducts.length} product{filteredProducts.length === 1 ? "" : "s"}
-              </p>
-            </div>
-
-            <div className="grid gap-4 lg:grid-cols-3">
-              {topThree.map((item) => (
-                <article
-                  key={`${item.id}-featured`}
-                  className="overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-b from-white/10 to-white/5"
-                >
-                  <div className="relative h-56">
-                    <Image src={item.image} alt={item.productName} fill className="object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#07111f] via-[#07111f]/30 to-transparent" />
-                    <div className="absolute left-4 top-4 flex items-center gap-2">
-                      <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-950">#{item.rank}</span>
-                      <span className={`rounded-full px-3 py-1 text-xs font-medium ${cabinAccent[item.cabinType]}`}>
-                        {item.cabinType}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-5">
-                    <div className="flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-white/45">
-                      <span>{item.airlineCode}</span>
-                      <span>•</span>
-                      <span>{item.airline}</span>
-                    </div>
-                    <h3 className="mt-2 text-2xl font-semibold">{item.productName}</h3>
-                    <p className="mt-1 text-sm text-white/55">{item.aircraft}</p>
-                    <p className="mt-4 text-sm leading-6 text-white/70">{item.description}</p>
-
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {item.bestFor.map((value) => (
-                        <span key={value} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/75">
-                          Best for {value}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-
-        <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filteredProducts.map((item) => (
-            <article
-              key={item.id}
-              className="group overflow-hidden rounded-[24px] border border-white/10 bg-white/5 transition duration-200 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]"
-            >
-              <div className="relative h-52 overflow-hidden">
-                <Image
-                  src={item.image}
-                  alt={item.productName}
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#07111f] via-[#07111f]/20 to-transparent" />
-                <div className="absolute left-4 top-4 flex items-center gap-2">
-                  <span className="rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur">
-                    #{item.rank}
-                  </span>
-                  <span className={`rounded-full px-3 py-1 text-xs font-medium backdrop-blur ${cabinAccent[item.cabinType]}`}>
-                    {item.cabinType}
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-5">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <h3 className="text-xl font-semibold leading-tight">{item.productName}</h3>
-                    <p className="mt-1 text-sm text-white/55">
-                      {item.airline} · {item.aircraft}
-                    </p>
-                  </div>
-                  <div className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70">
-                    {item.airlineCode}
-                  </div>
-                </div>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {item.bestFor.map((value) => (
-                    <span key={value} className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">
-                      {value}
-                    </span>
+                  {tagOptions.map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => setTag(option)}
+                      className={`rounded-full px-3 py-2 text-sm transition ${
+                        tag === option
+                          ? "bg-sky-400 text-slate-950"
+                          : "border border-white/10 bg-white/5 text-white/70 hover:bg-white/10"
+                      }`}
+                    >
+                      {option}
+                    </button>
                   ))}
                 </div>
-
-                <div className="mt-4 space-y-3">
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                    <div className="flex items-start gap-3">
-                      <SeatIcon />
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">Seat insight</p>
-                        <p className="mt-2 text-sm leading-6 text-white/75">{item.seatInsight}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                    <div className="flex items-start gap-3">
-                      <NoteIcon />
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">Why it stands out</p>
-                        <p className="mt-2 text-sm leading-6 text-white/65">{item.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                  <a
-                    href={item.aerolopaUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90"
-                  >
-                    <MapIcon />
-                    Open AeroLOPA
-                  </a>
-
-                  <a
-                    href={item.seatmapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-                  >
-                    <SeatIcon />
-                    Open SeatMaps
-                  </a>
-                </div>
               </div>
-            </article>
-          ))}
-        </section>
 
-        {filteredProducts.length === 0 && (
-          <section className="mt-8 rounded-[28px] border border-dashed border-white/10 bg-white/5 px-6 py-14 text-center">
-            <h2 className="text-2xl font-semibold">No cabins matched those filters</h2>
-            <p className="mt-3 text-sm text-white/60">Try clearing one or two filters, or use a broader search term.</p>
-            <button
-              onClick={resetFilters}
-              className="mt-6 rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-950"
-            >
-              Reset and show all cabins
-            </button>
+              <div className="flex items-end">
+                <button
+                  onClick={resetFilters}
+                  className="w-full rounded-2xl border border-white/10 px-4 py-3 text-sm font-medium text-white transition hover:bg-white/10 md:w-auto"
+                >
+                  Reset filters
+                </button>
+              </div>
+            </div>
           </section>
-        )}
+
+          {filteredProducts.length > 0 && (
+            <section className="mt-8">
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-[0.24em] text-white/45">Top matches</p>
+                  <h2 className="mt-1 text-2xl font-semibold">Best shortlist right now</h2>
+                </div>
+                <p className="text-sm text-white/55">
+                  Showing {filteredProducts.length} product{filteredProducts.length === 1 ? "" : "s"}
+                </p>
+              </div>
+
+              <div className="grid gap-4 lg:grid-cols-3">
+                {topThree.map((item) => (
+                  <article
+                    key={`${item.id}-featured`}
+                    className="overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-b from-white/10 to-white/5"
+                  >
+                    <div className="relative h-56">
+                      <Image src={item.image} alt={item.productName} fill className="object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#07111f] via-[#07111f]/30 to-transparent" />
+                      <div className="absolute left-4 top-4 flex items-center gap-2">
+                        <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-950">
+                          #{item.rank}
+                        </span>
+                        <span className={`rounded-full px-3 py-1 text-xs font-medium ${cabinAccent[item.cabinType]}`}>
+                          {item.cabinType}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="p-5">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-white/45">
+                        <span>{item.airlineCode}</span>
+                        <span>•</span>
+                        <span>{item.airline}</span>
+                      </div>
+                      <h3 className="mt-2 text-2xl font-semibold">{item.productName}</h3>
+                      <p className="mt-1 text-sm text-white/55">{item.aircraft}</p>
+                      <p className="mt-4 text-sm leading-6 text-white/70">{item.description}</p>
+
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {item.bestFor.map((value) => (
+                          <span
+                            key={value}
+                            className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/75"
+                          >
+                            Best for {value}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {filteredProducts.map((item) => (
+              <article
+                key={item.id}
+                className="group overflow-hidden rounded-[24px] border border-white/10 bg-white/5 transition duration-200 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]"
+              >
+                <div className="relative h-52 overflow-hidden">
+                  <Image
+                    src={item.image}
+                    alt={item.productName}
+                    fill
+                    className="object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#07111f] via-[#07111f]/20 to-transparent" />
+                  <div className="absolute left-4 top-4 flex items-center gap-2">
+                    <span className="rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur">
+                      #{item.rank}
+                    </span>
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-medium backdrop-blur ${cabinAccent[item.cabinType]}`}
+                    >
+                      {item.cabinType}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <h3 className="text-xl font-semibold leading-tight">{item.productName}</h3>
+                      <p className="mt-1 text-sm text-white/55">
+                        {item.airline} · {item.aircraft}
+                      </p>
+                    </div>
+                    <div className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70">
+                      {item.airlineCode}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {item.bestFor.map((value) => (
+                      <span key={value} className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">
+                        {value}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 space-y-3">
+                    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                      <div className="flex items-start gap-3">
+                        <SeatIcon />
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">Seat insight</p>
+                          <p className="mt-2 text-sm leading-6 text-white/75">{item.seatInsight}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                      <div className="flex items-start gap-3">
+                        <NoteIcon />
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">
+                            Why it stands out
+                          </p>
+                          <p className="mt-2 text-sm leading-6 text-white/65">{item.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                    <a
+                      href={item.aerolopaUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90"
+                    >
+                      <MapIcon />
+                      Open AeroLOPA
+                    </a>
+
+                    <a
+                      href={item.seatmapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                    >
+                      <SeatIcon />
+                      Open SeatMaps
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </section>
+
+          {filteredProducts.length === 0 && (
+            <section className="mt-8 rounded-[28px] border border-dashed border-white/10 bg-white/5 px-6 py-14 text-center">
+              <h2 className="text-2xl font-semibold">No cabins matched those filters</h2>
+              <p className="mt-3 text-sm text-white/60">Try clearing one or two filters, or use a broader search term.</p>
+              <button
+                onClick={resetFilters}
+                className="mt-6 rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-950"
+              >
+                Reset and show all cabins
+              </button>
+            </section>
+          )}
+        </div>
       </div>
     </main>
   );
