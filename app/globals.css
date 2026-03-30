@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #020403;
+  --background: #000000;
   --foreground: #f5f5f5;
 }
 
@@ -14,13 +14,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #020403;
+    --background: #000000;
     --foreground: #f5f5f5;
   }
 }
 
 html {
-  background: #020403;
+  background: #000000;
 }
 
 body {
@@ -29,21 +29,21 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ===== MATRIX GREEN BACKGROUND ===== */
+/* ===== MATRIX BLACK + NEON GREEN ===== */
 
 .app-shell {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
   background:
-    radial-gradient(circle at top, rgba(34, 197, 94, 0.1), transparent 30%),
-    radial-gradient(circle at bottom, rgba(16, 185, 129, 0.08), transparent 25%),
-    linear-gradient(180deg, #020403 0%, #03110c 45%, #020403 100%);
+    radial-gradient(circle at top, rgba(34, 255, 120, 0.08), transparent 28%),
+    radial-gradient(circle at center, rgba(0, 255, 120, 0.04), transparent 35%),
+    linear-gradient(180deg, #000000 0%, #010403 45%, #000000 100%);
 }
 
 .content-layer {
   position: relative;
-  z-index: 2;
+  z-index: 5;
 }
 
 .top-brand {
@@ -56,7 +56,9 @@ body {
 
 .brand-logo {
   border-radius: 20px;
-  box-shadow: 0 0 30px rgba(34, 197, 94, 0.28);
+  box-shadow:
+    0 0 18px rgba(0, 255, 128, 0.22),
+    0 0 40px rgba(0, 255, 128, 0.12);
 }
 
 .brand-title {
@@ -64,78 +66,114 @@ body {
   font-weight: 700;
   letter-spacing: 0.02em;
   color: #f8fafc;
+  text-shadow: 0 0 12px rgba(0, 255, 128, 0.18);
 }
 
-/* Matrix background wrapper */
+/* Matrix background */
 .matrix-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  background:
+    radial-gradient(circle at center, rgba(0, 255, 120, 0.03), transparent 55%);
 }
 
-/* soft green glow */
-.matrix-overlay {
+/* Grain / noise */
+.matrix-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 3px 3px, 5px 5px;
+  mix-blend-mode: screen;
+}
+
+/* Flicker */
+.matrix-flicker {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 255, 100, 0.02);
+  animation: flicker 4s infinite;
+}
+
+/* Dark edge shading */
+.matrix-vignette {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at center, rgba(34, 197, 94, 0.07), transparent 45%),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.28));
+    radial-gradient(circle at center, transparent 45%, rgba(0, 0, 0, 0.45) 100%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.22), transparent 15%, transparent 85%, rgba(0, 0, 0, 0.3)),
+    linear-gradient(to right, rgba(0, 0, 0, 0.28), transparent 10%, transparent 90%, rgba(0, 0, 0, 0.28));
 }
 
-/* falling code container */
+/* Rain container */
 .matrix-rain {
   position: absolute;
   inset: 0;
   overflow: hidden;
 }
 
-/* each code column */
+/* Falling columns */
 .matrix-column {
   position: absolute;
-  top: -120%;
-  width: 7%;
-  color: rgba(134, 239, 172, 0.38);
-  font-size: 18px;
-  line-height: 18px;
+  top: -140%;
+  width: 5%;
   white-space: pre-wrap;
   word-break: break-all;
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+  line-height: 14px;
+  color: rgba(60, 255, 140, 0.52);
   text-shadow:
-    0 0 6px rgba(74, 222, 128, 0.55),
-    0 0 14px rgba(34, 197, 94, 0.25);
+    0 0 4px rgba(0, 255, 110, 0.9),
+    0 0 10px rgba(0, 255, 110, 0.55),
+    0 0 20px rgba(0, 255, 110, 0.22);
   animation-name: matrixFall;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-  filter: blur(0.15px);
+  opacity: 0.95;
   user-select: none;
-  font-family: "Courier New", monospace;
-  opacity: 0.9;
+  filter: blur(0.1px);
 }
 
-/* subtle scan lines */
+/* Brighter columns mixed in */
+.matrix-bright {
+  color: rgba(170, 255, 200, 0.88);
+  text-shadow:
+    0 0 7px rgba(120, 255, 170, 0.95),
+    0 0 16px rgba(0, 255, 115, 0.7),
+    0 0 28px rgba(0, 255, 115, 0.3);
+}
+
+/* Scan lines */
 .matrix-bg::before {
   content: "";
   position: absolute;
   inset: 0;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.015) 0px,
-    rgba(255, 255, 255, 0.015) 1px,
+    rgba(255, 255, 255, 0.02) 0px,
+    rgba(255, 255, 255, 0.02) 1px,
     transparent 2px,
     transparent 4px
   );
-  opacity: 0.28;
+  opacity: 0.16;
 }
 
-/* dark edge shading */
+/* Green glow haze */
 .matrix-bg::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to right, rgba(0, 0, 0, 0.35), transparent 12%, transparent 88%, rgba(0, 0, 0, 0.35)),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.35));
+    radial-gradient(circle at 50% 20%, rgba(0, 255, 110, 0.05), transparent 25%),
+    radial-gradient(circle at 30% 60%, rgba(0, 255, 110, 0.03), transparent 20%),
+    radial-gradient(circle at 75% 55%, rgba(0, 255, 110, 0.04), transparent 24%);
+  opacity: 0.9;
 }
 
 @keyframes matrixFall {
@@ -143,11 +181,32 @@ body {
     transform: translateY(-120%);
     opacity: 0;
   }
-  10% {
-    opacity: 0.85;
+  6% {
+    opacity: 1;
   }
   100% {
-    transform: translateY(220%);
-    opacity: 0.15;
+    transform: translateY(240%);
+    opacity: 0.2;
+  }
+}
+
+@keyframes flicker {
+  0%, 18%, 22%, 63%, 100% {
+    opacity: 0.05;
+  }
+  20% {
+    opacity: 0.11;
+  }
+  21% {
+    opacity: 0.03;
+  }
+  64% {
+    opacity: 0.09;
+  }
+  65% {
+    opacity: 0.04;
+  }
+  66% {
+    opacity: 0.08;
   }
 }

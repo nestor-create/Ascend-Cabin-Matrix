@@ -408,19 +408,25 @@ const cabinAccent: Record<CabinType, string> = {
   First: "bg-lime-400/10 text-lime-200 ring-1 ring-inset ring-lime-400/20",
 };
 
-const matrixRows = [
-  "101100101001101010010110010101011001001010011010",
+const matrixColumns = [
+  "10100101101001011010010110100101101001011010010110",
   "アイウエオカキクケコサシスセソタチツテトナニヌネノ",
-  "010011010100110101001101010011010100110101001101",
-  "甲乙丙丁戊己庚辛壬癸天地玄黄宇宙洪荒",
-  "110010101101001010110100101011010010101101001010",
-  "データデータデータデータデータデータデータ",
-  "001101010110010101100101011001010110010101100101",
-  "MATRIXCODE101010ASCEND101010PREMIUM101010CABIN",
-  "101011001010110010101100101011001010110010101100",
-  "零壱弐参肆伍陸漆捌玖零壱弐参肆伍陸漆捌玖",
-  "010101110001010111000101011100010101110001010111",
-  "機密データ解析接続中機密データ解析接続中",
+  "01011010010110100101101001011010010110100101101001",
+  "機密接続解析演算通信機密接続解析演算通信機密接続解析",
+  "11001010101100101010110010101011001010101100101010",
+  "零壱弐参肆伍陸漆捌玖零壱弐参肆伍陸漆捌玖零壱弐参",
+  "MATRIXMATRIXASCENDCABINMATRIXASCENDCABINMATRIX",
+  "00110011001101010101100100110101011001001101010110",
+  "暗号層制御信号監視暗号層制御信号監視暗号層制御信号監視",
+  "10101011110000101010111100001010101111000010101011",
+  "PREMIUMDATASEATMAPPREMIUMDATASEATMAPPREMIUMDATA",
+  "乙丙丁戊己庚辛壬癸天地玄黄宇宙洪荒乙丙丁戊己庚辛壬癸",
+  "01101001011010010110100101101001011010010110100101",
+  "接続中接続中接続中接続中接続中接続中接続中接続中",
+  "11010100110101001101010011010100110101001101010011",
+  "ASCEND101010CABIN101010MATRIX101010ASCEND101010",
+  "監視演算追跡通信監視演算追跡通信監視演算追跡通信監視",
+  "01010101001100110010101010011001100101010100110011",
 ];
 
 export default function HomePage() {
@@ -477,19 +483,21 @@ export default function HomePage() {
   return (
     <main className="app-shell text-white">
       <div className="matrix-bg">
-        <div className="matrix-overlay" />
+        <div className="matrix-noise" />
+        <div className="matrix-flicker" />
+        <div className="matrix-vignette" />
         <div className="matrix-rain">
-          {matrixRows.map((row, index) => (
+          {matrixColumns.map((text, index) => (
             <span
               key={index}
-              className="matrix-column"
+              className={`matrix-column ${index % 3 === 0 ? "matrix-bright" : ""}`}
               style={{
-                left: `${index * 8.2}%`,
-                animationDuration: `${8 + (index % 5)}s`,
-                animationDelay: `${(index % 6) * -1.2}s`,
+                left: `${index * 5.6}%`,
+                animationDuration: `${5 + (index % 4)}s`,
+                animationDelay: `${index * -0.8}s`,
               }}
             >
-              {row}
+              {text}
             </span>
           ))}
         </div>
@@ -508,10 +516,10 @@ export default function HomePage() {
             <h1 className="brand-title">Ascend Cabin Matrix</h1>
           </div>
 
-          <section className="overflow-hidden rounded-[28px] border border-emerald-400/10 bg-white/5 shadow-2xl shadow-black/40 backdrop-blur-md">
+          <section className="overflow-hidden rounded-[28px] border border-emerald-400/10 bg-white/5 shadow-2xl shadow-black/50 backdrop-blur-md">
             <div className="grid gap-10 px-6 py-8 sm:px-8 lg:grid-cols-[1.25fr_0.75fr] lg:px-10 lg:py-10">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-400/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/80">
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/80">
                   <SparklesIcon />
                   Premium cabin intelligence
                 </div>
@@ -526,22 +534,22 @@ export default function HomePage() {
                 </p>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-2xl border border-emerald-400/10 bg-black/25 p-4">
+                  <div className="rounded-2xl border border-emerald-400/10 bg-black/30 p-4">
                     <p className="text-2xl font-semibold">{premiumProducts.length}</p>
                     <p className="mt-1 text-sm text-white/60">curated cabin products</p>
                   </div>
-                  <div className="rounded-2xl border border-emerald-400/10 bg-black/25 p-4">
+                  <div className="rounded-2xl border border-emerald-400/10 bg-black/30 p-4">
                     <p className="text-2xl font-semibold">{airlineOptions.length}</p>
                     <p className="mt-1 text-sm text-white/60">airlines covered</p>
                   </div>
-                  <div className="rounded-2xl border border-emerald-400/10 bg-black/25 p-4">
+                  <div className="rounded-2xl border border-emerald-400/10 bg-black/30 p-4">
                     <p className="text-2xl font-semibold">{filteredProducts.length}</p>
                     <p className="mt-1 text-sm text-white/60">matching results</p>
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-[24px] border border-emerald-400/10 bg-black/35 p-5">
+              <div className="rounded-[24px] border border-emerald-400/10 bg-black/40 p-5">
                 <p className="flex items-center gap-2 text-sm font-medium text-white">
                   <StarIcon />
                   How to use this
@@ -572,7 +580,7 @@ export default function HomePage() {
                   placeholder="Product, airline, aircraft, best for..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full rounded-2xl border border-emerald-400/10 bg-[#020807]/90 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-emerald-400/40"
+                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/70 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-emerald-400/40"
                 />
               </div>
 
@@ -584,7 +592,7 @@ export default function HomePage() {
                 <select
                   value={airline}
                   onChange={(e) => setAirline(e.target.value)}
-                  className="w-full rounded-2xl border border-emerald-400/10 bg-[#020807]/90 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
+                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/70 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
                 >
                   <option value="">All airlines</option>
                   {airlineOptions.map((option) => (
@@ -603,7 +611,7 @@ export default function HomePage() {
                 <select
                   value={aircraft}
                   onChange={(e) => setAircraft(e.target.value)}
-                  className="w-full rounded-2xl border border-emerald-400/10 bg-[#020807]/90 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
+                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/70 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
                 >
                   <option value="">All aircraft</option>
                   {aircraftOptions.map((option) => (
@@ -622,7 +630,7 @@ export default function HomePage() {
                 <select
                   value={cabin}
                   onChange={(e) => setCabin(e.target.value)}
-                  className="w-full rounded-2xl border border-emerald-400/10 bg-[#020807]/90 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
+                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/70 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
                 >
                   <option value="">All cabins</option>
                   <option value="Business">Business</option>
@@ -695,7 +703,7 @@ export default function HomePage() {
                   >
                     <div className="relative h-56">
                       <Image src={item.image} alt={item.productName} fill className="object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#020807] via-[#020807]/30 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
                       <div className="absolute left-4 top-4 flex items-center gap-2">
                         <span className="rounded-full bg-emerald-300 px-3 py-1 text-xs font-semibold text-slate-950">
                           #{item.rank}
@@ -746,7 +754,7 @@ export default function HomePage() {
                     fill
                     className="object-cover transition duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#020807] via-[#020807]/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
                   <div className="absolute left-4 top-4 flex items-center gap-2">
                     <span className="rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur">
                       #{item.rank}
