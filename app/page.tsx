@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type CabinType = "Business" | "First";
 
@@ -83,6 +83,99 @@ function SparklesIcon() {
       <path d="M19 14l1.1 2.4L22.5 17l-2.4 1.1L19 20.5l-1.1-2.4L15.5 17l2.4-1.1L19 14Z" />
     </svg>
   );
+}
+
+function MatrixCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationFrameId = 0;
+    let width = 0;
+    let height = 0;
+    let fontSize = 16;
+    let columns = 0;
+    let drops: number[] = [];
+
+    const chars =
+      "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*+-<>";
+
+    function setup() {
+      width = window.innerWidth;
+      height = Math.max(document.body.scrollHeight, window.innerHeight);
+
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      fontSize = width < 640 ? 12 : 16;
+      columns = Math.floor(width / fontSize);
+      drops = Array(columns)
+        .fill(0)
+        .map(() => Math.floor(Math.random() * -100));
+    }
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = "rgba(0, 255, 100, 0.7)";
+
+        ctx.fillStyle = "rgba(180, 255, 180, 0.95)";
+        ctx.fillText(text, x, y);
+
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = "rgba(0, 255, 120, 0.45)";
+        ctx.fillStyle = "rgba(0, 255, 90, 0.72)";
+        ctx.fillText(text, x, y + fontSize);
+
+        if (y > height && Math.random() > 0.975) {
+          drops[i] = Math.floor(Math.random() * -20);
+        }
+
+        drops[i]++;
+      }
+
+      animationFrameId = requestAnimationFrame(draw);
+    }
+
+    function handleResize() {
+      setup();
+    }
+
+    setup();
+
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(0, 0, width, height);
+
+    draw();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="matrix-canvas" aria-hidden="true" />;
 }
 
 const premiumProducts: Product[] = [
@@ -408,27 +501,6 @@ const cabinAccent: Record<CabinType, string> = {
   First: "bg-lime-400/10 text-lime-200 ring-1 ring-inset ring-lime-400/20",
 };
 
-const matrixColumns = [
-  "10100101101001011010010110100101101001011010010110",
-  "アイウエオカキクケコサシスセソタチツテトナニヌネノ",
-  "01011010010110100101101001011010010110100101101001",
-  "機密接続解析演算通信機密接続解析演算通信機密接続解析",
-  "11001010101100101010110010101011001010101100101010",
-  "零壱弐参肆伍陸漆捌玖零壱弐参肆伍陸漆捌玖零壱弐参",
-  "MATRIXMATRIXASCENDCABINMATRIXASCENDCABINMATRIX",
-  "00110011001101010101100100110101011001001101010110",
-  "暗号層制御信号監視暗号層制御信号監視暗号層制御信号監視",
-  "10101011110000101010111100001010101111000010101011",
-  "PREMIUMDATASEATMAPPREMIUMDATASEATMAPPREMIUMDATA",
-  "乙丙丁戊己庚辛壬癸天地玄黄宇宙洪荒乙丙丁戊己庚辛壬癸",
-  "01101001011010010110100101101001011010010110100101",
-  "接続中接続中接続中接続中接続中接続中接続中接続中",
-  "11010100110101001101010011010100110101001101010011",
-  "ASCEND101010CABIN101010MATRIX101010ASCEND101010",
-  "監視演算追跡通信監視演算追跡通信監視演算追跡通信監視",
-  "01010101001100110010101010011001100101010100110011",
-];
-
 export default function HomePage() {
   const [search, setSearch] = useState("");
   const [airline, setAirline] = useState("");
@@ -482,25 +554,11 @@ export default function HomePage() {
 
   return (
     <main className="app-shell text-white">
-      <div className="matrix-bg">
-        <div className="matrix-noise" />
+      <div className="matrix-bg" aria-hidden="true">
+        <MatrixCanvas />
+        <div className="matrix-glow" />
         <div className="matrix-flicker" />
         <div className="matrix-vignette" />
-        <div className="matrix-rain">
-          {matrixColumns.map((text, index) => (
-            <span
-              key={index}
-              className={`matrix-column ${index % 3 === 0 ? "matrix-bright" : ""}`}
-              style={{
-                left: `${index * 5.6}%`,
-                animationDuration: `${5 + (index % 4)}s`,
-                animationDelay: `${index * -0.8}s`,
-              }}
-            >
-              {text}
-            </span>
-          ))}
-        </div>
       </div>
 
       <div className="content-layer">
@@ -516,7 +574,7 @@ export default function HomePage() {
             <h1 className="brand-title">Ascend Cabin Matrix</h1>
           </div>
 
-          <section className="overflow-hidden rounded-[28px] border border-emerald-400/10 bg-white/5 shadow-2xl shadow-black/50 backdrop-blur-md">
+          <section className="overflow-hidden rounded-[28px] border border-emerald-400/10 bg-white/5 shadow-2xl shadow-black/60 backdrop-blur-md">
             <div className="grid gap-10 px-6 py-8 sm:px-8 lg:grid-cols-[1.25fr_0.75fr] lg:px-10 lg:py-10">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/80">
@@ -534,22 +592,22 @@ export default function HomePage() {
                 </p>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-2xl border border-emerald-400/10 bg-black/30 p-4">
+                  <div className="rounded-2xl border border-emerald-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{premiumProducts.length}</p>
                     <p className="mt-1 text-sm text-white/60">curated cabin products</p>
                   </div>
-                  <div className="rounded-2xl border border-emerald-400/10 bg-black/30 p-4">
+                  <div className="rounded-2xl border border-emerald-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{airlineOptions.length}</p>
                     <p className="mt-1 text-sm text-white/60">airlines covered</p>
                   </div>
-                  <div className="rounded-2xl border border-emerald-400/10 bg-black/30 p-4">
+                  <div className="rounded-2xl border border-emerald-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{filteredProducts.length}</p>
                     <p className="mt-1 text-sm text-white/60">matching results</p>
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-[24px] border border-emerald-400/10 bg-black/40 p-5">
+              <div className="rounded-[24px] border border-emerald-400/10 bg-black/45 p-5">
                 <p className="flex items-center gap-2 text-sm font-medium text-white">
                   <StarIcon />
                   How to use this
@@ -580,7 +638,7 @@ export default function HomePage() {
                   placeholder="Product, airline, aircraft, best for..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/70 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-emerald-400/40"
+                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-emerald-400/40"
                 />
               </div>
 
@@ -592,7 +650,7 @@ export default function HomePage() {
                 <select
                   value={airline}
                   onChange={(e) => setAirline(e.target.value)}
-                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/70 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
+                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
                 >
                   <option value="">All airlines</option>
                   {airlineOptions.map((option) => (
@@ -611,7 +669,7 @@ export default function HomePage() {
                 <select
                   value={aircraft}
                   onChange={(e) => setAircraft(e.target.value)}
-                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/70 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
+                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
                 >
                   <option value="">All aircraft</option>
                   {aircraftOptions.map((option) => (
@@ -630,7 +688,7 @@ export default function HomePage() {
                 <select
                   value={cabin}
                   onChange={(e) => setCabin(e.target.value)}
-                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/70 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
+                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
                 >
                   <option value="">All cabins</option>
                   <option value="Business">Business</option>
