@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #020403;
+  --foreground: #f5f5f5;
 }
 
 @theme inline {
@@ -14,9 +14,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #020403;
+    --foreground: #f5f5f5;
   }
+}
+
+html {
+  background: #020403;
 }
 
 body {
@@ -24,108 +28,17 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-/* ===== MATRIX UI ===== */
+
+/* ===== MATRIX GREEN BACKGROUND ===== */
 
 .app-shell {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
   background:
-    radial-gradient(circle at top, rgba(111, 76, 255, 0.25), transparent 40%),
-    linear-gradient(180deg, #07111f 0%, #020617 100%);
-}
-
-/* Content above background */
-.mx-auto {
-  position: relative;
-  z-index: 2;
-}
-
-/* Logo */
-.top-brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 32px;
-}
-
-.brand-logo {
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(111, 76, 255, 0.4);
-}
-
-.brand-title {
-  font-size: 28px;
-  font-weight: 700;
-}
-
-/* Matrix animation */
-.matrix-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  opacity: 0.15;
-
-  background-image:
-    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
-
-  background-size: 40px 40px;
-  animation: matrixMove 10s linear infinite;
-}
-
-.matrix-bg::before,
-.matrix-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(122, 92, 255, 0.18) 0px,
-      rgba(122, 92, 255, 0.18) 2px,
-      transparent 2px,
-      transparent 22px
-    );
-
-  animation: rainFall 8s linear infinite;
-}
-
-.matrix-bg::after {
-  opacity: 0.4;
-  animation-duration: 12s;
-  filter: blur(1px);
-}
-
-@keyframes matrixMove {
-  from { transform: translateY(0); }
-  to { transform: translateY(40px); }
-}
-
-@keyframes rainFall {
-  from { transform: translateY(-60px); }
-  to { transform: translateY(60px); }
-}
-
-
-
-
-
-
-
-
-/* ===== ASCEND BACKGROUND ===== */
-
-.app-shell {
-  position: relative;
-  min-height: 100vh;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at top, rgba(99, 102, 241, 0.22), transparent 35%),
-    radial-gradient(circle at bottom, rgba(168, 85, 247, 0.16), transparent 30%),
-    linear-gradient(180deg, #07111f 0%, #030712 100%);
+    radial-gradient(circle at top, rgba(34, 197, 94, 0.1), transparent 30%),
+    radial-gradient(circle at bottom, rgba(16, 185, 129, 0.08), transparent 25%),
+    linear-gradient(180deg, #020403 0%, #03110c 45%, #020403 100%);
 }
 
 .content-layer {
@@ -143,16 +56,17 @@ body {
 
 .brand-logo {
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(111, 76, 255, 0.45);
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.28);
 }
 
 .brand-title {
   font-size: 28px;
   font-weight: 700;
   letter-spacing: 0.02em;
+  color: #f8fafc;
 }
 
-/* Main animated layer */
+/* Matrix background wrapper */
 .matrix-bg {
   position: absolute;
   inset: 0;
@@ -161,49 +75,79 @@ body {
   overflow: hidden;
 }
 
-/* grid */
+/* soft green glow */
+.matrix-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(34, 197, 94, 0.07), transparent 45%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.28));
+}
+
+/* falling code container */
+.matrix-rain {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* each code column */
+.matrix-column {
+  position: absolute;
+  top: -120%;
+  width: 7%;
+  color: rgba(134, 239, 172, 0.38);
+  font-size: 18px;
+  line-height: 18px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  text-shadow:
+    0 0 6px rgba(74, 222, 128, 0.55),
+    0 0 14px rgba(34, 197, 94, 0.25);
+  animation-name: matrixFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  filter: blur(0.15px);
+  user-select: none;
+  font-family: "Courier New", monospace;
+  opacity: 0.9;
+}
+
+/* subtle scan lines */
 .matrix-bg::before {
   content: "";
   position: absolute;
-  inset: -20%;
-  opacity: 0.18;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-  background-size: 42px 42px;
-  animation: matrixGridMove 14s linear infinite;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.015) 0px,
+    rgba(255, 255, 255, 0.015) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  opacity: 0.28;
 }
 
-/* falling lines */
+/* dark edge shading */
 .matrix-bg::after {
   content: "";
   position: absolute;
-  inset: -50% 0;
-  opacity: 0.32;
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent 0 24px,
-    rgba(124, 58, 237, 0.22) 24px 26px,
-    transparent 26px 52px
-  );
-  animation: matrixRain 7s linear infinite;
-  filter: blur(0.4px);
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(0, 0, 0, 0.35), transparent 12%, transparent 88%, rgba(0, 0, 0, 0.35)),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.35));
 }
 
-@keyframes matrixGridMove {
-  from {
-    transform: translateY(0);
+@keyframes matrixFall {
+  0% {
+    transform: translateY(-120%);
+    opacity: 0;
   }
-  to {
-    transform: translateY(42px);
+  10% {
+    opacity: 0.85;
   }
-}
-
-@keyframes matrixRain {
-  from {
-    transform: translateY(-80px);
-  }
-  to {
-    transform: translateY(80px);
+  100% {
+    transform: translateY(220%);
+    opacity: 0.15;
   }
 }

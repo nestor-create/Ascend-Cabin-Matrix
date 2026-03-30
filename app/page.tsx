@@ -404,9 +404,24 @@ const premiumProducts: Product[] = [
 ];
 
 const cabinAccent: Record<CabinType, string> = {
-  Business: "bg-sky-400/10 text-sky-200 ring-1 ring-inset ring-sky-400/20",
-  First: "bg-amber-400/10 text-amber-200 ring-1 ring-inset ring-amber-400/20",
+  Business: "bg-emerald-400/10 text-emerald-200 ring-1 ring-inset ring-emerald-400/20",
+  First: "bg-lime-400/10 text-lime-200 ring-1 ring-inset ring-lime-400/20",
 };
+
+const matrixRows = [
+  "101100101001101010010110010101011001001010011010",
+  "アイウエオカキクケコサシスセソタチツテトナニヌネノ",
+  "010011010100110101001101010011010100110101001101",
+  "甲乙丙丁戊己庚辛壬癸天地玄黄宇宙洪荒",
+  "110010101101001010110100101011010010101101001010",
+  "データデータデータデータデータデータデータ",
+  "001101010110010101100101011001010110010101100101",
+  "MATRIXCODE101010ASCEND101010PREMIUM101010CABIN",
+  "101011001010110010101100101011001010110010101100",
+  "零壱弐参肆伍陸漆捌玖零壱弐参肆伍陸漆捌玖",
+  "010101110001010111000101011100010101110001010111",
+  "機密データ解析接続中機密データ解析接続中",
+];
 
 export default function HomePage() {
   const [search, setSearch] = useState("");
@@ -461,7 +476,24 @@ export default function HomePage() {
 
   return (
     <main className="app-shell text-white">
-      <div className="matrix-bg" />
+      <div className="matrix-bg">
+        <div className="matrix-overlay" />
+        <div className="matrix-rain">
+          {matrixRows.map((row, index) => (
+            <span
+              key={index}
+              className="matrix-column"
+              style={{
+                left: `${index * 8.2}%`,
+                animationDuration: `${8 + (index % 5)}s`,
+                animationDelay: `${(index % 6) * -1.2}s`,
+              }}
+            >
+              {row}
+            </span>
+          ))}
+        </div>
+      </div>
 
       <div className="content-layer">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
@@ -476,10 +508,10 @@ export default function HomePage() {
             <h1 className="brand-title">Ascend Cabin Matrix</h1>
           </div>
 
-          <section className="overflow-hidden rounded-[28px] border border-white/10 bg-white/5 shadow-2xl shadow-black/30 backdrop-blur">
+          <section className="overflow-hidden rounded-[28px] border border-emerald-400/10 bg-white/5 shadow-2xl shadow-black/40 backdrop-blur-md">
             <div className="grid gap-10 px-6 py-8 sm:px-8 lg:grid-cols-[1.25fr_0.75fr] lg:px-10 lg:py-10">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-white/70">
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-400/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/80">
                   <SparklesIcon />
                   Premium cabin intelligence
                 </div>
@@ -488,50 +520,50 @@ export default function HomePage() {
                   Find the right premium cabin in seconds.
                 </h1>
 
-                <p className="mt-4 max-w-2xl text-sm leading-6 text-white/70 sm:text-base">
+                <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75 sm:text-base">
                   Ascend Cabin Matrix helps advisors compare premium Business and First Class products by airline,
                   aircraft, privacy profile, and use case — with direct links to AeroLOPA and SeatMaps for quick seat validation.
                 </p>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <div className="rounded-2xl border border-emerald-400/10 bg-black/25 p-4">
                     <p className="text-2xl font-semibold">{premiumProducts.length}</p>
                     <p className="mt-1 text-sm text-white/60">curated cabin products</p>
                   </div>
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <div className="rounded-2xl border border-emerald-400/10 bg-black/25 p-4">
                     <p className="text-2xl font-semibold">{airlineOptions.length}</p>
                     <p className="mt-1 text-sm text-white/60">airlines covered</p>
                   </div>
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <div className="rounded-2xl border border-emerald-400/10 bg-black/25 p-4">
                     <p className="text-2xl font-semibold">{filteredProducts.length}</p>
                     <p className="mt-1 text-sm text-white/60">matching results</p>
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-[24px] border border-white/10 bg-[#0b1728] p-5">
+              <div className="rounded-[24px] border border-emerald-400/10 bg-black/35 p-5">
                 <p className="flex items-center gap-2 text-sm font-medium text-white">
                   <StarIcon />
                   How to use this
                 </p>
 
-                <div className="mt-4 space-y-3 text-sm leading-6 text-white/70">
+                <div className="mt-4 space-y-3 text-sm leading-6 text-white/75">
                   <p>Use search when you already know the product, airline, aircraft, or travel style.</p>
                   <p>Filter by cabin type or “best for” tags to quickly narrow the shortlist.</p>
                   <p>Open AeroLOPA for layout accuracy, then SeatMaps for a second look and public reference.</p>
                 </div>
 
-                <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm text-amber-100">
+                <div className="mt-6 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4 text-sm text-emerald-100">
                   Best for client-facing use: start with the top-ranked shortlist, then verify aircraft-specific seating before recommending a product.
                 </div>
               </div>
             </div>
           </section>
 
-          <section className="mt-8 rounded-[28px] border border-white/10 bg-white/5 p-4 shadow-xl shadow-black/20 backdrop-blur sm:p-6">
+          <section className="mt-8 rounded-[28px] border border-emerald-400/10 bg-white/5 p-4 shadow-xl shadow-black/30 backdrop-blur-md sm:p-6">
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
               <div className="xl:col-span-2">
-                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/60">
                   <SearchIcon />
                   Search cabins
                 </label>
@@ -540,19 +572,19 @@ export default function HomePage() {
                   placeholder="Product, airline, aircraft, best for..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full rounded-2xl border border-white/10 bg-[#08101d] px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-sky-400/40"
+                  className="w-full rounded-2xl border border-emerald-400/10 bg-[#020807]/90 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-emerald-400/40"
                 />
               </div>
 
               <div>
-                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/60">
                   <PlaneIcon />
                   Airline
                 </label>
                 <select
                   value={airline}
                   onChange={(e) => setAirline(e.target.value)}
-                  className="w-full rounded-2xl border border-white/10 bg-[#08101d] px-4 py-3 text-sm text-white outline-none focus:border-sky-400/40"
+                  className="w-full rounded-2xl border border-emerald-400/10 bg-[#020807]/90 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
                 >
                   <option value="">All airlines</option>
                   {airlineOptions.map((option) => (
@@ -564,14 +596,14 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/60">
                   <PlaneIcon />
                   Aircraft
                 </label>
                 <select
                   value={aircraft}
                   onChange={(e) => setAircraft(e.target.value)}
-                  className="w-full rounded-2xl border border-white/10 bg-[#08101d] px-4 py-3 text-sm text-white outline-none focus:border-sky-400/40"
+                  className="w-full rounded-2xl border border-emerald-400/10 bg-[#020807]/90 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
                 >
                   <option value="">All aircraft</option>
                   {aircraftOptions.map((option) => (
@@ -583,14 +615,14 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/60">
                   <SeatIcon />
                   Cabin
                 </label>
                 <select
                   value={cabin}
                   onChange={(e) => setCabin(e.target.value)}
-                  className="w-full rounded-2xl border border-white/10 bg-[#08101d] px-4 py-3 text-sm text-white outline-none focus:border-sky-400/40"
+                  className="w-full rounded-2xl border border-emerald-400/10 bg-[#020807]/90 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
                 >
                   <option value="">All cabins</option>
                   <option value="Business">Business</option>
@@ -601,7 +633,7 @@ export default function HomePage() {
 
             <div className="mt-3 grid gap-3 md:grid-cols-[1fr_auto]">
               <div>
-                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-white/55">
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/60">
                   <StarIcon />
                   Best for
                 </label>
@@ -610,8 +642,8 @@ export default function HomePage() {
                     onClick={() => setTag("")}
                     className={`rounded-full px-3 py-2 text-sm transition ${
                       tag === ""
-                        ? "bg-white text-slate-900"
-                        : "border border-white/10 bg-white/5 text-white/70 hover:bg-white/10"
+                        ? "bg-emerald-300 text-slate-950"
+                        : "border border-emerald-400/10 bg-white/5 text-white/70 hover:bg-white/10"
                     }`}
                   >
                     All
@@ -622,8 +654,8 @@ export default function HomePage() {
                       onClick={() => setTag(option)}
                       className={`rounded-full px-3 py-2 text-sm transition ${
                         tag === option
-                          ? "bg-sky-400 text-slate-950"
-                          : "border border-white/10 bg-white/5 text-white/70 hover:bg-white/10"
+                          ? "bg-emerald-400 text-slate-950"
+                          : "border border-emerald-400/10 bg-white/5 text-white/70 hover:bg-white/10"
                       }`}
                     >
                       {option}
@@ -635,7 +667,7 @@ export default function HomePage() {
               <div className="flex items-end">
                 <button
                   onClick={resetFilters}
-                  className="w-full rounded-2xl border border-white/10 px-4 py-3 text-sm font-medium text-white transition hover:bg-white/10 md:w-auto"
+                  className="w-full rounded-2xl border border-emerald-400/10 px-4 py-3 text-sm font-medium text-white transition hover:bg-white/10 md:w-auto"
                 >
                   Reset filters
                 </button>
@@ -647,7 +679,7 @@ export default function HomePage() {
             <section className="mt-8">
               <div className="mb-4 flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-[0.24em] text-white/45">Top matches</p>
+                  <p className="text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/50">Top matches</p>
                   <h2 className="mt-1 text-2xl font-semibold">Best shortlist right now</h2>
                 </div>
                 <p className="text-sm text-white/55">
@@ -659,13 +691,13 @@ export default function HomePage() {
                 {topThree.map((item) => (
                   <article
                     key={`${item.id}-featured`}
-                    className="overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-b from-white/10 to-white/5"
+                    className="overflow-hidden rounded-[24px] border border-emerald-400/10 bg-gradient-to-b from-white/10 to-white/5"
                   >
                     <div className="relative h-56">
                       <Image src={item.image} alt={item.productName} fill className="object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#07111f] via-[#07111f]/30 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#020807] via-[#020807]/30 to-transparent" />
                       <div className="absolute left-4 top-4 flex items-center gap-2">
-                        <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-950">
+                        <span className="rounded-full bg-emerald-300 px-3 py-1 text-xs font-semibold text-slate-950">
                           #{item.rank}
                         </span>
                         <span className={`rounded-full px-3 py-1 text-xs font-medium ${cabinAccent[item.cabinType]}`}>
@@ -688,7 +720,7 @@ export default function HomePage() {
                         {item.bestFor.map((value) => (
                           <span
                             key={value}
-                            className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/75"
+                            className="rounded-full border border-emerald-400/10 bg-white/5 px-3 py-1 text-xs text-white/75"
                           >
                             Best for {value}
                           </span>
@@ -705,7 +737,7 @@ export default function HomePage() {
             {filteredProducts.map((item) => (
               <article
                 key={item.id}
-                className="group overflow-hidden rounded-[24px] border border-white/10 bg-white/5 transition duration-200 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]"
+                className="group overflow-hidden rounded-[24px] border border-emerald-400/10 bg-white/5 transition duration-200 hover:-translate-y-1 hover:border-emerald-400/20 hover:bg-white/[0.07]"
               >
                 <div className="relative h-52 overflow-hidden">
                   <Image
@@ -714,7 +746,7 @@ export default function HomePage() {
                     fill
                     className="object-cover transition duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07111f] via-[#07111f]/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#020807] via-[#020807]/20 to-transparent" />
                   <div className="absolute left-4 top-4 flex items-center gap-2">
                     <span className="rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur">
                       #{item.rank}
@@ -735,21 +767,21 @@ export default function HomePage() {
                         {item.airline} · {item.aircraft}
                       </p>
                     </div>
-                    <div className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70">
+                    <div className="rounded-full border border-emerald-400/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70">
                       {item.airlineCode}
                     </div>
                   </div>
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     {item.bestFor.map((value) => (
-                      <span key={value} className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">
+                      <span key={value} className="rounded-full border border-emerald-400/10 px-3 py-1 text-xs text-white/70">
                         {value}
                       </span>
                     ))}
                   </div>
 
                   <div className="mt-4 space-y-3">
-                    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                    <div className="rounded-2xl border border-emerald-400/10 bg-black/20 p-4">
                       <div className="flex items-start gap-3">
                         <SeatIcon />
                         <div>
@@ -759,7 +791,7 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                    <div className="rounded-2xl border border-emerald-400/10 bg-black/20 p-4">
                       <div className="flex items-start gap-3">
                         <NoteIcon />
                         <div>
@@ -777,7 +809,7 @@ export default function HomePage() {
                       href={item.aerolopaUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90"
+                      className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90"
                     >
                       <MapIcon />
                       Open AeroLOPA
@@ -787,7 +819,7 @@ export default function HomePage() {
                       href={item.seatmapsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-emerald-400/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
                     >
                       <SeatIcon />
                       Open SeatMaps
@@ -799,12 +831,12 @@ export default function HomePage() {
           </section>
 
           {filteredProducts.length === 0 && (
-            <section className="mt-8 rounded-[28px] border border-dashed border-white/10 bg-white/5 px-6 py-14 text-center">
+            <section className="mt-8 rounded-[28px] border border-dashed border-emerald-400/10 bg-white/5 px-6 py-14 text-center">
               <h2 className="text-2xl font-semibold">No cabins matched those filters</h2>
               <p className="mt-3 text-sm text-white/60">Try clearing one or two filters, or use a broader search term.</p>
               <button
                 onClick={resetFilters}
-                className="mt-6 rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-950"
+                className="mt-6 rounded-2xl bg-emerald-300 px-5 py-3 text-sm font-semibold text-slate-950"
               >
                 Reset and show all cabins
               </button>
