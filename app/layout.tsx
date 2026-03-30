@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ascend Cabin Matrix",
-  description: "Premium cabin comparison and route guide",
+  title: "Ascend Cabin Optimizer",
+  description: "Identify the ideal premium cabin instantly.",
 };
 
 export default function RootLayout({
