@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
 type CabinType = "Business" | "First";
 
@@ -13,6 +13,7 @@ type Product = {
   airlineCode: string;
   aircraft: string;
   cabinType: CabinType;
+  route: string;
   bestFor: string[];
   seatInsight: string;
   description: string;
@@ -85,97 +86,14 @@ function SparklesIcon() {
   );
 }
 
-function MatrixCanvas() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animationFrameId = 0;
-    let width = 0;
-    let height = 0;
-    let fontSize = 16;
-    let columns = 0;
-    let drops: number[] = [];
-
-    const chars =
-      "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*+-<>";
-
-    function setup() {
-      width = window.innerWidth;
-      height = Math.max(document.body.scrollHeight, window.innerHeight);
-
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      fontSize = width < 640 ? 12 : 16;
-      columns = Math.floor(width / fontSize);
-      drops = Array(columns)
-        .fill(0)
-        .map(() => Math.floor(Math.random() * -100));
-    }
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
-      ctx.fillRect(0, 0, width, height);
-
-      ctx.font = `${fontSize}px monospace`;
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = "rgba(0, 255, 100, 0.7)";
-
-        ctx.fillStyle = "rgba(180, 255, 180, 0.95)";
-        ctx.fillText(text, x, y);
-
-        ctx.shadowBlur = 14;
-        ctx.shadowColor = "rgba(0, 255, 120, 0.45)";
-        ctx.fillStyle = "rgba(0, 255, 90, 0.72)";
-        ctx.fillText(text, x, y + fontSize);
-
-        if (y > height && Math.random() > 0.975) {
-          drops[i] = Math.floor(Math.random() * -20);
-        }
-
-        drops[i]++;
-      }
-
-      animationFrameId = requestAnimationFrame(draw);
-    }
-
-    function handleResize() {
-      setup();
-    }
-
-    setup();
-
-    ctx.fillStyle = "#000000";
-    ctx.fillRect(0, 0, width, height);
-
-    draw();
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="matrix-canvas" aria-hidden="true" />;
+function RouteIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M3 17h6" />
+      <path d="M15 7h6" />
+      <path d="M9 17a4 4 0 1 0 0-8h6a4 4 0 1 1 0 8" />
+    </svg>
+  );
 }
 
 const premiumProducts: Product[] = [
@@ -187,6 +105,7 @@ const premiumProducts: Product[] = [
     airlineCode: "LH",
     aircraft: "A350-900 / 787-9",
     cabinType: "First",
+    route: "Munich → New York JFK",
     bestFor: ["Privacy", "Solo"],
     seatInsight: "Private suite with doors and a fully lie-flat bed, designed for maximum privacy.",
     description: "Lufthansa’s newest flagship first class suite under Allegris.",
@@ -202,6 +121,7 @@ const premiumProducts: Product[] = [
     airlineCode: "LH",
     aircraft: "A350-900 / 787-9",
     cabinType: "Business",
+    route: "Munich → San Francisco",
     bestFor: ["Privacy", "Choice"],
     seatInsight: "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
     description: "Lufthansa’s new Allegris business class with a more flexible premium seat concept.",
@@ -217,6 +137,7 @@ const premiumProducts: Product[] = [
     airlineCode: "NH",
     aircraft: "777-300ER",
     cabinType: "Business",
+    route: "Tokyo Haneda → London Heathrow",
     bestFor: ["Space", "Solo"],
     seatInsight: "Extra-wide 1-2-1 business class seat with direct aisle access and exceptional personal space.",
     description: "ANA’s flagship business class suite.",
@@ -232,6 +153,7 @@ const premiumProducts: Product[] = [
     airlineCode: "QR",
     aircraft: "A350-1000 / 777-300ER / 787-9",
     cabinType: "Business",
+    route: "Doha → New York JFK",
     bestFor: ["Couples", "Privacy"],
     seatInsight: "Enclosed suite with doors and flexible seating for couples or groups.",
     description: "Qatar Airways’ flagship business class product.",
@@ -247,6 +169,7 @@ const premiumProducts: Product[] = [
     airlineCode: "SQ",
     aircraft: "A380-800",
     cabinType: "First",
+    route: "Singapore → London Heathrow",
     bestFor: ["Luxury", "Space"],
     seatInsight: "Large private suite concept on the A380 with one of the most spacious first class products in the sky.",
     description: "Singapore Airlines flagship Suites product.",
@@ -262,6 +185,7 @@ const premiumProducts: Product[] = [
     airlineCode: "EY",
     aircraft: "A380-800",
     cabinType: "First",
+    route: "Abu Dhabi → London Heathrow",
     bestFor: ["Space", "Luxury"],
     seatInsight: "A380 first class with a separate seat and bed concept, offering exceptional personal space.",
     description: "Etihad’s iconic A380 First Apartment experience.",
@@ -277,6 +201,7 @@ const premiumProducts: Product[] = [
     airlineCode: "NH",
     aircraft: "777-300ER",
     cabinType: "First",
+    route: "Tokyo Haneda → New York JFK",
     bestFor: ["Privacy", "Luxury"],
     seatInsight: "Wide enclosed suite with strong privacy and a modern residential-style design.",
     description: "ANA’s premium first class suite product.",
@@ -292,6 +217,7 @@ const premiumProducts: Product[] = [
     airlineCode: "EK",
     aircraft: "777-300ER",
     cabinType: "First",
+    route: "Dubai → Brussels",
     bestFor: ["Privacy", "Solo"],
     seatInsight: "Fully enclosed suite with very high privacy and a more futuristic first class feel.",
     description: "Emirates’ newest fully enclosed first class suite.",
@@ -307,6 +233,7 @@ const premiumProducts: Product[] = [
     airlineCode: "AF",
     aircraft: "777-300ER",
     cabinType: "First",
+    route: "Paris CDG → Los Angeles",
     bestFor: ["Luxury", "Exclusivity"],
     seatInsight: "Highly exclusive first class experience with a spacious personal area and refined soft product.",
     description: "Air France’s exclusive long-haul first class product.",
@@ -322,6 +249,7 @@ const premiumProducts: Product[] = [
     airlineCode: "BA",
     aircraft: "A350-1000 / 777-300ER / 787-10",
     cabinType: "Business",
+    route: "London Heathrow → Washington Dulles",
     bestFor: ["Privacy", "Network"],
     seatInsight: "1-2-1 layout with doors and direct aisle access across the cabin.",
     description: "British Airways’ modern suite-style business class.",
@@ -337,6 +265,7 @@ const premiumProducts: Product[] = [
     airlineCode: "DL",
     aircraft: "A350-900 / A330-900neo",
     cabinType: "Business",
+    route: "Los Angeles → Sydney",
     bestFor: ["Privacy", "Consistency"],
     seatInsight: "Suite-style seat with door and direct aisle access on key long-haul aircraft.",
     description: "Delta’s enclosed suite-style long-haul business class.",
@@ -352,6 +281,7 @@ const premiumProducts: Product[] = [
     airlineCode: "CX",
     aircraft: "777-300ER",
     cabinType: "Business",
+    route: "Hong Kong → London Heathrow",
     bestFor: ["Privacy", "Storage"],
     seatInsight: "Next-generation suite with door, improved storage, and a refined Cathay design.",
     description: "Cathay Pacific’s newest flagship business class suite.",
@@ -367,6 +297,7 @@ const premiumProducts: Product[] = [
     airlineCode: "JL",
     aircraft: "777-300ER / 787-9",
     cabinType: "Business",
+    route: "Tokyo Haneda → San Francisco",
     bestFor: ["Comfort", "Solo"],
     seatInsight: "Direct aisle access layout with a strong balance of privacy and comfort.",
     description: "Japan Airlines’ well-known Sky Suite business class product.",
@@ -382,6 +313,7 @@ const premiumProducts: Product[] = [
     airlineCode: "BR",
     aircraft: "777-300ER",
     cabinType: "Business",
+    route: "Taipei → New York JFK",
     bestFor: ["Comfort", "Sleep"],
     seatInsight: "Reverse herringbone seat with direct aisle access and a strong comfort reputation.",
     description: "EVA Air’s highly rated long-haul business class cabin.",
@@ -397,6 +329,7 @@ const premiumProducts: Product[] = [
     airlineCode: "KE",
     aircraft: "787-9 / 777-300ER",
     cabinType: "Business",
+    route: "Seoul Incheon → Paris CDG",
     bestFor: ["Privacy", "Solo"],
     seatInsight: "Suite-style premium seat with direct aisle access on long-haul aircraft.",
     description: "Korean Air’s modern long-haul business class suite.",
@@ -412,6 +345,7 @@ const premiumProducts: Product[] = [
     airlineCode: "VS",
     aircraft: "A330-900neo / A350-1000",
     cabinType: "Business",
+    route: "London Heathrow → New York JFK",
     bestFor: ["Couples", "Social"],
     seatInsight: "1-2-1 seat configuration with direct aisle access. Features The Loft lounge at the back of the aircraft.",
     description: "Virgin Atlantic’s stylish and modern Upper Class suite.",
@@ -427,6 +361,7 @@ const premiumProducts: Product[] = [
     airlineCode: "B6",
     aircraft: "A321LR / A321XLR",
     cabinType: "Business",
+    route: "New York JFK → Paris CDG",
     bestFor: ["Space", "Solo"],
     seatInsight: "Front-row Mint Studio offers more space and a larger suite-style experience than standard Mint seats.",
     description: "JetBlue’s spacious front-row Mint Studio product.",
@@ -442,6 +377,7 @@ const premiumProducts: Product[] = [
     airlineCode: "QF",
     aircraft: "A380-800 / 787-9",
     cabinType: "Business",
+    route: "Sydney → Singapore",
     bestFor: ["Comfort", "Practicality"],
     seatInsight: "Direct aisle access layout with a practical and comfortable long-haul design.",
     description: "Qantas’ modern long-haul business class suite.",
@@ -457,6 +393,7 @@ const premiumProducts: Product[] = [
     airlineCode: "TK",
     aircraft: "787-9 / A350-900",
     cabinType: "Business",
+    route: "Istanbul → San Francisco",
     bestFor: ["Network", "Value"],
     seatInsight: "Modern long-haul seat with direct aisle access and improved privacy over older fleet types.",
     description: "Turkish Airlines’ long-haul business class cabin.",
@@ -472,6 +409,7 @@ const premiumProducts: Product[] = [
     airlineCode: "AA",
     aircraft: "787-9",
     cabinType: "Business",
+    route: "Dallas Fort Worth → Brisbane",
     bestFor: ["Privacy", "New Product"],
     seatInsight: "New suite-style business class with doors on American’s latest premium configuration.",
     description: "American Airlines’ newest Flagship Suite product.",
@@ -487,6 +425,7 @@ const premiumProducts: Product[] = [
     airlineCode: "UA",
     aircraft: "787-9 / 787-10 / 777-300ER",
     cabinType: "Business",
+    route: "San Francisco → Singapore",
     bestFor: ["Consistency", "Network"],
     seatInsight: "United’s flagship long-haul seat with direct aisle access and a consistent premium layout.",
     description: "United’s Polaris long-haul business class product.",
@@ -496,9 +435,24 @@ const premiumProducts: Product[] = [
   },
 ];
 
+const boardRows = [
+  "LH 410  MUNICH            NEW YORK JFK      08:35   G12   BOARDING",
+  "QR 701  DOHA              NEW YORK JFK      09:20   A04   ON TIME ",
+  "SQ 322  SINGAPORE         LONDON LHR        10:05   C19   FINAL   ",
+  "EY 011  ABU DHABI         LONDON LHR        11:10   B07   GATE OPEN",
+  "AF 006  PARIS CDG         LOS ANGELES       11:35   D21   ON TIME ",
+  "VS 003  LONDON LHR        NEW YORK JFK      12:15   E09   BOARDING",
+  "CX 251  HONG KONG         LONDON LHR        12:55   F11   ON TIME ",
+  "NH 211  TOKYO HND         LONDON LHR        13:40   G03   FINAL   ",
+  "UA 001  SAN FRANCISCO     SINGAPORE         14:20   H05   ON TIME ",
+  "AA 007  DALLAS FT WORTH   BRISBANE          15:00   J16   GATE OPEN",
+  "TK 079  ISTANBUL          SAN FRANCISCO     15:45   K08   ON TIME ",
+  "QF 001  SYDNEY            SINGAPORE         16:20   L14   BOARDING",
+];
+
 const cabinAccent: Record<CabinType, string> = {
-  Business: "bg-emerald-400/10 text-emerald-200 ring-1 ring-inset ring-emerald-400/20",
-  First: "bg-lime-400/10 text-lime-200 ring-1 ring-inset ring-lime-400/20",
+  Business: "bg-sky-400/10 text-sky-200 ring-1 ring-inset ring-sky-400/20",
+  First: "bg-amber-400/10 text-amber-200 ring-1 ring-inset ring-amber-400/20",
 };
 
 export default function HomePage() {
@@ -506,6 +460,7 @@ export default function HomePage() {
   const [airline, setAirline] = useState("");
   const [aircraft, setAircraft] = useState("");
   const [cabin, setCabin] = useState("");
+  const [route, setRoute] = useState("");
   const [tag, setTag] = useState("");
 
   const airlineOptions = useMemo(
@@ -515,6 +470,11 @@ export default function HomePage() {
 
   const aircraftOptions = useMemo(
     () => Array.from(new Set(premiumProducts.map((item) => item.aircraft))).sort(),
+    []
+  );
+
+  const routeOptions = useMemo(
+    () => Array.from(new Set(premiumProducts.map((item) => item.route))).sort(),
     []
   );
 
@@ -531,16 +491,18 @@ export default function HomePage() {
         item.productName.toLowerCase().includes(query) ||
         item.airline.toLowerCase().includes(query) ||
         item.aircraft.toLowerCase().includes(query) ||
+        item.route.toLowerCase().includes(query) ||
         item.bestFor.some((value) => value.toLowerCase().includes(query));
 
       const matchesAirline = airline === "" || item.airline === airline;
       const matchesAircraft = aircraft === "" || item.aircraft === aircraft;
       const matchesCabin = cabin === "" || item.cabinType === cabin;
+      const matchesRoute = route === "" || item.route === route;
       const matchesTag = tag === "" || item.bestFor.includes(tag);
 
-      return matchesSearch && matchesAirline && matchesAircraft && matchesCabin && matchesTag;
+      return matchesSearch && matchesAirline && matchesAircraft && matchesCabin && matchesRoute && matchesTag;
     });
-  }, [search, airline, aircraft, cabin, tag]);
+  }, [search, airline, aircraft, cabin, route, tag]);
 
   const topThree = filteredProducts.slice(0, 3);
 
@@ -549,16 +511,30 @@ export default function HomePage() {
     setAirline("");
     setAircraft("");
     setCabin("");
+    setRoute("");
     setTag("");
   }
 
   return (
     <main className="app-shell text-white">
-      <div className="matrix-bg" aria-hidden="true">
-        <MatrixCanvas />
-        <div className="matrix-glow" />
-        <div className="matrix-flicker" />
-        <div className="matrix-vignette" />
+      <div className="airport-board-bg" aria-hidden="true">
+        <div className="board-glow" />
+        <div className="board-flicker" />
+        <div className="board-vignette" />
+        <div className="board-track board-track-one">
+          {[...boardRows, ...boardRows].map((row, index) => (
+            <div key={`one-${index}`} className="board-row">
+              {row}
+            </div>
+          ))}
+        </div>
+        <div className="board-track board-track-two">
+          {[...boardRows.slice().reverse(), ...boardRows.slice().reverse()].map((row, index) => (
+            <div key={`two-${index}`} className="board-row">
+              {row}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="content-layer">
@@ -574,10 +550,10 @@ export default function HomePage() {
             <h1 className="brand-title">Ascend Cabin Matrix</h1>
           </div>
 
-          <section className="overflow-hidden rounded-[28px] border border-emerald-400/10 bg-white/5 shadow-2xl shadow-black/60 backdrop-blur-md">
+          <section className="overflow-hidden rounded-[28px] border border-cyan-400/10 bg-white/5 shadow-2xl shadow-black/50 backdrop-blur-md">
             <div className="grid gap-10 px-6 py-8 sm:px-8 lg:grid-cols-[1.25fr_0.75fr] lg:px-10 lg:py-10">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/80">
+                <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/15 bg-cyan-400/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/80">
                   <SparklesIcon />
                   Premium cabin intelligence
                 </div>
@@ -588,69 +564,69 @@ export default function HomePage() {
 
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75 sm:text-base">
                   Ascend Cabin Matrix helps advisors compare premium Business and First Class products by airline,
-                  aircraft, privacy profile, and use case — with direct links to AeroLOPA and SeatMaps for quick seat validation.
+                  aircraft, privacy profile, route, and use case — with direct links to AeroLOPA and SeatMaps for quick seat validation.
                 </p>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-2xl border border-emerald-400/10 bg-black/35 p-4">
+                  <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{premiumProducts.length}</p>
                     <p className="mt-1 text-sm text-white/60">curated cabin products</p>
                   </div>
-                  <div className="rounded-2xl border border-emerald-400/10 bg-black/35 p-4">
+                  <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{airlineOptions.length}</p>
                     <p className="mt-1 text-sm text-white/60">airlines covered</p>
                   </div>
-                  <div className="rounded-2xl border border-emerald-400/10 bg-black/35 p-4">
+                  <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{filteredProducts.length}</p>
                     <p className="mt-1 text-sm text-white/60">matching results</p>
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-[24px] border border-emerald-400/10 bg-black/45 p-5">
+              <div className="rounded-[24px] border border-cyan-400/10 bg-black/45 p-5">
                 <p className="flex items-center gap-2 text-sm font-medium text-white">
                   <StarIcon />
                   How to use this
                 </p>
 
                 <div className="mt-4 space-y-3 text-sm leading-6 text-white/75">
-                  <p>Use search when you already know the product, airline, aircraft, or travel style.</p>
-                  <p>Filter by cabin type or “best for” tags to quickly narrow the shortlist.</p>
-                  <p>Open AeroLOPA for layout accuracy, then SeatMaps for a second look and public reference.</p>
+                  <p>Search by product, airline, aircraft, or route when you already know the trip pattern.</p>
+                  <p>Use route plus cabin filters to narrow down the best long-haul product for a client.</p>
+                  <p>Open AeroLOPA for layout accuracy, then SeatMaps for a second public reference.</p>
                 </div>
 
-                <div className="mt-6 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4 text-sm text-emerald-100">
-                  Best for client-facing use: start with the top-ranked shortlist, then verify aircraft-specific seating before recommending a product.
+                <div className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-sm text-cyan-100">
+                  Best workflow: shortlist by route first, then compare privacy, cabin type, and aircraft before recommending.
                 </div>
               </div>
             </div>
           </section>
 
-          <section className="mt-8 rounded-[28px] border border-emerald-400/10 bg-white/5 p-4 shadow-xl shadow-black/30 backdrop-blur-md sm:p-6">
+          <section className="mt-8 rounded-[28px] border border-cyan-400/10 bg-white/5 p-4 shadow-xl shadow-black/30 backdrop-blur-md sm:p-6">
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
               <div className="xl:col-span-2">
-                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/60">
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
                   <SearchIcon />
                   Search cabins
                 </label>
                 <input
                   type="text"
-                  placeholder="Product, airline, aircraft, best for..."
+                  placeholder="Product, airline, aircraft, route, best for..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-emerald-400/40"
+                  className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-cyan-400/40"
                 />
               </div>
 
               <div>
-                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/60">
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
                   <PlaneIcon />
                   Airline
                 </label>
                 <select
                   value={airline}
                   onChange={(e) => setAirline(e.target.value)}
-                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
+                  className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none focus:border-cyan-400/40"
                 >
                   <option value="">All airlines</option>
                   {airlineOptions.map((option) => (
@@ -662,14 +638,14 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/60">
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
                   <PlaneIcon />
                   Aircraft
                 </label>
                 <select
                   value={aircraft}
                   onChange={(e) => setAircraft(e.target.value)}
-                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
+                  className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none focus:border-cyan-400/40"
                 >
                   <option value="">All aircraft</option>
                   {aircraftOptions.map((option) => (
@@ -681,14 +657,14 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/60">
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
                   <SeatIcon />
                   Cabin
                 </label>
                 <select
                   value={cabin}
                   onChange={(e) => setCabin(e.target.value)}
-                  className="w-full rounded-2xl border border-emerald-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400/40"
+                  className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none focus:border-cyan-400/40"
                 >
                   <option value="">All cabins</option>
                   <option value="Business">Business</option>
@@ -697,9 +673,28 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="mt-3 grid gap-3 md:grid-cols-[1fr_auto]">
+            <div className="mt-3 grid gap-3 xl:grid-cols-[1fr_1fr_auto]">
               <div>
-                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/60">
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
+                  <RouteIcon />
+                  Route
+                </label>
+                <select
+                  value={route}
+                  onChange={(e) => setRoute(e.target.value)}
+                  className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none focus:border-cyan-400/40"
+                >
+                  <option value="">All routes</option>
+                  {routeOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
                   <StarIcon />
                   Best for
                 </label>
@@ -708,8 +703,8 @@ export default function HomePage() {
                     onClick={() => setTag("")}
                     className={`rounded-full px-3 py-2 text-sm transition ${
                       tag === ""
-                        ? "bg-emerald-300 text-slate-950"
-                        : "border border-emerald-400/10 bg-white/5 text-white/70 hover:bg-white/10"
+                        ? "bg-cyan-300 text-slate-950"
+                        : "border border-cyan-400/10 bg-white/5 text-white/70 hover:bg-white/10"
                     }`}
                   >
                     All
@@ -720,8 +715,8 @@ export default function HomePage() {
                       onClick={() => setTag(option)}
                       className={`rounded-full px-3 py-2 text-sm transition ${
                         tag === option
-                          ? "bg-emerald-400 text-slate-950"
-                          : "border border-emerald-400/10 bg-white/5 text-white/70 hover:bg-white/10"
+                          ? "bg-cyan-400 text-slate-950"
+                          : "border border-cyan-400/10 bg-white/5 text-white/70 hover:bg-white/10"
                       }`}
                     >
                       {option}
@@ -733,7 +728,7 @@ export default function HomePage() {
               <div className="flex items-end">
                 <button
                   onClick={resetFilters}
-                  className="w-full rounded-2xl border border-emerald-400/10 px-4 py-3 text-sm font-medium text-white transition hover:bg-white/10 md:w-auto"
+                  className="w-full rounded-2xl border border-cyan-400/10 px-4 py-3 text-sm font-medium text-white transition hover:bg-white/10 xl:w-auto"
                 >
                   Reset filters
                 </button>
@@ -745,7 +740,7 @@ export default function HomePage() {
             <section className="mt-8">
               <div className="mb-4 flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-[0.24em] text-emerald-100/50">Top matches</p>
+                  <p className="text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/50">Top matches</p>
                   <h2 className="mt-1 text-2xl font-semibold">Best shortlist right now</h2>
                 </div>
                 <p className="text-sm text-white/55">
@@ -757,13 +752,13 @@ export default function HomePage() {
                 {topThree.map((item) => (
                   <article
                     key={`${item.id}-featured`}
-                    className="overflow-hidden rounded-[24px] border border-emerald-400/10 bg-gradient-to-b from-white/10 to-white/5"
+                    className="overflow-hidden rounded-[24px] border border-cyan-400/10 bg-gradient-to-b from-white/10 to-white/5"
                   >
                     <div className="relative h-56">
                       <Image src={item.image} alt={item.productName} fill className="object-cover" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
                       <div className="absolute left-4 top-4 flex items-center gap-2">
-                        <span className="rounded-full bg-emerald-300 px-3 py-1 text-xs font-semibold text-slate-950">
+                        <span className="rounded-full bg-cyan-300 px-3 py-1 text-xs font-semibold text-slate-950">
                           #{item.rank}
                         </span>
                         <span className={`rounded-full px-3 py-1 text-xs font-medium ${cabinAccent[item.cabinType]}`}>
@@ -780,13 +775,14 @@ export default function HomePage() {
                       </div>
                       <h3 className="mt-2 text-2xl font-semibold">{item.productName}</h3>
                       <p className="mt-1 text-sm text-white/55">{item.aircraft}</p>
+                      <p className="mt-2 text-sm text-cyan-200/80">{item.route}</p>
                       <p className="mt-4 text-sm leading-6 text-white/70">{item.description}</p>
 
                       <div className="mt-4 flex flex-wrap gap-2">
                         {item.bestFor.map((value) => (
                           <span
                             key={value}
-                            className="rounded-full border border-emerald-400/10 bg-white/5 px-3 py-1 text-xs text-white/75"
+                            className="rounded-full border border-cyan-400/10 bg-white/5 px-3 py-1 text-xs text-white/75"
                           >
                             Best for {value}
                           </span>
@@ -803,7 +799,7 @@ export default function HomePage() {
             {filteredProducts.map((item) => (
               <article
                 key={item.id}
-                className="group overflow-hidden rounded-[24px] border border-emerald-400/10 bg-white/5 transition duration-200 hover:-translate-y-1 hover:border-emerald-400/20 hover:bg-white/[0.07]"
+                className="group overflow-hidden rounded-[24px] border border-cyan-400/10 bg-white/5 transition duration-200 hover:-translate-y-1 hover:border-cyan-400/20 hover:bg-white/[0.07]"
               >
                 <div className="relative h-52 overflow-hidden">
                   <Image
@@ -833,21 +829,33 @@ export default function HomePage() {
                         {item.airline} · {item.aircraft}
                       </p>
                     </div>
-                    <div className="rounded-full border border-emerald-400/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70">
+                    <div className="rounded-full border border-cyan-400/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70">
                       {item.airlineCode}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 rounded-2xl border border-cyan-400/10 bg-black/20 p-4">
+                    <div className="flex items-start gap-3">
+                      <RouteIcon />
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">
+                          Current route serviced
+                        </p>
+                        <p className="mt-2 text-sm leading-6 text-cyan-100/85">{item.route}</p>
+                      </div>
                     </div>
                   </div>
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     {item.bestFor.map((value) => (
-                      <span key={value} className="rounded-full border border-emerald-400/10 px-3 py-1 text-xs text-white/70">
+                      <span key={value} className="rounded-full border border-cyan-400/10 px-3 py-1 text-xs text-white/70">
                         {value}
                       </span>
                     ))}
                   </div>
 
                   <div className="mt-4 space-y-3">
-                    <div className="rounded-2xl border border-emerald-400/10 bg-black/20 p-4">
+                    <div className="rounded-2xl border border-cyan-400/10 bg-black/20 p-4">
                       <div className="flex items-start gap-3">
                         <SeatIcon />
                         <div>
@@ -857,7 +865,7 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <div className="rounded-2xl border border-emerald-400/10 bg-black/20 p-4">
+                    <div className="rounded-2xl border border-cyan-400/10 bg-black/20 p-4">
                       <div className="flex items-start gap-3">
                         <NoteIcon />
                         <div>
@@ -875,7 +883,7 @@ export default function HomePage() {
                       href={item.aerolopaUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90"
+                      className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-300 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90"
                     >
                       <MapIcon />
                       Open AeroLOPA
@@ -885,7 +893,7 @@ export default function HomePage() {
                       href={item.seatmapsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-emerald-400/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-cyan-400/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
                     >
                       <SeatIcon />
                       Open SeatMaps
@@ -897,12 +905,12 @@ export default function HomePage() {
           </section>
 
           {filteredProducts.length === 0 && (
-            <section className="mt-8 rounded-[28px] border border-dashed border-emerald-400/10 bg-white/5 px-6 py-14 text-center">
+            <section className="mt-8 rounded-[28px] border border-dashed border-cyan-400/10 bg-white/5 px-6 py-14 text-center">
               <h2 className="text-2xl font-semibold">No cabins matched those filters</h2>
               <p className="mt-3 text-sm text-white/60">Try clearing one or two filters, or use a broader search term.</p>
               <button
                 onClick={resetFilters}
-                className="mt-6 rounded-2xl bg-emerald-300 px-5 py-3 text-sm font-semibold text-slate-950"
+                className="mt-6 rounded-2xl bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950"
               >
                 Reset and show all cabins
               </button>
