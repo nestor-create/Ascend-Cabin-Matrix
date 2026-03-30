@@ -24,3 +24,87 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* ===== MATRIX UI ===== */
+
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top, rgba(111, 76, 255, 0.25), transparent 40%),
+    linear-gradient(180deg, #07111f 0%, #020617 100%);
+}
+
+/* Content above background */
+.mx-auto {
+  position: relative;
+  z-index: 2;
+}
+
+/* Logo */
+.top-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.brand-logo {
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(111, 76, 255, 0.4);
+}
+
+.brand-title {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* Matrix animation */
+.matrix-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.15;
+
+  background-image:
+    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+
+  background-size: 40px 40px;
+  animation: matrixMove 10s linear infinite;
+}
+
+.matrix-bg::before,
+.matrix-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(122, 92, 255, 0.18) 0px,
+      rgba(122, 92, 255, 0.18) 2px,
+      transparent 2px,
+      transparent 22px
+    );
+
+  animation: rainFall 8s linear infinite;
+}
+
+.matrix-bg::after {
+  opacity: 0.4;
+  animation-duration: 12s;
+  filter: blur(1px);
+}
+
+@keyframes matrixMove {
+  from { transform: translateY(0); }
+  to { transform: translateY(40px); }
+}
+
+@keyframes rainFall {
+  from { transform: translateY(-60px); }
+  to { transform: translateY(60px); }
+}

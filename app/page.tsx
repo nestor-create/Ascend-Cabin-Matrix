@@ -460,10 +460,21 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#07111f] text-white">
+    <main className="app-shell text-white">
+  <div className="matrix-bg"></div>
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.16),transparent_35%),radial-gradient(circle_at_right,rgba(251,191,36,0.12),transparent_25%)]" />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+        <div className="top-brand">
+  <Image
+    src="/images/ascend-logo.png"
+    alt="Ascend Logo"
+    width={90}
+    height={90}
+    className="brand-logo"
+  />
+  <h1 className="brand-title">Ascend Cabin Matrix</h1>
+</div>
         <section className="overflow-hidden rounded-[28px] border border-white/10 bg-white/5 shadow-2xl shadow-black/30 backdrop-blur">
           <div className="grid gap-10 px-6 py-8 sm:px-8 lg:grid-cols-[1.25fr_0.75fr] lg:px-10 lg:py-10">
             <div>
