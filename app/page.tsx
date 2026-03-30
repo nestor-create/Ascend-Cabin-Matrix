@@ -628,7 +628,7 @@ export default function HomePage() {
               height={90}
               className="brand-logo h-[90px] w-[90px] object-contain"
             />
-            <h1 className="brand-title">Ascend Cabin Matrix</h1>
+            <h1 className="brand-title">Ascend Cabin Optimizer</h1>
           </div>
 
           <section className="overflow-hidden rounded-[28px] border border-cyan-400/10 bg-white/5 shadow-2xl shadow-black/50 backdrop-blur-md">
@@ -640,12 +640,17 @@ export default function HomePage() {
                 </div>
 
                 <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-                  Find the right premium cabin in seconds.
+                  Identify the ideal premium cabin—instantly.
                 </h1>
 
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75 sm:text-base">
-                  Ascend Cabin Matrix helps advisors compare premium Business and First Class products by airline,
-                  aircraft, privacy profile, route, and use case — with direct links to AeroLOPA and SeatMaps for quick seat validation.
+                  Ascend Cabin Optimizer enables travel professionals and clients to compare Business and First Class
+                  products across airlines, aircraft, and layouts — with seamless access to AeroLOPA and seat maps for
+                  precise validation.
+                </p>
+
+                <p className="mt-4 max-w-2xl text-sm font-medium leading-6 text-cyan-100 sm:text-base">
+                  Make faster decisions. Elevate your recommendations. Deliver a better client experience.
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-100">
