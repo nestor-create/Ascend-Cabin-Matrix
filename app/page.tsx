@@ -535,13 +535,158 @@ const cabinAccent: Record<CabinType, string> = {
   First: "bg-amber-400/10 text-amber-200 ring-1 ring-inset ring-amber-400/20",
 };
 
+const curatedBestForOptions = [
+  "Privacy",
+  "Couples",
+  "Space",
+  "Luxury",
+  "Sleep",
+  "Network",
+];
+
+const locationAliases: Record<string, string[]> = {
+  "new york jfk": ["new york jfk", "jfk", "new york", "nyc"],
+  "london heathrow": ["london heathrow", "heathrow", "lhr", "london", "lon"],
+  "san francisco": ["san francisco", "sfo", "sf"],
+  "los angeles": ["los angeles", "lax", "la"],
+  "chicago": ["chicago", "ord", "o'hare", "ohare"],
+  "chicago o'hare": ["chicago o'hare", "chicago ord", "ord", "o'hare", "ohare", "chicago"],
+  "munich": ["munich", "muc"],
+  "doha": ["doha", "doh"],
+  "singapore": ["singapore", "sin"],
+  "sydney": ["sydney", "syd"],
+  "paris": ["paris", "cdg", "par"],
+  "paris cdg": ["paris cdg", "paris", "cdg", "charles de gaulle", "par"],
+  "abu dhabi": ["abu dhabi", "auh"],
+  "tokyo haneda": ["tokyo haneda", "haneda", "hnd", "tokyo"],
+  "tokyo narita": ["tokyo narita", "narita", "nrt", "tokyo"],
+  "tokyo": ["tokyo", "hnd", "nrt", "haneda", "narita"],
+  "hong kong": ["hong kong", "hkg"],
+  "taipei": ["taipei", "tpe"],
+  "seoul incheon": ["seoul incheon", "incheon", "icn", "seoul"],
+  "seoul": ["seoul", "icn", "incheon"],
+  "istanbul": ["istanbul", "ist"],
+  "dubai": ["dubai", "dxb"],
+  "geneva": ["geneva", "gva"],
+  "brussels": ["brussels", "bru"],
+  "vancouver": ["vancouver", "yvr"],
+  "amsterdam": ["amsterdam", "ams"],
+  "boston": ["boston", "bos"],
+  "delhi": ["delhi", "del", "new delhi"],
+  "detroit": ["detroit", "dtw"],
+  "atlanta": ["atlanta", "atl"],
+  "johannesburg": ["johannesburg", "jnb"],
+  "washington dulles": ["washington dulles", "dulles", "iad", "washington"],
+  "newark": ["newark", "ewr"],
+  "dallas/forth worth": ["dallas/forth worth", "dallas/fort worth", "dfw", "dallas"],
+  "dallas/fort worth": ["dallas/fort worth", "dfw", "dallas", "fort worth"],
+  "melbourne": ["melbourne", "mel"],
+  "perth": ["perth", "per"],
+  "shanghai": ["shanghai", "pvg", "sha"],
+  "philadelphia": ["philadelphia", "phl"],
+  "brisbane": ["brisbane", "bne"],
+  "auckland": ["auckland", "akl"],
+};
+
+function normalizeText(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/→/g, " to ")
+    .replace(/\//g, " ")
+    .replace(/-/g, " ")
+    .replace(/[.,]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function splitRoute(route: string): [string, string] | null {
+  const parts = route.split("→").map((part) => part.trim());
+  if (parts.length !== 2) return null;
+  return [parts[0], parts[1]];
+}
+
+function getLocationTokens(location: string) {
+  const normalized = normalizeText(location);
+  const aliasValues = locationAliases[normalized] ?? [];
+  const tokenSet = new Set<string>([normalized, ...aliasValues.map(normalizeText)]);
+
+  normalized.split(" ").forEach((part) => {
+    if (part) tokenSet.add(part);
+  });
+
+  return Array.from(tokenSet).filter(Boolean);
+}
+
+function matchesLocation(input: string, location: string) {
+  const normalizedInput = normalizeText(input);
+  if (!normalizedInput) return true;
+
+  const locationTokens = getLocationTokens(location);
+
+  return locationTokens.some(
+    (token) => token.includes(normalizedInput) || normalizedInput.includes(token)
+  );
+}
+
+function parseUserRouteInput(input: string) {
+  const normalized = normalizeText(input);
+
+  if (!normalized) {
+    return { from: "", to: "", raw: "" };
+  }
+
+  const separators = [" to ", " > ", " -> ", " — ", " – ", " —> "];
+
+  for (const separator of separators) {
+    if (normalized.includes(separator)) {
+      const [from, to] = normalized.split(separator).map((value) => value.trim());
+      return {
+        from: from || "",
+        to: to || "",
+        raw: normalized,
+      };
+    }
+  }
+
+  return {
+    from: "",
+    to: "",
+    raw: normalized,
+  };
+}
+
+function routeMatchesInput(route: string, input: string, useReverseDirection = false) {
+  const parsedRoute = splitRoute(route);
+  if (!parsedRoute) return false;
+
+  const [originalFrom, originalTo] = parsedRoute;
+  const routeFrom = useReverseDirection ? originalTo : originalFrom;
+  const routeTo = useReverseDirection ? originalFrom : originalTo;
+
+  const parsedInput = parseUserRouteInput(input);
+
+  if (!parsedInput.raw) return true;
+
+  if (parsedInput.from && parsedInput.to) {
+    return matchesLocation(parsedInput.from, routeFrom) && matchesLocation(parsedInput.to, routeTo);
+  }
+
+  return matchesLocation(parsedInput.raw, routeFrom) || matchesLocation(parsedInput.raw, routeTo);
+}
+
+function productMatchesRoute(routes: string[], input: string, useReverseDirection = false) {
+  if (!input.trim()) return true;
+  return routes.some((route) => routeMatchesInput(route, input, useReverseDirection));
+}
+
 export default function HomePage() {
   const [search, setSearch] = useState("");
   const [airline, setAirline] = useState("");
   const [aircraft, setAircraft] = useState("");
   const [cabin, setCabin] = useState("");
-  const [route, setRoute] = useState("");
-  const [tag, setTag] = useState("");
+  const [outboundRoute, setOutboundRoute] = useState("");
+  const [returnRoute, setReturnRoute] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const airlineOptions = useMemo(
     () => Array.from(new Set(premiumProducts.map((item) => item.airline))).sort(),
@@ -550,16 +695,6 @@ export default function HomePage() {
 
   const aircraftOptions = useMemo(
     () => Array.from(new Set(premiumProducts.map((item) => item.aircraft))).sort(),
-    []
-  );
-
-  const routeOptions = useMemo(
-    () => Array.from(new Set(premiumProducts.flatMap((item) => item.routes))).sort(),
-    []
-  );
-
-  const tagOptions = useMemo(
-    () => Array.from(new Set(premiumProducts.flatMap((item) => item.bestFor))).sort(),
     []
   );
 
@@ -578,22 +713,41 @@ export default function HomePage() {
       const matchesAirline = airline === "" || item.airline === airline;
       const matchesAircraft = aircraft === "" || item.aircraft === aircraft;
       const matchesCabin = cabin === "" || item.cabinType === cabin;
-      const matchesRoute = route === "" || item.routes.includes(route);
-      const matchesTag = tag === "" || item.bestFor.includes(tag);
 
-      return matchesSearch && matchesAirline && matchesAircraft && matchesCabin && matchesRoute && matchesTag;
+      const matchesOutbound = productMatchesRoute(item.routes, outboundRoute, false);
+      const matchesReturn = productMatchesRoute(item.routes, returnRoute, true);
+
+      const matchesTags =
+        selectedTags.length === 0 || selectedTags.every((tag) => item.bestFor.includes(tag));
+
+      return (
+        matchesSearch &&
+        matchesAirline &&
+        matchesAircraft &&
+        matchesCabin &&
+        matchesOutbound &&
+        matchesReturn &&
+        matchesTags
+      );
     });
-  }, [search, airline, aircraft, cabin, route, tag]);
+  }, [search, airline, aircraft, cabin, outboundRoute, returnRoute, selectedTags]);
 
   const topThree = filteredProducts.slice(0, 3);
+
+  function toggleTag(tag: string) {
+    setSelectedTags((current) =>
+      current.includes(tag) ? current.filter((value) => value !== tag) : [...current, tag]
+    );
+  }
 
   function resetFilters() {
     setSearch("");
     setAirline("");
     setAircraft("");
     setCabin("");
-    setRoute("");
-    setTag("");
+    setOutboundRoute("");
+    setReturnRoute("");
+    setSelectedTags([]);
   }
 
   return (
@@ -654,7 +808,8 @@ export default function HomePage() {
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-100">
-                  Route lists below are current reference routes only. Always double-check AeroLOPA and the live airline seat map before sharing with clients or booking.
+                  Route lists below are current reference routes only. Always double-check AeroLOPA and the live airline
+                  seat map before sharing with clients or booking.
                 </div>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -681,12 +836,12 @@ export default function HomePage() {
 
                 <div className="mt-4 space-y-3 text-sm leading-6 text-white/75">
                   <p>Search by product, airline, aircraft, or route when you already know the trip pattern.</p>
-                  <p>Use route plus cabin filters to narrow down the best long-haul product for a client.</p>
-                  <p>Open AeroLOPA for layout accuracy, then compare with the airline’s live seat map before recommending.</p>
+                  <p>Use outbound and return route fields to manually narrow down likely cabin fits.</p>
+                  <p>Select multiple “Best for” tags at the same time to create a tighter shortlist.</p>
                 </div>
 
                 <div className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-sm text-cyan-100">
-                  Best workflow: shortlist by route first, then compare privacy, cabin type, and aircraft before recommending.
+                  Best workflow: enter route keywords like JFK, LHR, Doha, or London Heathrow, then refine by cabin and tags.
                 </div>
               </div>
             </div>
@@ -763,56 +918,79 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="mt-3 grid gap-3 xl:grid-cols-[1fr_1fr_auto]">
+            <div className="mt-3 grid gap-3 lg:grid-cols-2">
               <div>
                 <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
                   <RouteIcon />
-                  Route
+                  Outbound
                 </label>
-                <select
-                  value={route}
-                  onChange={(e) => setRoute(e.target.value)}
-                  className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none focus:border-cyan-400/40"
-                >
-                  <option value="">All routes</option>
-                  {routeOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
+                <input
+                  type="text"
+                  placeholder="e.g. JFK to Doha"
+                  value={outboundRoute}
+                  onChange={(e) => setOutboundRoute(e.target.value)}
+                  className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-cyan-400/40"
+                />
               </div>
 
+              <div>
+                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
+                  <RouteIcon />
+                  Return
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Doha to JFK"
+                  value={returnRoute}
+                  onChange={(e) => setReturnRoute(e.target.value)}
+                  className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-cyan-400/40"
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-3 xl:grid-cols-[1fr_auto]">
               <div>
                 <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
                   <StarIcon />
                   Best for
                 </label>
+
                 <div className="flex flex-wrap gap-2">
                   <button
-                    onClick={() => setTag("")}
+                    type="button"
+                    onClick={() => setSelectedTags([])}
                     className={`rounded-full px-3 py-2 text-sm transition ${
-                      tag === ""
+                      selectedTags.length === 0
                         ? "bg-cyan-300 text-slate-950"
                         : "border border-cyan-400/10 bg-white/5 text-white/70 hover:bg-white/10"
                     }`}
                   >
                     All
                   </button>
-                  {tagOptions.map((option) => (
-                    <button
-                      key={option}
-                      onClick={() => setTag(option)}
-                      className={`rounded-full px-3 py-2 text-sm transition ${
-                        tag === option
-                          ? "bg-cyan-400 text-slate-950"
-                          : "border border-cyan-400/10 bg-white/5 text-white/70 hover:bg-white/10"
-                      }`}
-                    >
-                      {option}
-                    </button>
-                  ))}
+
+                  {curatedBestForOptions.map((option) => {
+                    const isActive = selectedTags.includes(option);
+
+                    return (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={() => toggleTag(option)}
+                        className={`rounded-full px-3 py-2 text-sm transition ${
+                          isActive
+                            ? "bg-cyan-400 text-slate-950"
+                            : "border border-cyan-400/10 bg-white/5 text-white/70 hover:bg-white/10"
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    );
+                  })}
                 </div>
+
+                <p className="mt-2 text-xs text-white/45">
+                  You can select multiple options at once.
+                </p>
               </div>
 
               <div className="flex items-end">
@@ -1008,7 +1186,9 @@ export default function HomePage() {
           {filteredProducts.length === 0 && (
             <section className="mt-8 rounded-[28px] border border-dashed border-cyan-400/10 bg-white/5 px-6 py-14 text-center">
               <h2 className="text-2xl font-semibold">No cabins matched those filters</h2>
-              <p className="mt-3 text-sm text-white/60">Try clearing one or two filters, or use a broader search term.</p>
+              <p className="mt-3 text-sm text-white/60">
+                Try broader route text like city names or airport codes, or remove one selected tag.
+              </p>
               <button
                 onClick={resetFilters}
                 className="mt-6 rounded-2xl bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950"
