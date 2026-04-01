@@ -1,8 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type CabinType = "Business" | "First";
+
+type RoutePair = {
+  from: string;
+  to: string;
+};
 
 type Product = {
   id: string;
@@ -12,13 +17,17 @@ type Product = {
   airlineCode: string;
   aircraft: string;
   cabinType: CabinType;
-  routes: string[];
+  routePairs: RoutePair[];
   bestFor: string[];
   seatInsight: string;
   description: string;
   image: string;
   seatmapsUrl: string;
   aerolopaUrl: string;
+};
+
+type RawProduct = Omit<Product, "routePairs"> & {
+  routes: string[];
 };
 
 function SearchIcon() {
@@ -95,7 +104,7 @@ function RouteIcon() {
   );
 }
 
-const premiumProducts: Product[] = [
+const rawProducts: RawProduct[] = [
   {
     id: "1",
     rank: 1,
@@ -104,10 +113,16 @@ const premiumProducts: Product[] = [
     airlineCode: "LH",
     aircraft: "A350-900 / 787-9",
     cabinType: "First",
-    routes: ["Munich → New York JFK", "Munich → Chicago", "Munich → San Francisco"],
-    bestFor: ["Privacy", "Solo"],
+    routes: [
+      "Munich → New York JFK",
+      "Munich → Chicago",
+      "Munich → San Francisco",
+      "Munich → Shanghai",
+    ],
+    bestFor: ["Privacy", "Luxury"],
     seatInsight: "Private suite with doors and a fully lie-flat bed, designed for maximum privacy.",
-    description: "Lufthansa’s newest flagship first class suite under Allegris. Verify live by aircraft because rollout is still selective.",
+    description:
+      "Lufthansa’s newest flagship First Class suite under Allegris. Treated here as roundtrip-capable on listed city pairs.",
     image: "/images/allegris-first.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
     aerolopaUrl: "https://www.aerolopa.com/lh",
@@ -120,10 +135,15 @@ const premiumProducts: Product[] = [
     airlineCode: "LH",
     aircraft: "A350-900 / 787-9",
     cabinType: "Business",
-    routes: ["Munich → New York JFK", "Munich → Chicago", "Munich → San Francisco", "Munich → Shanghai"],
+    routes: [
+      "Munich → New York JFK",
+      "Munich → Chicago",
+      "Munich → San Francisco",
+      "Munich → Shanghai",
+    ],
     bestFor: ["Privacy", "Choice"],
     seatInsight: "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
-    description: "Lufthansa’s new Allegris business class with a more flexible premium seat concept.",
+    description: "Lufthansa’s new Allegris Business Class with route-aware roundtrip matching.",
     image: "/images/allegris-business.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
     aerolopaUrl: "https://www.aerolopa.com/lh",
@@ -146,7 +166,7 @@ const premiumProducts: Product[] = [
     ],
     bestFor: ["Space", "Solo"],
     seatInsight: "Extra-wide 1-2-1 business class seat with direct aisle access and exceptional personal space.",
-    description: "ANA’s flagship business class suite. Always verify exact seat map and flight because assignments can rotate.",
+    description: "ANA’s flagship business class suite.",
     image: "/images/the-room.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/nh-ana/",
     aerolopaUrl: "https://www.aerolopa.com/nh",
@@ -169,7 +189,7 @@ const premiumProducts: Product[] = [
     ],
     bestFor: ["Couples", "Privacy"],
     seatInsight: "Enclosed suite with doors and flexible seating for couples or groups.",
-    description: "Qatar Airways’ flagship business class product. Qsuite is select-routes-only and can disappear with aircraft swaps.",
+    description: "Qatar Airways’ flagship business class product.",
     image: "/images/qsuite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/qr-qatar-airways/",
     aerolopaUrl: "https://www.aerolopa.com/qr",
@@ -185,7 +205,7 @@ const premiumProducts: Product[] = [
     routes: ["Singapore → London Heathrow", "Singapore → Sydney", "Singapore → Shanghai"],
     bestFor: ["Luxury", "Space"],
     seatInsight: "Large private suite concept on the A380 with one of the most spacious first class products in the sky.",
-    description: "Singapore Airlines flagship Suites product. Only available on A380 service, so aircraft check matters most.",
+    description: "Singapore Airlines flagship Suites product.",
     image: "/images/singapore-suites.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/sq-singapore-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/sq",
@@ -255,7 +275,7 @@ const premiumProducts: Product[] = [
     ],
     bestFor: ["Luxury", "Exclusivity"],
     seatInsight: "Highly exclusive first class experience with a spacious personal area and refined soft product.",
-    description: "Air France’s exclusive long-haul first class product. JFK and LAX are especially strong current reference routes.",
+    description: "Air France’s exclusive long-haul first class product.",
     image: "/images/la-premiere.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/af-air-france/",
     aerolopaUrl: "https://www.aerolopa.com/af",
@@ -276,7 +296,7 @@ const premiumProducts: Product[] = [
     ],
     bestFor: ["Privacy", "Network"],
     seatInsight: "1-2-1 layout with doors and direct aisle access across the cabin.",
-    description: "British Airways’ modern suite-style business class. Verify live because not every aircraft on a route will match.",
+    description: "British Airways’ modern suite-style business class.",
     image: "/images/club-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ba-british-airways/",
     aerolopaUrl: "https://www.aerolopa.com/ba",
@@ -318,7 +338,7 @@ const premiumProducts: Product[] = [
     ],
     bestFor: ["Privacy", "Storage"],
     seatInsight: "Next-generation suite with door, improved storage, and a refined Cathay design.",
-    description: "Cathay Pacific’s newest flagship business class suite, still rolling out on selected 777-300ER aircraft.",
+    description: "Cathay Pacific’s newest flagship business class suite.",
     image: "/images/cathay-aria.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/cx-cathay-pacific/",
     aerolopaUrl: "https://www.aerolopa.com/cx",
@@ -339,7 +359,7 @@ const premiumProducts: Product[] = [
     ],
     bestFor: ["Comfort", "Solo"],
     seatInsight: "Direct aisle access layout with a strong balance of privacy and comfort.",
-    description: "Japan Airlines’ well-known Sky Suite business class product. Route and subfleet can vary.",
+    description: "Japan Airlines’ well-known Sky Suite business class product.",
     image: "/images/jal-sky-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/jl-japan-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/jl",
@@ -466,7 +486,7 @@ const premiumProducts: Product[] = [
     ],
     bestFor: ["Network", "Value"],
     seatInsight: "Modern long-haul seat with direct aisle access and improved privacy over older fleet types.",
-    description: "Turkish Airlines’ preferred long-haul business product on the 787-9 and A350-900.",
+    description: "Turkish Airlines’ preferred long-haul business product.",
     image: "/images/turkish-business.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/tk-turkish-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/tk",
@@ -487,7 +507,7 @@ const premiumProducts: Product[] = [
     ],
     bestFor: ["Privacy", "New Product"],
     seatInsight: "New suite-style business class with doors on American’s latest premium configuration.",
-    description: "American Airlines’ newest Flagship Suite product. Chicago–London is the strongest anchor route.",
+    description: "American Airlines’ newest Flagship Suite product.",
     image: "/images/american-flagship.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/aa-american-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/aa",
@@ -535,14 +555,7 @@ const cabinAccent: Record<CabinType, string> = {
   First: "bg-amber-400/10 text-amber-200 ring-1 ring-inset ring-amber-400/20",
 };
 
-const curatedBestForOptions = [
-  "Privacy",
-  "Couples",
-  "Space",
-  "Luxury",
-  "Sleep",
-  "Network",
-];
+const curatedBestForOptions = ["Privacy", "Couples", "Space", "Luxury", "Sleep", "Network"];
 
 const locationAliases: Record<string, string[]> = {
   "new york jfk": ["new york jfk", "jfk", "new york", "nyc"],
@@ -551,58 +564,94 @@ const locationAliases: Record<string, string[]> = {
   "los angeles": ["los angeles", "lax", "la"],
   "chicago": ["chicago", "ord", "o'hare", "ohare"],
   "chicago o'hare": ["chicago o'hare", "chicago ord", "ord", "o'hare", "ohare", "chicago"],
-  "munich": ["munich", "muc"],
-  "doha": ["doha", "doh"],
-  "singapore": ["singapore", "sin"],
-  "sydney": ["sydney", "syd"],
-  "paris": ["paris", "cdg", "par"],
+  munich: ["munich", "muc"],
+  doha: ["doha", "doh"],
+  singapore: ["singapore", "sin"],
+  sydney: ["sydney", "syd"],
+  paris: ["paris", "cdg", "par"],
   "paris cdg": ["paris cdg", "paris", "cdg", "charles de gaulle", "par"],
   "abu dhabi": ["abu dhabi", "auh"],
   "tokyo haneda": ["tokyo haneda", "haneda", "hnd", "tokyo"],
   "tokyo narita": ["tokyo narita", "narita", "nrt", "tokyo"],
-  "tokyo": ["tokyo", "hnd", "nrt", "haneda", "narita"],
+  tokyo: ["tokyo", "hnd", "nrt", "haneda", "narita"],
   "hong kong": ["hong kong", "hkg"],
-  "taipei": ["taipei", "tpe"],
+  taipei: ["taipei", "tpe"],
   "seoul incheon": ["seoul incheon", "incheon", "icn", "seoul"],
-  "seoul": ["seoul", "icn", "incheon"],
-  "istanbul": ["istanbul", "ist"],
-  "dubai": ["dubai", "dxb"],
-  "geneva": ["geneva", "gva"],
-  "brussels": ["brussels", "bru"],
-  "vancouver": ["vancouver", "yvr"],
-  "amsterdam": ["amsterdam", "ams"],
-  "boston": ["boston", "bos"],
-  "delhi": ["delhi", "del", "new delhi"],
-  "detroit": ["detroit", "dtw"],
-  "atlanta": ["atlanta", "atl"],
-  "johannesburg": ["johannesburg", "jnb"],
+  seoul: ["seoul", "icn", "incheon"],
+  istanbul: ["istanbul", "ist"],
+  dubai: ["dubai", "dxb"],
+  geneva: ["geneva", "gva"],
+  brussels: ["brussels", "bru"],
+  vancouver: ["vancouver", "yvr"],
+  amsterdam: ["amsterdam", "ams"],
+  boston: ["boston", "bos"],
+  delhi: ["delhi", "del", "new delhi"],
+  detroit: ["detroit", "dtw"],
+  atlanta: ["atlanta", "atl"],
+  johannesburg: ["johannesburg", "jnb"],
   "washington dulles": ["washington dulles", "dulles", "iad", "washington"],
-  "newark": ["newark", "ewr"],
-  "dallas/forth worth": ["dallas/forth worth", "dallas/fort worth", "dfw", "dallas"],
-  "dallas/fort worth": ["dallas/fort worth", "dfw", "dallas", "fort worth"],
-  "melbourne": ["melbourne", "mel"],
-  "perth": ["perth", "per"],
-  "shanghai": ["shanghai", "pvg", "sha"],
-  "philadelphia": ["philadelphia", "phl"],
-  "brisbane": ["brisbane", "bne"],
-  "auckland": ["auckland", "akl"],
+  newark: ["newark", "ewr"],
+  "dallas fort worth": ["dallas/fort worth", "dallas fort worth", "dfw", "dallas", "fort worth"],
+  melbourne: ["melbourne", "mel"],
+  perth: ["perth", "per"],
+  shanghai: ["shanghai", "pvg", "sha"],
+  philadelphia: ["philadelphia", "phl"],
+  brisbane: ["brisbane", "bne"],
+  auckland: ["auckland", "akl"],
 };
 
 function normalizeText(value: string) {
   return value
     .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/→/g, " to ")
+    .replace(/[–—-]/g, " ")
     .replace(/\//g, " ")
-    .replace(/-/g, " ")
-    .replace(/[.,]/g, " ")
+    .replace(/[.,']/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
 
-function splitRoute(route: string): [string, string] | null {
+function titleCase(value: string) {
+  return value
+    .split(" ")
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+function splitRoute(route: string): RoutePair | null {
   const parts = route.split("→").map((part) => part.trim());
   if (parts.length !== 2) return null;
-  return [parts[0], parts[1]];
+  return { from: parts[0], to: parts[1] };
+}
+
+function dedupeRoutePairs(routePairs: RoutePair[]) {
+  const map = new Map<string, RoutePair>();
+
+  for (const pair of routePairs) {
+    const key = `${normalizeText(pair.from)}__${normalizeText(pair.to)}`;
+    if (!map.has(key)) {
+      map.set(key, pair);
+    }
+  }
+
+  return Array.from(map.values());
+}
+
+function toBidirectionalPairs(routes: string[]) {
+  const pairs: RoutePair[] = [];
+
+  for (const route of routes) {
+    const parsed = splitRoute(route);
+    if (!parsed) continue;
+
+    pairs.push(parsed);
+    pairs.push({ from: parsed.to, to: parsed.from });
+  }
+
+  return dedupeRoutePairs(pairs);
 }
 
 function getLocationTokens(location: string) {
@@ -628,56 +677,143 @@ function matchesLocation(input: string, location: string) {
   );
 }
 
-function parseUserRouteInput(input: string) {
+function parseRouteInput(input: string): { from: string; to: string; raw: string } {
   const normalized = normalizeText(input);
 
   if (!normalized) {
     return { from: "", to: "", raw: "" };
   }
 
-  const separators = [" to ", " > ", " -> ", " — ", " – ", " —> "];
-
+  const separators = [" to ", " > ", " -> "];
   for (const separator of separators) {
     if (normalized.includes(separator)) {
       const [from, to] = normalized.split(separator).map((value) => value.trim());
-      return {
-        from: from || "",
-        to: to || "",
-        raw: normalized,
-      };
+      return { from: from || "", to: to || "", raw: normalized };
     }
   }
 
-  return {
-    from: "",
-    to: "",
-    raw: normalized,
-  };
+  return { from: "", to: "", raw: normalized };
 }
 
-function routeMatchesInput(route: string, input: string, useReverseDirection = false) {
-  const parsedRoute = splitRoute(route);
-  if (!parsedRoute) return false;
-
-  const [originalFrom, originalTo] = parsedRoute;
-  const routeFrom = useReverseDirection ? originalTo : originalFrom;
-  const routeTo = useReverseDirection ? originalFrom : originalTo;
-
-  const parsedInput = parseUserRouteInput(input);
-
+function matchesRoutePair(pair: RoutePair, input: string) {
+  const parsedInput = parseRouteInput(input);
   if (!parsedInput.raw) return true;
 
   if (parsedInput.from && parsedInput.to) {
-    return matchesLocation(parsedInput.from, routeFrom) && matchesLocation(parsedInput.to, routeTo);
+    return matchesLocation(parsedInput.from, pair.from) && matchesLocation(parsedInput.to, pair.to);
   }
 
-  return matchesLocation(parsedInput.raw, routeFrom) || matchesLocation(parsedInput.raw, routeTo);
+  return matchesLocation(parsedInput.raw, pair.from) || matchesLocation(parsedInput.raw, pair.to);
 }
 
-function productMatchesRoute(routes: string[], input: string, useReverseDirection = false) {
-  if (!input.trim()) return true;
-  return routes.some((route) => routeMatchesInput(route, input, useReverseDirection));
+function formatRoute(pair: RoutePair) {
+  return `${pair.from} → ${pair.to}`;
 }
+
+function reverseRouteLabel(route: string) {
+  const parsed = splitRoute(route);
+  if (!parsed) return "";
+  return `${parsed.to} → ${parsed.from}`;
+}
+
+function scoreSuggestion(input: string, route: string) {
+  const normalizedInput = normalizeText(input);
+  const normalizedRoute = normalizeText(route);
+
+  if (!normalizedInput) return 0;
+  if (normalizedRoute.startsWith(normalizedInput)) return 100;
+  if (normalizedRoute.includes(normalizedInput)) return 80;
+
+  const parsed = splitRoute(route);
+  if (!parsed) return 0;
+
+  const fromMatch = matchesLocation(normalizedInput, parsed.from);
+  const toMatch = matchesLocation(normalizedInput, parsed.to);
+
+  if (fromMatch && toMatch) return 70;
+  if (fromMatch) return 60;
+  if (toMatch) return 50;
+
+  return 0;
+}
+
+function RouteAutosuggest({
+  label,
+  placeholder,
+  value,
+  onChange,
+  suggestions,
+  onSelect,
+}: {
+  label: string;
+  placeholder: string;
+  value: string;
+  onChange: (value: string) => void;
+  suggestions: string[];
+  onSelect: (value: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      if (!wrapperRef.current) return;
+      if (!wrapperRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
+
+  const shouldShow = open && suggestions.length > 0;
+
+  return (
+    <div ref={wrapperRef} className="relative">
+      <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
+        <RouteIcon />
+        {label}
+      </label>
+
+      <input
+        type="text"
+        value={value}
+        placeholder={placeholder}
+        onFocus={() => setOpen(true)}
+        onChange={(e) => {
+          onChange(e.target.value);
+          setOpen(true);
+        }}
+        className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-cyan-400/40"
+      />
+
+      {shouldShow && (
+        <div className="absolute z-30 mt-2 max-h-72 w-full overflow-auto rounded-2xl border border-cyan-400/10 bg-slate-950/95 p-2 shadow-2xl shadow-black/50 backdrop-blur-xl">
+          {suggestions.map((suggestion) => (
+            <button
+              key={suggestion}
+              type="button"
+              onClick={() => {
+                onSelect(suggestion);
+                setOpen(false);
+              }}
+              className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm text-white/85 transition hover:bg-white/10"
+            >
+              <span>{suggestion}</span>
+              <span className="text-[11px] uppercase tracking-[0.18em] text-cyan-200/45">Route</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+const premiumProducts: Product[] = rawProducts.map(({ routes, ...item }) => ({
+  ...item,
+  routePairs: toBidirectionalPairs(routes),
+}));
 
 export default function HomePage() {
   const [search, setSearch] = useState("");
@@ -698,7 +834,15 @@ export default function HomePage() {
     []
   );
 
-  const filteredProducts = useMemo(() => {
+  const routeCatalog = useMemo(() => {
+    return Array.from(
+      new Set(
+        premiumProducts.flatMap((item) => item.routePairs.map((pair) => formatRoute(pair)))
+      )
+    ).sort((a, b) => a.localeCompare(b));
+  }, []);
+
+  const productsMatchingNonRouteFilters = useMemo(() => {
     return premiumProducts.filter((item) => {
       const query = search.trim().toLowerCase();
 
@@ -707,30 +851,114 @@ export default function HomePage() {
         item.productName.toLowerCase().includes(query) ||
         item.airline.toLowerCase().includes(query) ||
         item.aircraft.toLowerCase().includes(query) ||
-        item.routes.some((value) => value.toLowerCase().includes(query)) ||
+        item.routePairs.some((pair) => formatRoute(pair).toLowerCase().includes(query)) ||
         item.bestFor.some((value) => value.toLowerCase().includes(query));
 
       const matchesAirline = airline === "" || item.airline === airline;
       const matchesAircraft = aircraft === "" || item.aircraft === aircraft;
       const matchesCabin = cabin === "" || item.cabinType === cabin;
-
-      const matchesOutbound = productMatchesRoute(item.routes, outboundRoute, false);
-      const matchesReturn = productMatchesRoute(item.routes, returnRoute, true);
-
       const matchesTags =
         selectedTags.length === 0 || selectedTags.every((tag) => item.bestFor.includes(tag));
 
-      return (
-        matchesSearch &&
-        matchesAirline &&
-        matchesAircraft &&
-        matchesCabin &&
-        matchesOutbound &&
-        matchesReturn &&
-        matchesTags
-      );
+      return matchesSearch && matchesAirline && matchesAircraft && matchesCabin && matchesTags;
     });
-  }, [search, airline, aircraft, cabin, outboundRoute, returnRoute, selectedTags]);
+  }, [search, airline, aircraft, cabin, selectedTags]);
+
+  const outboundSuggestions = useMemo(() => {
+    const scopedRoutes = Array.from(
+      new Set(
+        productsMatchingNonRouteFilters.flatMap((item) =>
+          item.routePairs.map((pair) => formatRoute(pair))
+        )
+      )
+    );
+
+    const base = outboundRoute.trim() ? scopedRoutes : routeCatalog;
+
+    return [...base]
+      .filter((route) => (outboundRoute.trim() ? scoreSuggestion(outboundRoute, route) > 0 : true))
+      .sort((a, b) => scoreSuggestion(outboundRoute, b) - scoreSuggestion(outboundRoute, a) || a.localeCompare(b))
+      .slice(0, 8);
+  }, [outboundRoute, productsMatchingNonRouteFilters, routeCatalog]);
+
+  const returnSuggestions = useMemo(() => {
+    if (outboundRoute.trim()) {
+      const directReverse = reverseRouteLabel(outboundRoute);
+      if (directReverse) {
+        const reverseMatches = productsMatchingNonRouteFilters.some((item) =>
+          item.routePairs.some((pair) => formatRoute(pair) === directReverse)
+        );
+
+        if (reverseMatches) {
+          const rest = routeCatalog.filter((route) => route !== directReverse);
+          return [directReverse, ...rest.filter((route) => scoreSuggestion(returnRoute || directReverse, route) > 0)].slice(0, 8);
+        }
+      }
+    }
+
+    const scopedRoutes = Array.from(
+      new Set(
+        productsMatchingNonRouteFilters.flatMap((item) =>
+          item.routePairs.map((pair) => formatRoute(pair))
+        )
+      )
+    );
+
+    const base = returnRoute.trim() ? scopedRoutes : routeCatalog;
+
+    return [...base]
+      .filter((route) => (returnRoute.trim() ? scoreSuggestion(returnRoute, route) > 0 : true))
+      .sort((a, b) => scoreSuggestion(returnRoute, b) - scoreSuggestion(returnRoute, a) || a.localeCompare(b))
+      .slice(0, 8);
+  }, [outboundRoute, returnRoute, productsMatchingNonRouteFilters, routeCatalog]);
+
+  useEffect(() => {
+    if (!outboundRoute.trim()) return;
+    if (returnRoute.trim()) return;
+
+    const reversed = reverseRouteLabel(outboundRoute);
+    if (!reversed) return;
+
+    const exists = routeCatalog.includes(reversed);
+    if (exists) {
+      setReturnRoute(reversed);
+    }
+  }, [outboundRoute, returnRoute, routeCatalog]);
+
+  const filteredProducts = useMemo(() => {
+    return productsMatchingNonRouteFilters.filter((item) => {
+      const matchesOutbound =
+        !outboundRoute.trim() || item.routePairs.some((pair) => matchesRoutePair(pair, outboundRoute));
+
+      const matchesReturn =
+        !returnRoute.trim() || item.routePairs.some((pair) => matchesRoutePair(pair, returnRoute));
+
+      if (!matchesOutbound || !matchesReturn) return false;
+
+      if (outboundRoute.trim() && returnRoute.trim()) {
+        const outboundParsed = splitRoute(outboundRoute);
+        const returnParsed = splitRoute(returnRoute);
+
+        if (outboundParsed && returnParsed) {
+          const hasExactRoundtrip =
+            item.routePairs.some(
+              (pair) =>
+                normalizeText(pair.from) === normalizeText(outboundParsed.from) &&
+                normalizeText(pair.to) === normalizeText(outboundParsed.to)
+            ) &&
+            item.routePairs.some(
+              (pair) =>
+                normalizeText(pair.from) === normalizeText(returnParsed.from) &&
+                normalizeText(pair.to) === normalizeText(returnParsed.to)
+            );
+
+          return hasExactRoundtrip;
+        }
+      }
+
+      return true;
+    });
+  }, [productsMatchingNonRouteFilters, outboundRoute, returnRoute]);
 
   const topThree = filteredProducts.slice(0, 3);
 
@@ -751,7 +979,7 @@ export default function HomePage() {
   }
 
   return (
-    <main className="app-shell text-white">
+    <main className="app-shell min-h-screen overflow-hidden bg-[#06111b] text-white">
       <div className="airport-board-bg" aria-hidden="true">
         <div className="board-glow" />
         <div className="board-flicker" />
@@ -772,9 +1000,9 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="content-layer">
+      <div className="content-layer relative z-10">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-          <div className="top-brand">
+          <div className="top-brand flex items-center gap-4">
             <img
               src="/images/ascend-logo.png"
               alt="Ascend Logo"
@@ -782,10 +1010,13 @@ export default function HomePage() {
               height={90}
               className="brand-logo h-[90px] w-[90px] object-contain"
             />
-            <h1 className="brand-title">Ascend Cabin Optimizer</h1>
+            <div>
+              <p className="text-xs uppercase tracking-[0.32em] text-cyan-100/55">Ascend</p>
+              <h1 className="brand-title text-3xl font-semibold sm:text-4xl">Cabin Optimizer</h1>
+            </div>
           </div>
 
-          <section className="overflow-hidden rounded-[28px] border border-cyan-400/10 bg-white/5 shadow-2xl shadow-black/50 backdrop-blur-md">
+          <section className="mt-6 overflow-hidden rounded-[28px] border border-cyan-400/10 bg-white/5 shadow-2xl shadow-black/50 backdrop-blur-md">
             <div className="grid gap-10 px-6 py-8 sm:px-8 lg:grid-cols-[1.25fr_0.75fr] lg:px-10 lg:py-10">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/15 bg-cyan-400/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/80">
@@ -793,33 +1024,35 @@ export default function HomePage() {
                   Premium cabin intelligence
                 </div>
 
-                <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-                  Identify the ideal premium cabin—instantly.
-                </h1>
+                <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+                  Roundtrip route search that suggests live matches as you type.
+                </h2>
 
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75 sm:text-base">
-                  Ascend Cabin Optimizer enables travel professionals and clients to compare Business and First Class
-                  products across airlines, aircraft, and layouts — with seamless access to AeroLOPA and seat maps for
-                  precise validation.
+                  This version turns every seeded route into a bidirectional route pair, so products can match outbound and return searches correctly.
+                  Type JFK, London, MUC, PVG, or a full route like Munich to Shanghai and the dropdown will suggest valid routes from your own data.
                 </p>
 
                 <p className="mt-4 max-w-2xl text-sm font-medium leading-6 text-cyan-100 sm:text-base">
-                  Make faster decisions. Elevate your recommendations. Deliver a better client experience.
+                  Example: if Allegris is loaded for Munich → Shanghai, the app will also support Shanghai → Munich automatically.
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-100">
-                  Route lists below are current reference routes only. Always double-check AeroLOPA and the live airline
-                  seat map before sharing with clients or booking.
+                  For long-term accuracy, keep the route seed data updated. The logic is now built so future route edits only need to be entered once per city pair.
                 </div>
 
-                <div className="mt-8 grid gap-4 sm:grid-cols-3">
+                <div className="mt-8 grid gap-4 sm:grid-cols-4">
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{premiumProducts.length}</p>
-                    <p className="mt-1 text-sm text-white/60">curated cabin products</p>
+                    <p className="mt-1 text-sm text-white/60">curated products</p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{airlineOptions.length}</p>
-                    <p className="mt-1 text-sm text-white/60">airlines covered</p>
+                    <p className="mt-1 text-sm text-white/60">airlines</p>
+                  </div>
+                  <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
+                    <p className="text-2xl font-semibold">{routeCatalog.length}</p>
+                    <p className="mt-1 text-sm text-white/60">searchable routes</p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{filteredProducts.length}</p>
@@ -831,17 +1064,18 @@ export default function HomePage() {
               <div className="rounded-[24px] border border-cyan-400/10 bg-black/45 p-5">
                 <p className="flex items-center gap-2 text-sm font-medium text-white">
                   <StarIcon />
-                  How to use this
+                  What changed
                 </p>
 
                 <div className="mt-4 space-y-3 text-sm leading-6 text-white/75">
-                  <p>Search by product, airline, aircraft, or route when you already know the trip pattern.</p>
-                  <p>Use outbound and return route fields to manually narrow down likely cabin fits.</p>
-                  <p>Select multiple “Best for” tags at the same time to create a tighter shortlist.</p>
+                  <p>Outbound and return are now autosuggest inputs, not plain text only.</p>
+                  <p>Routes are stored as roundtrip-capable pairs and expanded bidirectionally.</p>
+                  <p>Return route auto-fills with the reverse of the outbound route when available.</p>
+                  <p>Search respects airline, aircraft, cabin, and best-for filters before building route suggestions.</p>
                 </div>
 
                 <div className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-sm text-cyan-100">
-                  Best workflow: enter route keywords like JFK, LHR, Doha, or London Heathrow, then refine by cabin and tags.
+                  Tip: type a city, airport code, or a full route. Suggestions are generated from the routes already added to your dataset.
                 </div>
               </div>
             </div>
@@ -919,33 +1153,29 @@ export default function HomePage() {
             </div>
 
             <div className="mt-3 grid gap-3 lg:grid-cols-2">
-              <div>
-                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
-                  <RouteIcon />
-                  Outbound
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. JFK to Doha"
-                  value={outboundRoute}
-                  onChange={(e) => setOutboundRoute(e.target.value)}
-                  className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-cyan-400/40"
-                />
-              </div>
+              <RouteAutosuggest
+                label="Outbound"
+                placeholder="e.g. JFK to Doha or Munich"
+                value={outboundRoute}
+                onChange={setOutboundRoute}
+                suggestions={outboundSuggestions}
+                onSelect={(route) => {
+                  setOutboundRoute(route);
+                  if (!returnRoute.trim()) {
+                    const reversed = reverseRouteLabel(route);
+                    if (reversed) setReturnRoute(reversed);
+                  }
+                }}
+              />
 
-              <div>
-                <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
-                  <RouteIcon />
-                  Return
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Doha to JFK"
-                  value={returnRoute}
-                  onChange={(e) => setReturnRoute(e.target.value)}
-                  className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-cyan-400/40"
-                />
-              </div>
+              <RouteAutosuggest
+                label="Return"
+                placeholder="e.g. Doha to JFK or Shanghai"
+                value={returnRoute}
+                onChange={setReturnRoute}
+                suggestions={returnSuggestions}
+                onSelect={setReturnRoute}
+              />
             </div>
 
             <div className="mt-4 grid gap-3 xl:grid-cols-[1fr_auto]">
@@ -988,9 +1218,7 @@ export default function HomePage() {
                   })}
                 </div>
 
-                <p className="mt-2 text-xs text-white/45">
-                  You can select multiple options at once.
-                </p>
+                <p className="mt-2 text-xs text-white/45">You can select multiple options at once.</p>
               </div>
 
               <div className="flex items-end">
@@ -1023,11 +1251,7 @@ export default function HomePage() {
                     className="overflow-hidden rounded-[24px] border border-cyan-400/10 bg-gradient-to-b from-white/10 to-white/5"
                   >
                     <div className="relative h-56 overflow-hidden">
-                      <img
-                        src={item.image}
-                        alt={item.productName}
-                        className="block h-full w-full object-cover"
-                      />
+                      <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
                       <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
                         <span className="rounded-full bg-cyan-300 px-3 py-1 text-xs font-semibold text-slate-950">
                           #{item.rank}
@@ -1046,7 +1270,7 @@ export default function HomePage() {
                       </div>
                       <h3 className="mt-2 text-2xl font-semibold">{item.productName}</h3>
                       <p className="mt-1 text-sm text-white/55">{item.aircraft}</p>
-                      <p className="mt-2 text-sm text-cyan-200/80">{item.routes[0]}</p>
+                      <p className="mt-2 text-sm text-cyan-200/80">{formatRoute(item.routePairs[0])}</p>
                       <p className="mt-4 text-sm leading-6 text-white/70">{item.description}</p>
 
                       <div className="mt-4 flex flex-wrap gap-2">
@@ -1109,15 +1333,19 @@ export default function HomePage() {
                       <RouteIcon />
                       <div className="w-full">
                         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">
-                          Current route list
+                          Roundtrip route list
                         </p>
                         <div className="mt-2 flex flex-wrap gap-2">
-                          {item.routes.map((value) => (
+                          {dedupeRoutePairs(
+                            item.routePairs.filter(
+                              (pair) => normalizeText(pair.from) <= normalizeText(pair.to)
+                            )
+                          ).map((pair) => (
                             <span
-                              key={value}
+                              key={formatRoute(pair)}
                               className="rounded-full border border-cyan-400/10 bg-white/5 px-3 py-1 text-xs text-cyan-100/85"
                             >
-                              {value}
+                              {pair.from} ⇄ {pair.to}
                             </span>
                           ))}
                         </div>
@@ -1148,9 +1376,7 @@ export default function HomePage() {
                       <div className="flex items-start gap-3">
                         <NoteIcon />
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">
-                            Why it stands out
-                          </p>
+                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">Why it stands out</p>
                           <p className="mt-2 text-sm leading-6 text-white/65">{item.description}</p>
                         </div>
                       </div>
