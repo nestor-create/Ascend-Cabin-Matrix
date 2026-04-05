@@ -997,7 +997,7 @@ export default function HomePage() {
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-100">
-                  Verified 2026 route updates have been folded into the seeded dataset where airlines publish them clearly. Keep the rest of the route seeds reviewed periodically as fleet assignments can change.
+                  
                 </div>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-4">
@@ -1024,16 +1024,6 @@ export default function HomePage() {
 
               <div className="rounded-[24px] border border-cyan-400/10 bg-black/45 p-5">
                 <p className="flex items-center gap-2 text-sm font-medium text-white">
-                  <StarIcon />
-                  What changed
-                </p>
-
-                <div className="mt-4 space-y-3 text-sm leading-6 text-white/75">
-                  <p>Ascend Cabin Optimizer branding and hero copy updated.</p>
-                  <p>Outbound and return now suggest cities only, not full route strings.</p>
-                  <p>Cards still show all full routes seeded for each product.</p>
-                  <p>Verified 2026 Lufthansa, Air France, and Etihad route updates added to the dataset.</p>
-                </div>
 
                 <div className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-sm text-cyan-100">
                   Tip: type a city or airport code like MUC, JFK, DOH, HND, or LHR.
