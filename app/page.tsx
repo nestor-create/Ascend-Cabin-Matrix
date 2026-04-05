@@ -599,70 +599,6 @@ const cabinAccent: Record<CabinType, string> = {
 
 const curatedBestForOptions = ["Privacy", "Couples", "Space", "Luxury", "Sleep", "Network"];
 
-const locationAliases: Record<string, string[]> = {
-  "new york jfk": ["new york jfk", "jfk", "new york", "nyc"],
-  "london heathrow": ["london heathrow", "heathrow", "lhr", "london", "lon"],
-  "san francisco": ["san francisco", "sfo", "sf"],
-  "los angeles": ["los angeles", "lax", "la"],
-  "chicago": ["chicago", "ord", "o'hare", "ohare"],
-  "chicago o'hare": ["chicago o'hare", "chicago ord", "ord", "o'hare", "ohare", "chicago"],
-  munich: ["munich", "muc"],
-  frankfurt: ["frankfurt", "fra"],
-  doha: ["doha", "doh"],
-  singapore: ["singapore", "sin"],
-  sydney: ["sydney", "syd"],
-  paris: ["paris", "cdg", "par"],
-  "paris cdg": ["paris cdg", "paris", "cdg", "charles de gaulle", "par"],
-  "abu dhabi": ["abu dhabi", "auh"],
-  "tokyo haneda": ["tokyo haneda", "haneda", "hnd", "tokyo"],
-  "tokyo narita": ["tokyo narita", "narita", "nrt", "tokyo"],
-  tokyo: ["tokyo", "hnd", "nrt", "haneda", "narita"],
-  "hong kong": ["hong kong", "hkg"],
-  taipei: ["taipei", "tpe"],
-  "seoul incheon": ["seoul incheon", "incheon", "icn", "seoul"],
-  seoul: ["seoul", "icn", "incheon"],
-  istanbul: ["istanbul", "ist"],
-  dubai: ["dubai", "dxb"],
-  geneva: ["geneva", "gva"],
-  brussels: ["brussels", "bru"],
-  vancouver: ["vancouver", "yvr"],
-  amsterdam: ["amsterdam", "ams"],
-  boston: ["boston", "bos"],
-  delhi: ["delhi", "del", "new delhi"],
-  detroit: ["detroit", "dtw"],
-  atlanta: ["atlanta", "atl"],
-  johannesburg: ["johannesburg", "jnb"],
-  "washington dulles": ["washington dulles", "dulles", "iad", "washington"],
-  "washington d.c.": ["washington d.c.", "washington dc", "washington", "iad", "dca"],
-  newark: ["newark", "ewr"],
-  "dallas fort worth": ["dallas/fort worth", "dallas fort worth", "dfw", "dallas", "fort worth"],
-  "dallas/fort worth": ["dallas/fort worth", "dallas fort worth", "dfw", "dallas", "fort worth"],
-  melbourne: ["melbourne", "mel"],
-  perth: ["perth", "per"],
-  shanghai: ["shanghai", "pvg", "sha"],
-  philadelphia: ["philadelphia", "phl"],
-  brisbane: ["brisbane", "bne"],
-  auckland: ["auckland", "akl"],
-  abidjan: ["abidjan", "abj"],
-  houston: ["houston", "iah", "hou"],
-  "tel aviv": ["tel aviv", "tlv"],
-  "sao paulo": ["sao paulo", "gru", "são paulo"],
-  austin: ["austin", "aus"],
-  toronto: ["toronto", "yyz"],
-  montreal: ["montreal", "yul"],
-  bogota: ["bogota", "bogotá", "bog"],
-  lagos: ["lagos", "los"],
-  malabo: ["malabo", "ssg"],
-  "cape town": ["cape town", "cpt"],
-  hyderabad: ["hyderabad", "hyd"],
-  nairobi: ["nairobi", "nbo"],
-  mumbai: ["mumbai", "bom"],
-  bengaluru: ["bengaluru", "bangalore", "blr"],
-  "san diego": ["san diego", "san"],
-  "kuala lumpur": ["kuala lumpur", "kul"],
-  "raleigh-durham": ["raleigh-durham", "raleigh durham", "rdu"],
-};
-
 function normalizeText(value: string) {
   return value
     .toLowerCase()
@@ -709,45 +645,21 @@ function toBidirectionalPairs(routes: string[]) {
   return dedupeRoutePairs(pairs);
 }
 
-function getLocationTokens(location: string) {
-  const normalized = normalizeText(location);
-  const aliasValues = locationAliases[normalized] ?? [];
-  const tokenSet = new Set<string>([normalized, ...aliasValues.map(normalizeText)]);
-
-  normalized.split(" ").forEach((part) => {
-    if (part) tokenSet.add(part);
-  });
-
-  return Array.from(tokenSet).filter(Boolean);
-}
-
-function matchesLocation(input: string, location: string) {
-  const normalizedInput = normalizeText(input);
-  if (!normalizedInput) return true;
-
-  const locationTokens = getLocationTokens(location);
-
-  return locationTokens.some(
-    (token) => token.includes(normalizedInput) || normalizedInput.includes(token)
-  );
-}
-
 function formatRoute(pair: RoutePair) {
   return `${pair.from} → ${pair.to}`;
 }
 
-function scoreCitySuggestion(input: string, city: string) {
+function scoreRouteSuggestion(input: string, route: string) {
   const normalizedInput = normalizeText(input);
-  const normalizedCity = normalizeText(city);
+  const normalizedRoute = normalizeText(route);
 
   if (!normalizedInput) return 0;
-  if (normalizedCity.startsWith(normalizedInput)) return 100;
-  if (normalizedCity.includes(normalizedInput)) return 80;
-  if (matchesLocation(normalizedInput, city)) return 60;
+  if (normalizedRoute.startsWith(normalizedInput)) return 100;
+  if (normalizedRoute.includes(normalizedInput)) return 80;
   return 0;
 }
 
-function CityAutosuggest({
+function RouteAutosuggest({
   label,
   placeholder,
   value,
@@ -811,7 +723,7 @@ function CityAutosuggest({
               className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm text-white/85 transition hover:bg-white/10"
             >
               <span>{suggestion}</span>
-              <span className="text-[11px] uppercase tracking-[0.18em] text-cyan-200/45">City</span>
+              <span className="text-[11px] uppercase tracking-[0.18em] text-cyan-200/45">Route</span>
             </button>
           ))}
         </div>
@@ -830,8 +742,8 @@ export default function HomePage() {
   const [airline, setAirline] = useState("");
   const [aircraft, setAircraft] = useState("");
   const [cabin, setCabin] = useState("");
-  const [outboundCity, setOutboundCity] = useState("");
-  const [returnCity, setReturnCity] = useState("");
+  const [outboundRoute, setOutboundRoute] = useState("");
+  const [returnRoute, setReturnRoute] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const airlineOptions = useMemo(
@@ -843,6 +755,14 @@ export default function HomePage() {
     () => Array.from(new Set(premiumProducts.map((item) => item.aircraft))).sort(),
     []
   );
+
+  const routeCatalog = useMemo(() => {
+    return Array.from(
+      new Set(
+        premiumProducts.flatMap((item) => item.routePairs.map((pair) => formatRoute(pair)))
+      )
+    ).sort((a, b) => a.localeCompare(b));
+  }, []);
 
   const productsMatchingNonRouteFilters = useMemo(() => {
     return premiumProducts.filter((item) => {
@@ -866,59 +786,59 @@ export default function HomePage() {
     });
   }, [search, airline, aircraft, cabin, selectedTags]);
 
-  const outboundCityOptions = useMemo(() => {
-    const origins = Array.from(
-      new Set(productsMatchingNonRouteFilters.flatMap((item) => item.routePairs.map((pair) => pair.from)))
-    );
+  const filteredRouteCatalog = useMemo(() => {
+    return Array.from(
+      new Set(
+        productsMatchingNonRouteFilters.flatMap((item) =>
+          item.routePairs.map((pair) => formatRoute(pair))
+        )
+      )
+    ).sort((a, b) => a.localeCompare(b));
+  }, [productsMatchingNonRouteFilters]);
 
-    return [...origins]
-      .filter((city) => (outboundCity.trim() ? scoreCitySuggestion(outboundCity, city) > 0 : true))
+  const outboundRouteOptions = useMemo(() => {
+    const base = outboundRoute.trim() ? filteredRouteCatalog : routeCatalog;
+
+    return [...base]
+      .filter((route) => (outboundRoute.trim() ? scoreRouteSuggestion(outboundRoute, route) > 0 : true))
       .sort(
         (a, b) =>
-          scoreCitySuggestion(outboundCity, b) - scoreCitySuggestion(outboundCity, a) ||
+          scoreRouteSuggestion(outboundRoute, b) - scoreRouteSuggestion(outboundRoute, a) ||
           a.localeCompare(b)
       )
       .slice(0, 8);
-  }, [outboundCity, productsMatchingNonRouteFilters]);
+  }, [outboundRoute, filteredRouteCatalog, routeCatalog]);
 
-  const returnCityOptions = useMemo(() => {
-    const filteredPairs = productsMatchingNonRouteFilters.flatMap((item) => item.routePairs);
+  const returnRouteOptions = useMemo(() => {
+    const base = returnRoute.trim() ? filteredRouteCatalog : routeCatalog;
 
-    const returnCandidates = outboundCity.trim()
-      ? filteredPairs.filter((pair) => matchesLocation(outboundCity, pair.from)).map((pair) => pair.to)
-      : filteredPairs.map((pair) => pair.to);
-
-    const uniqueReturns = Array.from(new Set(returnCandidates));
-
-    return [...uniqueReturns]
-      .filter((city) => (returnCity.trim() ? scoreCitySuggestion(returnCity, city) > 0 : true))
+    return [...base]
+      .filter((route) => (returnRoute.trim() ? scoreRouteSuggestion(returnRoute, route) > 0 : true))
       .sort(
         (a, b) =>
-          scoreCitySuggestion(returnCity, b) - scoreCitySuggestion(returnCity, a) ||
+          scoreRouteSuggestion(returnRoute, b) - scoreRouteSuggestion(returnRoute, a) ||
           a.localeCompare(b)
       )
       .slice(0, 8);
-  }, [outboundCity, returnCity, productsMatchingNonRouteFilters]);
+  }, [returnRoute, filteredRouteCatalog, routeCatalog]);
 
   const filteredProducts = useMemo(() => {
     return productsMatchingNonRouteFilters.filter((item) => {
       const matchesOutbound =
-        !outboundCity.trim() || item.routePairs.some((pair) => matchesLocation(outboundCity, pair.from));
+        !outboundRoute.trim() ||
+        item.routePairs.some((pair) =>
+          formatRoute(pair).toLowerCase().includes(outboundRoute.toLowerCase())
+        );
 
       const matchesReturn =
-        !returnCity.trim() || item.routePairs.some((pair) => matchesLocation(returnCity, pair.to));
-
-      if (!matchesOutbound || !matchesReturn) return false;
-
-      if (outboundCity.trim() && returnCity.trim()) {
-        return item.routePairs.some(
-          (pair) => matchesLocation(outboundCity, pair.from) && matchesLocation(returnCity, pair.to)
+        !returnRoute.trim() ||
+        item.routePairs.some((pair) =>
+          formatRoute(pair).toLowerCase().includes(returnRoute.toLowerCase())
         );
-      }
 
-      return true;
+      return matchesOutbound && matchesReturn;
     });
-  }, [productsMatchingNonRouteFilters, outboundCity, returnCity]);
+  }, [productsMatchingNonRouteFilters, outboundRoute, returnRoute]);
 
   const topThree = filteredProducts.slice(0, 3);
 
@@ -933,8 +853,8 @@ export default function HomePage() {
     setAirline("");
     setAircraft("");
     setCabin("");
-    setOutboundCity("");
-    setReturnCity("");
+    setOutboundRoute("");
+    setReturnRoute("");
     setSelectedTags([]);
   }
 
@@ -989,16 +909,12 @@ export default function HomePage() {
                 </h2>
 
                 <p className="mt-4 max-w-3xl text-sm leading-6 text-white/75 sm:text-base">
-                  Outbound and return suggest one city at a time for a cleaner workflow, while results still match the full underlying route pairs and display every route seeded for each product.
+                  Search full outbound and return routes across premium cabin products, then compare airline, aircraft, cabin type, seat layout, AeroLOPA, and SeatMaps in one view.
                 </p>
 
                 <p className="mt-4 max-w-3xl text-sm font-medium leading-6 text-cyan-100 sm:text-base">
-                  Use airline, aircraft, cabin, and best-for filters to narrow the shortlist, then compare layouts with AeroLOPA and SeatMaps side by side.
+                  Updated route seeds are already included below, so newly added routes appear inside the outbound and return route suggestions automatically.
                 </p>
-
-                <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-100">
-                  Verified 2026 route updates have been folded into the seeded dataset where airlines publish them clearly. Keep the rest of the route seeds reviewed periodically as fleet assignments can change.
-                </div>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-4">
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
@@ -1010,9 +926,7 @@ export default function HomePage() {
                     <p className="mt-1 text-sm text-white/60">airlines</p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
-                    <p className="text-2xl font-semibold">
-                      {Array.from(new Set(premiumProducts.flatMap((item) => item.routePairs.map((pair) => formatRoute(pair))))).length}
-                    </p>
+                    <p className="text-2xl font-semibold">{routeCatalog.length}</p>
                     <p className="mt-1 text-sm text-white/60">searchable routes</p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
@@ -1022,22 +936,32 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="rounded-[24px] border border-cyan-400/10 bg-black/45 p-5">
-                <p className="flex items-center gap-2 text-sm font-medium text-white">
+              <div className="rounded-[24px] border border-cyan-400/15 bg-gradient-to-br from-cyan-400/10 via-white/[0.03] to-cyan-300/5 p-6">
+                <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100">
                   <StarIcon />
-                  What changed
+                  Ready to book?
+                </div>
+
+                <h3 className="mt-5 text-2xl font-semibold text-white">
+                  Experience 24/7 access to travel concierge.
+                </h3>
+
+                <p className="mt-4 text-sm leading-6 text-cyan-50/80">
+                  Save an average of 35% on Business and First Class while booking with a premium travel experience designed around flexibility, speed, and expert support.
                 </p>
 
-                <div className="mt-4 space-y-3 text-sm leading-6 text-white/75">
-                  <p>Ascend Cabin Optimizer branding and hero copy updated.</p>
-                  <p>Outbound and return now suggest cities only, not full route strings.</p>
-                  <p>Cards still show all full routes seeded for each product.</p>
-                  <p>Verified 2026 Lufthansa, Air France, and Etihad route updates added to the dataset.</p>
+                <div className="mt-6 rounded-2xl border border-white/10 bg-black/25 p-4 text-sm leading-6 text-white/75">
+                  Apply for membership to unlock personalized flight sourcing, premium fare monitoring, and concierge support at every step of your trip.
                 </div>
 
-                <div className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-sm text-cyan-100">
-                  Tip: type a city or airport code like MUC, JFK, DOH, HND, or LHR.
-                </div>
+                <a
+                  href="https://joinascend.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex w-full items-center justify-center rounded-2xl bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90"
+                >
+                  Apply for membership at joinascend.com
+                </a>
               </div>
             </div>
           </section>
@@ -1114,25 +1038,25 @@ export default function HomePage() {
             </div>
 
             <div className="mt-3 grid gap-3 lg:grid-cols-2">
-              <CityAutosuggest
+              <RouteAutosuggest
                 label="Outbound"
-                placeholder="e.g. Munich, JFK, Doha"
-                value={outboundCity}
-                onChange={setOutboundCity}
-                suggestions={outboundCityOptions}
-                onSelect={(city) => {
-                  setOutboundCity(city);
-                  setReturnCity("");
+                placeholder="e.g. Munich → Shanghai"
+                value={outboundRoute}
+                onChange={setOutboundRoute}
+                suggestions={outboundRouteOptions}
+                onSelect={(route) => {
+                  setOutboundRoute(route);
+                  setReturnRoute("");
                 }}
               />
 
-              <CityAutosuggest
+              <RouteAutosuggest
                 label="Return"
-                placeholder="e.g. Shanghai, London Heathrow, Sydney"
-                value={returnCity}
-                onChange={setReturnCity}
-                suggestions={returnCityOptions}
-                onSelect={setReturnCity}
+                placeholder="e.g. Shanghai → Munich"
+                value={returnRoute}
+                onChange={setReturnRoute}
+                suggestions={returnRouteOptions}
+                onSelect={setReturnRoute}
               />
             </div>
 
@@ -1205,8 +1129,11 @@ export default function HomePage() {
               <div className="grid gap-4 lg:grid-cols-3">
                 {topThree.map((item) => {
                   const matchingRoutes = item.routePairs.filter((pair) => {
-                    const outboundOk = !outboundCity.trim() || matchesLocation(outboundCity, pair.from);
-                    const returnOk = !returnCity.trim() || matchesLocation(returnCity, pair.to);
+                    const route = formatRoute(pair);
+                    const outboundOk =
+                      !outboundRoute.trim() || route.toLowerCase().includes(outboundRoute.toLowerCase());
+                    const returnOk =
+                      !returnRoute.trim() || route.toLowerCase().includes(returnRoute.toLowerCase());
                     return outboundOk && returnOk;
                   });
 
@@ -1261,8 +1188,11 @@ export default function HomePage() {
           <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {filteredProducts.map((item) => {
               const matchingRoutes = item.routePairs.filter((pair) => {
-                const outboundOk = !outboundCity.trim() || matchesLocation(outboundCity, pair.from);
-                const returnOk = !returnCity.trim() || matchesLocation(returnCity, pair.to);
+                const route = formatRoute(pair);
+                const outboundOk =
+                  !outboundRoute.trim() || route.toLowerCase().includes(outboundRoute.toLowerCase());
+                const returnOk =
+                  !returnRoute.trim() || route.toLowerCase().includes(returnRoute.toLowerCase());
                 return outboundOk && returnOk;
               });
 
@@ -1390,7 +1320,7 @@ export default function HomePage() {
             <section className="mt-8 rounded-[28px] border border-dashed border-cyan-400/10 bg-white/5 px-6 py-14 text-center">
               <h2 className="text-2xl font-semibold">No cabins matched those filters</h2>
               <p className="mt-3 text-sm text-white/60">
-                Try broader city text like Munich, JFK, Doha, Shanghai, or London Heathrow, or remove one selected tag.
+                Try broader route text like Munich → Shanghai, Doha → Sydney, or remove one selected tag.
               </p>
               <button
                 onClick={resetFilters}
