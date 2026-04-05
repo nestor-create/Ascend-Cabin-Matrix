@@ -672,7 +672,7 @@ function scoreSuggestion(input: string, value: string) {
   return 0;
 }
 
-function CityAutosuggest({
+function PlaceAutosuggest({
   label,
   placeholder,
   value,
@@ -736,7 +736,7 @@ function CityAutosuggest({
               className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm text-white/85 transition hover:bg-white/10"
             >
               <span>{suggestion}</span>
-              <span className="text-[11px] uppercase tracking-[0.18em] text-cyan-200/45">City</span>
+              <span className="text-[11px] uppercase tracking-[0.18em] text-cyan-200/45">Available</span>
             </button>
           ))}
         </div>
@@ -755,8 +755,8 @@ export default function HomePage() {
   const [airline, setAirline] = useState("");
   const [aircraft, setAircraft] = useState("");
   const [cabin, setCabin] = useState("");
-  const [outboundCity, setOutboundCity] = useState("");
-  const [returnCity, setReturnCity] = useState("");
+  const [outboundPlace, setOutboundPlace] = useState("");
+  const [returnPlace, setReturnPlace] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const airlineOptions = useMemo(
@@ -769,13 +769,13 @@ export default function HomePage() {
     []
   );
 
-  const cityCatalog = useMemo(() => {
+  const placeCatalog = useMemo(() => {
     return dedupeStrings(
       premiumProducts.flatMap((item) => item.routePairs.flatMap((pair) => [pair.from, pair.to]))
     ).sort((a, b) => a.localeCompare(b));
   }, []);
 
-  const productsMatchingNonCityFilters = useMemo(() => {
+  const productsMatchingNonPlaceFilters = useMemo(() => {
     return premiumProducts.filter((item) => {
       const query = search.trim().toLowerCase();
 
@@ -802,63 +802,67 @@ export default function HomePage() {
     });
   }, [search, airline, aircraft, cabin, selectedTags]);
 
-  const filteredOutboundCities = useMemo(() => {
+  const filteredOutboundPlaces = useMemo(() => {
     return dedupeStrings(
-      productsMatchingNonCityFilters.flatMap((item) => item.routePairs.map((pair) => pair.from))
+      productsMatchingNonPlaceFilters.flatMap((item) => item.routePairs.map((pair) => pair.from))
     ).sort((a, b) => a.localeCompare(b));
-  }, [productsMatchingNonCityFilters]);
+  }, [productsMatchingNonPlaceFilters]);
 
-  const filteredReturnCities = useMemo(() => {
-    let baseProducts = productsMatchingNonCityFilters;
+  const filteredReturnPlaces = useMemo(() => {
+    let baseProducts = productsMatchingNonPlaceFilters;
 
-    if (outboundCity.trim()) {
+    if (outboundPlace.trim()) {
       baseProducts = baseProducts.filter((item) =>
-        item.routePairs.some((pair) => normalizeText(pair.from).includes(normalizeText(outboundCity)))
+        item.routePairs.some((pair) => normalizeText(pair.from).includes(normalizeText(outboundPlace)))
       );
     }
 
     return dedupeStrings(baseProducts.flatMap((item) => item.routePairs.map((pair) => pair.to))).sort((a, b) =>
       a.localeCompare(b)
     );
-  }, [productsMatchingNonCityFilters, outboundCity]);
+  }, [productsMatchingNonPlaceFilters, outboundPlace]);
 
-  const outboundCityOptions = useMemo(() => {
-    const base = outboundCity.trim() ? filteredOutboundCities : cityCatalog;
-
-    return [...base]
-      .filter((city) => (outboundCity.trim() ? scoreSuggestion(outboundCity, city) > 0 : true))
-      .sort(
-        (a, b) =>
-          scoreSuggestion(outboundCity, b) - scoreSuggestion(outboundCity, a) || a.localeCompare(b)
-      )
-      .slice(0, 8);
-  }, [outboundCity, filteredOutboundCities, cityCatalog]);
-
-  const returnCityOptions = useMemo(() => {
-    const base = returnCity.trim() ? filteredReturnCities : filteredReturnCities.length ? filteredReturnCities : cityCatalog;
+  const outboundPlaceOptions = useMemo(() => {
+    const base = outboundPlace.trim() ? filteredOutboundPlaces : placeCatalog;
 
     return [...base]
-      .filter((city) => (returnCity.trim() ? scoreSuggestion(returnCity, city) > 0 : true))
+      .filter((place) => (outboundPlace.trim() ? scoreSuggestion(outboundPlace, place) > 0 : true))
       .sort(
         (a, b) =>
-          scoreSuggestion(returnCity, b) - scoreSuggestion(returnCity, a) || a.localeCompare(b)
+          scoreSuggestion(outboundPlace, b) - scoreSuggestion(outboundPlace, a) || a.localeCompare(b)
       )
       .slice(0, 8);
-  }, [returnCity, filteredReturnCities, cityCatalog]);
+  }, [outboundPlace, filteredOutboundPlaces, placeCatalog]);
+
+  const returnPlaceOptions = useMemo(() => {
+    const base = returnPlace.trim()
+      ? filteredReturnPlaces
+      : filteredReturnPlaces.length
+      ? filteredReturnPlaces
+      : placeCatalog;
+
+    return [...base]
+      .filter((place) => (returnPlace.trim() ? scoreSuggestion(returnPlace, place) > 0 : true))
+      .sort(
+        (a, b) =>
+          scoreSuggestion(returnPlace, b) - scoreSuggestion(returnPlace, a) || a.localeCompare(b)
+      )
+      .slice(0, 8);
+  }, [returnPlace, filteredReturnPlaces, placeCatalog]);
 
   const filteredProducts = useMemo(() => {
-    return productsMatchingNonCityFilters.filter((item) => {
+    return productsMatchingNonPlaceFilters.filter((item) => {
       const matchesOutbound =
-        !outboundCity.trim() ||
-        item.routePairs.some((pair) => normalizeText(pair.from).includes(normalizeText(outboundCity)));
+        !outboundPlace.trim() ||
+        item.routePairs.some((pair) => normalizeText(pair.from).includes(normalizeText(outboundPlace)));
 
       const matchesReturn =
-        !returnCity.trim() ||
-        item.routePairs.some((pair) => normalizeText(pair.to).includes(normalizeText(returnCity)));
+        !returnPlace.trim() ||
+        item.routePairs.some((pair) => normalizeText(pair.to).includes(normalizeText(returnPlace)));
 
       return matchesOutbound && matchesReturn;
     });
-  }, [productsMatchingNonCityFilters, outboundCity, returnCity]);
+  }, [productsMatchingNonPlaceFilters, outboundPlace, returnPlace]);
 
   const topThree = filteredProducts.slice(0, 3);
 
@@ -873,8 +877,8 @@ export default function HomePage() {
     setAirline("");
     setAircraft("");
     setCabin("");
-    setOutboundCity("");
-    setReturnCity("");
+    setOutboundPlace("");
+    setReturnPlace("");
     setSelectedTags([]);
   }
 
@@ -942,8 +946,8 @@ export default function HomePage() {
                     <p className="mt-1 text-sm text-white/60">airlines</p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
-                    <p className="text-2xl font-semibold">{cityCatalog.length}</p>
-                    <p className="mt-1 text-sm text-white/60">searchable cities</p>
+                    <p className="text-2xl font-semibold">{placeCatalog.length}</p>
+                    <p className="mt-1 text-sm text-white/60">searchable places</p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{filteredProducts.length}</p>
@@ -991,7 +995,7 @@ export default function HomePage() {
                 </label>
                 <input
                   type="text"
-                  placeholder="Product, airline, aircraft, city, best for..."
+                  placeholder="Product, airline, aircraft, route, place, best for..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-cyan-400/40"
@@ -1054,24 +1058,22 @@ export default function HomePage() {
             </div>
 
             <div className="mt-3 grid gap-3 lg:grid-cols-2">
-              <CityAutosuggest
+              <PlaceAutosuggest
                 label="Outbound"
-                placeholder="e.g. Abu Dhabi, Amsterdam, Munich"
-                value={outboundCity}
-                onChange={setOutboundCity}
-                suggestions={outboundCityOptions}
-                onSelect={(city) => {
-                  setOutboundCity(city);
-                }}
+                placeholder="e.g. Abu Dhabi, Atlanta, Paris CDG, Dallas/Fort Worth"
+                value={outboundPlace}
+                onChange={setOutboundPlace}
+                suggestions={outboundPlaceOptions}
+                onSelect={setOutboundPlace}
               />
 
-              <CityAutosuggest
+              <PlaceAutosuggest
                 label="Return"
-                placeholder="e.g. Paris, London Heathrow, Singapore"
-                value={returnCity}
-                onChange={setReturnCity}
-                suggestions={returnCityOptions}
-                onSelect={setReturnCity}
+                placeholder="e.g. Amsterdam, London Heathrow, New York JFK, Singapore"
+                value={returnPlace}
+                onChange={setReturnPlace}
+                suggestions={returnPlaceOptions}
+                onSelect={setReturnPlace}
               />
             </div>
 
@@ -1145,11 +1147,11 @@ export default function HomePage() {
                 {topThree.map((item) => {
                   const matchingRoutes = item.routePairs.filter((pair) => {
                     const outboundOk =
-                      !outboundCity.trim() ||
-                      normalizeText(pair.from).includes(normalizeText(outboundCity));
+                      !outboundPlace.trim() ||
+                      normalizeText(pair.from).includes(normalizeText(outboundPlace));
                     const returnOk =
-                      !returnCity.trim() ||
-                      normalizeText(pair.to).includes(normalizeText(returnCity));
+                      !returnPlace.trim() ||
+                      normalizeText(pair.to).includes(normalizeText(returnPlace));
                     return outboundOk && returnOk;
                   });
 
@@ -1205,18 +1207,26 @@ export default function HomePage() {
             {filteredProducts.map((item) => {
               const matchingRoutes = item.routePairs.filter((pair) => {
                 const outboundOk =
-                  !outboundCity.trim() ||
-                  normalizeText(pair.from).includes(normalizeText(outboundCity));
+                  !outboundPlace.trim() ||
+                  normalizeText(pair.from).includes(normalizeText(outboundPlace));
                 const returnOk =
-                  !returnCity.trim() ||
-                  normalizeText(pair.to).includes(normalizeText(returnCity));
+                  !returnPlace.trim() ||
+                  normalizeText(pair.to).includes(normalizeText(returnPlace));
                 return outboundOk && returnOk;
               });
 
               const visibleRoutes =
                 matchingRoutes.length > 0
-                  ? dedupeRoutePairs(matchingRoutes.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to)))
-                  : dedupeRoutePairs(item.routePairs.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to)));
+                  ? dedupeRoutePairs(
+                      matchingRoutes.filter(
+                        (pair) => normalizeText(pair.from) <= normalizeText(pair.to)
+                      )
+                    )
+                  : dedupeRoutePairs(
+                      item.routePairs.filter(
+                        (pair) => normalizeText(pair.from) <= normalizeText(pair.to)
+                      )
+                    );
 
               return (
                 <article
@@ -1289,7 +1299,9 @@ export default function HomePage() {
                         <div className="flex items-start gap-3">
                           <SeatIcon />
                           <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">Seat insight</p>
+                            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">
+                              Seat insight
+                            </p>
                             <p className="mt-2 text-sm leading-6 text-white/75">{item.seatInsight}</p>
                           </div>
                         </div>
@@ -1299,7 +1311,9 @@ export default function HomePage() {
                         <div className="flex items-start gap-3">
                           <NoteIcon />
                           <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">Why it stands out</p>
+                            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">
+                              Why it stands out
+                            </p>
                             <p className="mt-2 text-sm leading-6 text-white/65">{item.description}</p>
                           </div>
                         </div>
@@ -1337,7 +1351,7 @@ export default function HomePage() {
             <section className="mt-8 rounded-[28px] border border-dashed border-cyan-400/10 bg-white/5 px-6 py-14 text-center">
               <h2 className="text-2xl font-semibold">No cabins matched those filters</h2>
               <p className="mt-3 text-sm text-white/60">
-                Try broader city text like Abu Dhabi, Amsterdam, Munich, or remove one selected tag.
+                Try broader place text like Atlanta, Amsterdam, Paris CDG, New York JFK, or remove one selected tag.
               </p>
               <button
                 onClick={resetFilters}
