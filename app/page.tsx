@@ -932,7 +932,7 @@ export default function HomePage() {
                 </div>
 
                 <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-                  Ascend Cabin Optimizer.
+                  Ascend Cabin Optimizer
                 </h2>
 
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75 sm:text-base">
@@ -940,8 +940,7 @@ export default function HomePage() {
                 </p>
 
                 <p className="mt-4 max-w-2xl text-sm font-medium leading-6 text-cyan-100 sm:text-base">
-                  Select Munich in outbound and Shanghai in return, and the app will match products
-                  that actually operate Munich → Shanghai.
+                
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-100">
