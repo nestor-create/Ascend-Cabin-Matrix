@@ -437,10 +437,12 @@ const rawProducts: RawProduct[] = [
     aircraft: "747-8",
     cabinType: "First",
     routes: [
-      "Seoul Incheon → Paris CDG",
       "Seoul Incheon → New York JFK",
       "Seoul Incheon → Los Angeles",
+      "Seoul Incheon → Atlanta",
+      "Seoul Incheon → Paris CDG",
       "Seoul Incheon → London Heathrow",
+      "Seoul Incheon → Frankfurt",
     ],
     bestFor: ["Privacy", "Luxury"],
     seatInsight: "Fully enclosed next-generation first class suite with strong privacy, refined finishes, and a flagship long-haul experience.",
@@ -455,13 +457,22 @@ const rawProducts: RawProduct[] = [
     productName: "Prestige Suite 2.0",
     airline: "Korean Air",
     airlineCode: "KE",
-    aircraft: "787-10 / 777-300ER",
+    aircraft: "787-10 / 777-300ER / A350-900",
     cabinType: "Business",
     routes: [
-      "Seoul Incheon → Paris CDG",
       "Seoul Incheon → New York JFK",
       "Seoul Incheon → Los Angeles",
+      "Seoul Incheon → San Francisco",
+      "Seoul Incheon → Seattle",
+      "Seoul Incheon → Vancouver",
       "Seoul Incheon → London Heathrow",
+      "Seoul Incheon → Paris CDG",
+      "Seoul Incheon → Frankfurt",
+      "Seoul Incheon → Rome",
+      "Seoul Incheon → Madrid",
+      "Seoul Incheon → Sydney",
+      "Seoul Incheon → Singapore",
+      "Seoul Incheon → Tokyo Haneda",
     ],
     bestFor: ["Privacy", "Solo"],
     seatInsight: "Suite-style business class seat with door, direct aisle access, and a more private next-generation Korean Air layout.",
@@ -1237,14 +1248,10 @@ export default function HomePage() {
               const visibleRoutes =
                 matchingRoutes.length > 0
                   ? dedupeRoutePairs(
-                      matchingRoutes.filter(
-                        (pair) => normalizeText(pair.from) <= normalizeText(pair.to)
-                      )
+                      matchingRoutes.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to))
                     )
                   : dedupeRoutePairs(
-                      item.routePairs.filter(
-                        (pair) => normalizeText(pair.from) <= normalizeText(pair.to)
-                      )
+                      item.routePairs.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to))
                     );
 
               return (
