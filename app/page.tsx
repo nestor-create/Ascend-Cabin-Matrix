@@ -111,13 +111,17 @@ const rawProducts: RawProduct[] = [
     productName: "Allegris First",
     airline: "Lufthansa",
     airlineCode: "LH",
-    aircraft: "A350-900 / 787-9",
+    aircraft: "A350-900",
     cabinType: "First",
     routes: [
       "Munich → New York JFK",
+      "Munich → Newark",
       "Munich → Chicago",
-      "Munich → San Francisco",
+      "Munich → Miami",
+      "Munich → San Diego",
+      "Munich → Tokyo Haneda",
       "Munich → Shanghai",
+      "Munich → Bengaluru",
     ],
     bestFor: ["Privacy", "Luxury"],
     seatInsight: "Private suite with doors and a fully lie-flat bed, designed for maximum privacy.",
@@ -136,9 +140,34 @@ const rawProducts: RawProduct[] = [
     cabinType: "Business",
     routes: [
       "Munich → New York JFK",
+      "Munich → Newark",
       "Munich → Chicago",
-      "Munich → San Francisco",
+      "Munich → Miami",
+      "Munich → San Diego",
+      "Munich → Tokyo Haneda",
       "Munich → Shanghai",
+      "Munich → Bengaluru",
+      "Frankfurt → New York JFK",
+      "Frankfurt → Los Angeles",
+      "Frankfurt → Austin",
+      "Frankfurt → Toronto",
+      "Frankfurt → Montreal",
+      "Frankfurt → Rio de Janeiro",
+      "Frankfurt → Bogota",
+      "Frankfurt → Lagos",
+      "Frankfurt → Malabo",
+      "Frankfurt → Cape Town",
+      "Frankfurt → Shanghai",
+      "Frankfurt → Hyderabad",
+      "Frankfurt → Hong Kong",
+      "Frankfurt → Delhi",
+      "Frankfurt → Nairobi",
+      "Frankfurt → Mumbai",
+      "Frankfurt → Detroit",
+      "Frankfurt → Dallas/Fort Worth",
+      "Frankfurt → Atlanta",
+      "Frankfurt → Raleigh-Durham",
+      "Frankfurt → Kuala Lumpur",
     ],
     bestFor: ["Privacy", "Choice"],
     seatInsight: "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
@@ -217,7 +246,12 @@ const rawProducts: RawProduct[] = [
     airlineCode: "EY",
     aircraft: "A380-800",
     cabinType: "First",
-    routes: ["Abu Dhabi → London Heathrow"],
+    routes: [
+      "Abu Dhabi → London Heathrow",
+      "Abu Dhabi → Toronto",
+      "Abu Dhabi → Paris",
+      "Abu Dhabi → Singapore",
+    ],
     bestFor: ["Space", "Luxury"],
     seatInsight: "A380 first class with a separate seat and bed concept, offering exceptional personal space.",
     description: "Etihad’s iconic A380 First Apartment experience.",
@@ -266,11 +300,20 @@ const rawProducts: RawProduct[] = [
     aircraft: "777-300ER",
     cabinType: "First",
     routes: [
+      "Paris CDG → Abidjan",
+      "Paris CDG → Atlanta",
+      "Paris CDG → Boston",
+      "Paris CDG → Dubai",
+      "Paris CDG → Houston",
       "Paris CDG → Los Angeles",
+      "Paris CDG → Miami",
       "Paris CDG → New York JFK",
-      "Paris CDG → Tokyo Haneda",
-      "Paris CDG → Singapore",
       "Paris CDG → San Francisco",
+      "Paris CDG → Sao Paulo",
+      "Paris CDG → Singapore",
+      "Paris CDG → Tel Aviv",
+      "Paris CDG → Tokyo Haneda",
+      "Paris CDG → Washington D.C.",
     ],
     bestFor: ["Luxury", "Exclusivity"],
     seatInsight: "Highly exclusive first class experience with a spacious personal area and refined soft product.",
@@ -564,6 +607,7 @@ const locationAliases: Record<string, string[]> = {
   "chicago": ["chicago", "ord", "o'hare", "ohare"],
   "chicago o'hare": ["chicago o'hare", "chicago ord", "ord", "o'hare", "ohare", "chicago"],
   munich: ["munich", "muc"],
+  frankfurt: ["frankfurt", "fra"],
   doha: ["doha", "doh"],
   singapore: ["singapore", "sin"],
   sydney: ["sydney", "syd"],
@@ -589,6 +633,7 @@ const locationAliases: Record<string, string[]> = {
   atlanta: ["atlanta", "atl"],
   johannesburg: ["johannesburg", "jnb"],
   "washington dulles": ["washington dulles", "dulles", "iad", "washington"],
+  "washington d.c.": ["washington d.c.", "washington dc", "washington", "iad", "dca"],
   newark: ["newark", "ewr"],
   "dallas fort worth": ["dallas/fort worth", "dallas fort worth", "dfw", "dallas", "fort worth"],
   "dallas/fort worth": ["dallas/fort worth", "dallas fort worth", "dfw", "dallas", "fort worth"],
@@ -598,6 +643,24 @@ const locationAliases: Record<string, string[]> = {
   philadelphia: ["philadelphia", "phl"],
   brisbane: ["brisbane", "bne"],
   auckland: ["auckland", "akl"],
+  abidjan: ["abidjan", "abj"],
+  houston: ["houston", "iah", "hou"],
+  "tel aviv": ["tel aviv", "tlv"],
+  "sao paulo": ["sao paulo", "gru", "são paulo"],
+  austin: ["austin", "aus"],
+  toronto: ["toronto", "yyz"],
+  montreal: ["montreal", "yul"],
+  bogota: ["bogota", "bogotá", "bog"],
+  lagos: ["lagos", "los"],
+  malabo: ["malabo", "ssg"],
+  "cape town": ["cape town", "cpt"],
+  hyderabad: ["hyderabad", "hyd"],
+  nairobi: ["nairobi", "nbo"],
+  mumbai: ["mumbai", "bom"],
+  bengaluru: ["bengaluru", "bangalore", "blr"],
+  "san diego": ["san diego", "san diego", "san", "sfo"],
+  kuala: ["kuala lumpur", "kul"],
+  "raleigh-durham": ["raleigh-durham", "raleigh durham", "rdu"],
 };
 
 function normalizeText(value: string) {
@@ -667,6 +730,10 @@ function matchesLocation(input: string, location: string) {
   return locationTokens.some(
     (token) => token.includes(normalizedInput) || normalizedInput.includes(token)
   );
+}
+
+function formatRoute(pair: RoutePair) {
+  return `${pair.from} → ${pair.to}`;
 }
 
 function scoreCitySuggestion(input: string, city: string) {
@@ -753,10 +820,6 @@ function CityAutosuggest({
   );
 }
 
-function formatRoute(pair: RoutePair) {
-  return `${pair.from} → ${pair.to}`;
-}
-
 const premiumProducts: Product[] = rawProducts.map(({ routes, ...item }) => ({
   ...item,
   routePairs: toBidirectionalPairs(routes),
@@ -805,14 +868,10 @@ export default function HomePage() {
 
   const outboundCityOptions = useMemo(() => {
     const origins = Array.from(
-      new Set(
-        productsMatchingNonRouteFilters.flatMap((item) => item.routePairs.map((pair) => pair.from))
-      )
+      new Set(productsMatchingNonRouteFilters.flatMap((item) => item.routePairs.map((pair) => pair.from)))
     );
 
-    const base = outboundCity.trim() ? origins : origins;
-
-    return [...base]
+    return [...origins]
       .filter((city) => (outboundCity.trim() ? scoreCitySuggestion(outboundCity, city) > 0 : true))
       .sort(
         (a, b) =>
@@ -826,9 +885,7 @@ export default function HomePage() {
     const filteredPairs = productsMatchingNonRouteFilters.flatMap((item) => item.routePairs);
 
     const returnCandidates = outboundCity.trim()
-      ? filteredPairs
-          .filter((pair) => matchesLocation(outboundCity, pair.from))
-          .map((pair) => pair.to)
+      ? filteredPairs.filter((pair) => matchesLocation(outboundCity, pair.from)).map((pair) => pair.to)
       : filteredPairs.map((pair) => pair.to);
 
     const uniqueReturns = Array.from(new Set(returnCandidates));
@@ -846,20 +903,16 @@ export default function HomePage() {
   const filteredProducts = useMemo(() => {
     return productsMatchingNonRouteFilters.filter((item) => {
       const matchesOutbound =
-        !outboundCity.trim() ||
-        item.routePairs.some((pair) => matchesLocation(outboundCity, pair.from));
+        !outboundCity.trim() || item.routePairs.some((pair) => matchesLocation(outboundCity, pair.from));
 
       const matchesReturn =
-        !returnCity.trim() ||
-        item.routePairs.some((pair) => matchesLocation(returnCity, pair.to));
+        !returnCity.trim() || item.routePairs.some((pair) => matchesLocation(returnCity, pair.to));
 
       if (!matchesOutbound || !matchesReturn) return false;
 
       if (outboundCity.trim() && returnCity.trim()) {
         return item.routePairs.some(
-          (pair) =>
-            matchesLocation(outboundCity, pair.from) &&
-            matchesLocation(returnCity, pair.to)
+          (pair) => matchesLocation(outboundCity, pair.from) && matchesLocation(returnCity, pair.to)
         );
       }
 
@@ -919,7 +972,7 @@ export default function HomePage() {
             />
             <div>
               <p className="text-xs uppercase tracking-[0.32em] text-cyan-100/55">Ascend</p>
-              <h1 className="brand-title text-3xl font-semibold sm:text-4xl">Cabin Optimizer</h1>
+              <h1 className="brand-title text-3xl font-semibold sm:text-4xl">Ascend Cabin Optimizer</h1>
             </div>
           </div>
 
@@ -931,20 +984,20 @@ export default function HomePage() {
                   Premium cabin intelligence
                 </div>
 
-                <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-                  Ascend Cabin Optimizer
+                <h2 className="mt-5 max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl">
+                  Compare Business &amp; First Class products across airlines, aircraft, and layouts — with AeroLOPA + seat maps all in one place.
                 </h2>
 
-                <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75 sm:text-base">
-                  Compare Business & First Class products across airlines, aircraft, and layouts with AeroLOPA + seat maps all in one place.
-                </p>
-
-                <p className="mt-4 max-w-2xl text-sm font-medium leading-6 text-cyan-100 sm:text-base">
+                <p className="mt-4 max-w-3xl text-sm leading-6 text-white/75 sm:text-base">
                 
                 </p>
 
+                <p className="mt-4 max-w-3xl text-sm font-medium leading-6 text-cyan-100 sm:text-base">
+                  Use airline, aircraft, cabin, and best-for filters to narrow the shortlist, then compare layouts with AeroLOPA and SeatMaps side by side.
+                </p>
+
                 <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-100">
-                  Route suggestions are city-based now, but aircraft and cabin matching still follow your seeded product data.
+                  Verified 2026 route updates have been folded into the seeded dataset where airlines publish them clearly. Keep the rest of the route seeds reviewed periodically as fleet assignments can change.
                 </div>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-4">
@@ -958,9 +1011,9 @@ export default function HomePage() {
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">
-                      {Array.from(new Set(premiumProducts.flatMap((item) => item.routePairs.map((pair) => pair.from)))).length}
+                      {Array.from(new Set(premiumProducts.flatMap((item) => item.routePairs.map((pair) => formatRoute(pair))))).length}
                     </p>
-                    <p className="mt-1 text-sm text-white/60">origin cities</p>
+                    <p className="mt-1 text-sm text-white/60">searchable routes</p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{filteredProducts.length}</p>
@@ -976,14 +1029,14 @@ export default function HomePage() {
                 </p>
 
                 <div className="mt-4 space-y-3 text-sm leading-6 text-white/75">
-                  <p>Outbound and Return still exist.</p>
-                  <p>Both inputs now show single-city suggestions instead of full route strings.</p>
-                  <p>Return cities are scoped from the selected outbound city when possible.</p>
-                  <p>Filters still respect airline, aircraft, cabin, and best-for tags.</p>
+                  <p>Ascend Cabin Optimizer branding and hero copy updated.</p>
+                  <p>Outbound and return now suggest cities only, not full route strings.</p>
+                  <p>Cards still show all full routes seeded for each product.</p>
+                  <p>Verified 2026 Lufthansa, Air France, and Etihad route updates added to the dataset.</p>
                 </div>
 
                 <div className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-sm text-cyan-100">
-                  Tip: type MUC, JFK, Doha, London, Shanghai, or any city/airport alias.
+                  Tip: type a city or airport code like MUC, JFK, DOH, HND, or LHR.
                 </div>
               </div>
             </div>
@@ -1150,175 +1203,194 @@ export default function HomePage() {
               </div>
 
               <div className="grid gap-4 lg:grid-cols-3">
-                {topThree.map((item) => (
-                  <article
-                    key={`${item.id}-featured`}
-                    className="overflow-hidden rounded-[24px] border border-cyan-400/10 bg-gradient-to-b from-white/10 to-white/5"
-                  >
-                    <div className="relative h-56 overflow-hidden">
-                      <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
-                      <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
-                        <span className="rounded-full bg-cyan-300 px-3 py-1 text-xs font-semibold text-slate-950">
-                          #{item.rank}
-                        </span>
-                        <span className={`rounded-full px-3 py-1 text-xs font-medium ${cabinAccent[item.cabinType]}`}>
-                          {item.cabinType}
-                        </span>
-                      </div>
-                    </div>
+                {topThree.map((item) => {
+                  const matchingRoutes = item.routePairs.filter((pair) => {
+                    const outboundOk = !outboundCity.trim() || matchesLocation(outboundCity, pair.from);
+                    const returnOk = !returnCity.trim() || matchesLocation(returnCity, pair.to);
+                    return outboundOk && returnOk;
+                  });
 
-                    <div className="p-5">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-white/45">
-                        <span>{item.airlineCode}</span>
-                        <span>•</span>
-                        <span>{item.airline}</span>
-                      </div>
-                      <h3 className="mt-2 text-2xl font-semibold">{item.productName}</h3>
-                      <p className="mt-1 text-sm text-white/55">{item.aircraft}</p>
-                      <p className="mt-2 text-sm text-cyan-200/80">{formatRoute(item.routePairs[0])}</p>
-                      <p className="mt-4 text-sm leading-6 text-white/70">{item.description}</p>
-
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {item.bestFor.map((value) => (
-                          <span
-                            key={value}
-                            className="rounded-full border border-cyan-400/10 bg-white/5 px-3 py-1 text-xs text-white/75"
-                          >
-                            Best for {value}
+                  return (
+                    <article
+                      key={`${item.id}-featured`}
+                      className="overflow-hidden rounded-[24px] border border-cyan-400/10 bg-gradient-to-b from-white/10 to-white/5"
+                    >
+                      <div className="relative h-56 overflow-hidden">
+                        <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
+                        <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
+                          <span className="rounded-full bg-cyan-300 px-3 py-1 text-xs font-semibold text-slate-950">
+                            #{item.rank}
                           </span>
-                        ))}
+                          <span className={`rounded-full px-3 py-1 text-xs font-medium ${cabinAccent[item.cabinType]}`}>
+                            {item.cabinType}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))}
+
+                      <div className="p-5">
+                        <div className="flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-white/45">
+                          <span>{item.airlineCode}</span>
+                          <span>•</span>
+                          <span>{item.airline}</span>
+                        </div>
+                        <h3 className="mt-2 text-2xl font-semibold">{item.productName}</h3>
+                        <p className="mt-1 text-sm text-white/55">{item.aircraft}</p>
+                        <p className="mt-2 text-sm text-cyan-200/80">
+                          {matchingRoutes[0] ? formatRoute(matchingRoutes[0]) : formatRoute(item.routePairs[0])}
+                        </p>
+                        <p className="mt-4 text-sm leading-6 text-white/70">{item.description}</p>
+
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {item.bestFor.map((value) => (
+                            <span
+                              key={value}
+                              className="rounded-full border border-cyan-400/10 bg-white/5 px-3 py-1 text-xs text-white/75"
+                            >
+                              Best for {value}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
               </div>
             </section>
           )}
 
           <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {filteredProducts.map((item) => (
-              <article
-                key={item.id}
-                className="group overflow-hidden rounded-[24px] border border-cyan-400/10 bg-white/5 transition duration-200 hover:-translate-y-1 hover:border-cyan-400/20 hover:bg-white/[0.07]"
-              >
-                <div className="relative h-52 overflow-hidden">
-                  <img
-                    src={item.image}
-                    alt={item.productName}
-                    className="block h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                  />
+            {filteredProducts.map((item) => {
+              const matchingRoutes = item.routePairs.filter((pair) => {
+                const outboundOk = !outboundCity.trim() || matchesLocation(outboundCity, pair.from);
+                const returnOk = !returnCity.trim() || matchesLocation(returnCity, pair.to);
+                return outboundOk && returnOk;
+              });
 
-                  <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
-                    <span className="rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur">
-                      #{item.rank}
-                    </span>
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-medium backdrop-blur ${cabinAccent[item.cabinType]}`}
-                    >
-                      {item.cabinType}
-                    </span>
-                  </div>
-                </div>
+              const visibleRoutes =
+                matchingRoutes.length > 0
+                  ? dedupeRoutePairs(matchingRoutes.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to)))
+                  : dedupeRoutePairs(item.routePairs.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to)));
 
-                <div className="p-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <h3 className="text-xl font-semibold leading-tight">{item.productName}</h3>
-                      <p className="mt-1 text-sm text-white/55">
-                        {item.airline} · {item.aircraft}
-                      </p>
-                    </div>
-                    <div className="rounded-full border border-cyan-400/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70">
-                      {item.airlineCode}
-                    </div>
-                  </div>
+              return (
+                <article
+                  key={item.id}
+                  className="group overflow-hidden rounded-[24px] border border-cyan-400/10 bg-white/5 transition duration-200 hover:-translate-y-1 hover:border-cyan-400/20 hover:bg-white/[0.07]"
+                >
+                  <div className="relative h-52 overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.productName}
+                      className="block h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
 
-                  <div className="mt-4 rounded-2xl border border-cyan-400/10 bg-black/20 p-4">
-                    <div className="flex items-start gap-3">
-                      <RouteIcon />
-                      <div className="w-full">
-                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">
-                          Route pairs
-                        </p>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {dedupeRoutePairs(
-                            item.routePairs.filter(
-                              (pair) => normalizeText(pair.from) <= normalizeText(pair.to)
-                            )
-                          ).map((pair) => (
-                            <span
-                              key={formatRoute(pair)}
-                              className="rounded-full border border-cyan-400/10 bg-white/5 px-3 py-1 text-xs text-cyan-100/85"
-                            >
-                              {pair.from} ⇄ {pair.to}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {item.bestFor.map((value) => (
-                      <span key={value} className="rounded-full border border-cyan-400/10 px-3 py-1 text-xs text-white/70">
-                        {value}
+                    <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
+                      <span className="rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur">
+                        #{item.rank}
                       </span>
-                    ))}
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-medium backdrop-blur ${cabinAccent[item.cabinType]}`}
+                      >
+                        {item.cabinType}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="mt-4 space-y-3">
-                    <div className="rounded-2xl border border-cyan-400/10 bg-black/20 p-4">
+                  <div className="p-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <h3 className="text-xl font-semibold leading-tight">{item.productName}</h3>
+                        <p className="mt-1 text-sm text-white/55">
+                          {item.airline} · {item.aircraft}
+                        </p>
+                      </div>
+                      <div className="rounded-full border border-cyan-400/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70">
+                        {item.airlineCode}
+                      </div>
+                    </div>
+
+                    <div className="mt-4 rounded-2xl border border-cyan-400/10 bg-black/20 p-4">
                       <div className="flex items-start gap-3">
+                        <RouteIcon />
+                        <div className="w-full">
+                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">
+                            Route pairs
+                          </p>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {visibleRoutes.map((pair) => (
+                              <span
+                                key={formatRoute(pair)}
+                                className="rounded-full border border-cyan-400/10 bg-white/5 px-3 py-1 text-xs text-cyan-100/85"
+                              >
+                                {pair.from} ⇄ {pair.to}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {item.bestFor.map((value) => (
+                        <span key={value} className="rounded-full border border-cyan-400/10 px-3 py-1 text-xs text-white/70">
+                          {value}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="mt-4 space-y-3">
+                      <div className="rounded-2xl border border-cyan-400/10 bg-black/20 p-4">
+                        <div className="flex items-start gap-3">
+                          <SeatIcon />
+                          <div>
+                            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">Seat insight</p>
+                            <p className="mt-2 text-sm leading-6 text-white/75">{item.seatInsight}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="rounded-2xl border border-cyan-400/10 bg-black/20 p-4">
+                        <div className="flex items-start gap-3">
+                          <NoteIcon />
+                          <div>
+                            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">Why it stands out</p>
+                            <p className="mt-2 text-sm leading-6 text-white/65">{item.description}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                      <a
+                        href={item.aerolopaUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-300 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90"
+                      >
+                        <MapIcon />
+                        Open AeroLOPA
+                      </a>
+
+                      <a
+                        href={item.seatmapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 rounded-2xl border border-cyan-400/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                      >
                         <SeatIcon />
-                        <div>
-                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">Seat insight</p>
-                          <p className="mt-2 text-sm leading-6 text-white/75">{item.seatInsight}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="rounded-2xl border border-cyan-400/10 bg-black/20 p-4">
-                      <div className="flex items-start gap-3">
-                        <NoteIcon />
-                        <div>
-                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">Why it stands out</p>
-                          <p className="mt-2 text-sm leading-6 text-white/65">{item.description}</p>
-                        </div>
-                      </div>
+                        Open SeatMaps
+                      </a>
                     </div>
                   </div>
-
-                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                    <a
-                      href={item.aerolopaUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-300 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90"
-                    >
-                      <MapIcon />
-                      Open AeroLOPA
-                    </a>
-
-                    <a
-                      href={item.seatmapsUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-cyan-400/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-                    >
-                      <SeatIcon />
-                      Open SeatMaps
-                    </a>
-                  </div>
-                </div>
-              </article>
-            ))}
+                </article>
+              );
+            })}
           </section>
 
           {filteredProducts.length === 0 && (
             <section className="mt-8 rounded-[28px] border border-dashed border-cyan-400/10 bg-white/5 px-6 py-14 text-center">
               <h2 className="text-2xl font-semibold">No cabins matched those filters</h2>
               <p className="mt-3 text-sm text-white/60">
-                Try broader city text like Munich, JFK, Doha, or Shanghai, or remove one selected tag.
+                Try broader city text like Munich, JFK, Doha, Shanghai, or London Heathrow, or remove one selected tag.
               </p>
               <button
                 onClick={resetFilters}
