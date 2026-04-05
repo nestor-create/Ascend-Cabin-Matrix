@@ -104,6 +104,15 @@ function RouteIcon() {
   );
 }
 
+function XIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  );
+}
+
 const rawProducts: RawProduct[] = [
   {
     id: "1",
@@ -713,20 +722,60 @@ function routeMatchesInput(value: string, input: string) {
   return normalizeText(value).includes(normalizeText(input));
 }
 
-function PlaceAutosuggest({
+function arrayIncludesNormalized(values: string[], value: string) {
+  const normalizedValue = normalizeText(value);
+  return values.some((item) => normalizeText(item) === normalizedValue);
+}
+
+function dedupeSelected(values: string[]) {
+  return dedupeStrings(values);
+}
+
+function routeKey(pair: RoutePair) {
+  return `${normalizeText(pair.from)}__${normalizeText(pair.to)}`;
+}
+
+function pairMatchesSelections(pair: RoutePair, selectedFroms: string[], selectedTos: string[]) {
+  const hasFromSelections = selectedFroms.length > 0;
+  const hasToSelections = selectedTos.length > 0;
+
+  const matchesFrom = !hasFromSelections || arrayIncludesNormalized(selectedFroms, pair.from);
+  const matchesTo = !hasToSelections || arrayIncludesNormalized(selectedTos, pair.to);
+
+  return matchesFrom && matchesTo;
+}
+
+function hasExactSelectedRoutePair(item: Product, selectedFroms: string[], selectedTos: string[]) {
+  if (selectedFroms.length === 0 && selectedTos.length === 0) return true;
+  return item.routePairs.some((pair) => pairMatchesSelections(pair, selectedFroms, selectedTos));
+}
+
+function getVisibleRoutePairs(item: Product, selectedFroms: string[], selectedTos: string[]) {
+  const matched = item.routePairs.filter((pair) => pairMatchesSelections(pair, selectedFroms, selectedTos));
+
+  const base = matched.length > 0 ? matched : item.routePairs;
+
+  return dedupeRoutePairs(base.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to)));
+}
+
+function MultiPlaceAutosuggest({
   label,
   placeholder,
   value,
   onChange,
   suggestions,
+  selectedValues,
   onSelect,
+  onRemove,
 }: {
   label: string;
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
   suggestions: string[];
+  selectedValues: string[];
   onSelect: (value: string) => void;
+  onRemove: (value: string) => void;
 }) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -743,7 +792,8 @@ function PlaceAutosuggest({
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
 
-  const shouldShow = open && suggestions.length > 0;
+  const filteredSuggestions = suggestions.filter((suggestion) => !arrayIncludesNormalized(selectedValues, suggestion));
+  const shouldShow = open && filteredSuggestions.length > 0;
 
   return (
     <div ref={wrapperRef} className="relative">
@@ -752,21 +802,44 @@ function PlaceAutosuggest({
         {label}
       </label>
 
-      <input
-        type="text"
-        value={value}
-        placeholder={placeholder}
-        onFocus={() => setOpen(true)}
-        onChange={(e) => {
-          onChange(e.target.value);
-          setOpen(true);
-        }}
-        className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-cyan-400/40"
-      />
+      <div className="rounded-2xl border border-cyan-400/10 bg-black/75 px-3 py-3">
+        {selectedValues.length > 0 && (
+          <div className="mb-3 flex flex-wrap gap-2">
+            {selectedValues.map((selected) => (
+              <span
+                key={selected}
+                className="inline-flex items-center gap-2 rounded-full border border-cyan-400/10 bg-white/5 px-3 py-1.5 text-xs text-cyan-100/90"
+              >
+                {selected}
+                <button
+                  type="button"
+                  onClick={() => onRemove(selected)}
+                  className="rounded-full text-white/60 transition hover:text-white"
+                  aria-label={`Remove ${selected}`}
+                >
+                  <XIcon />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+
+        <input
+          type="text"
+          value={value}
+          placeholder={placeholder}
+          onFocus={() => setOpen(true)}
+          onChange={(e) => {
+            onChange(e.target.value);
+            setOpen(true);
+          }}
+          className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/35"
+        />
+      </div>
 
       {shouldShow && (
         <div className="absolute z-30 mt-2 max-h-80 w-full overflow-auto rounded-2xl border border-cyan-400/10 bg-slate-950/95 p-2 shadow-2xl shadow-black/50 backdrop-blur-xl">
-          {suggestions.map((suggestion) => (
+          {filteredSuggestions.map((suggestion) => (
             <button
               key={suggestion}
               type="button"
@@ -777,7 +850,7 @@ function PlaceAutosuggest({
               className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm text-white/85 transition hover:bg-white/10"
             >
               <span>{suggestion}</span>
-              <span className="text-[11px] uppercase tracking-[0.18em] text-cyan-200/45">Available</span>
+              <span className="text-[11px] uppercase tracking-[0.18em] text-cyan-200/45">Add</span>
             </button>
           ))}
         </div>
@@ -796,8 +869,10 @@ export default function HomePage() {
   const [airline, setAirline] = useState("");
   const [aircraft, setAircraft] = useState("");
   const [cabin, setCabin] = useState("");
-  const [outboundPlace, setOutboundPlace] = useState("");
-  const [returnPlace, setReturnPlace] = useState("");
+  const [outboundInput, setOutboundInput] = useState("");
+  const [returnInput, setReturnInput] = useState("");
+  const [selectedOutboundPlaces, setSelectedOutboundPlaces] = useState<string[]>([]);
+  const [selectedReturnPlaces, setSelectedReturnPlaces] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const airlineOptions = useMemo(
@@ -816,7 +891,7 @@ export default function HomePage() {
     ).sort((a, b) => a.localeCompare(b));
   }, []);
 
-  const baseProductsWithoutTagFilter = useMemo(() => {
+  const baseProductsWithoutAirlineOrRouteOrTag = useMemo(() => {
     return premiumProducts.filter((item) => {
       const query = search.trim().toLowerCase();
 
@@ -841,99 +916,85 @@ export default function HomePage() {
   }, [search, aircraft, cabin]);
 
   const routeMatchedProducts = useMemo(() => {
-    return baseProductsWithoutTagFilter.filter((item) => {
-      const matchesOutbound =
-        !outboundPlace.trim() ||
-        item.routePairs.some((pair) => routeMatchesInput(pair.from, outboundPlace));
-
-      const matchesReturn =
-        !returnPlace.trim() ||
-        item.routePairs.some((pair) => routeMatchesInput(pair.to, returnPlace));
-
-      return matchesOutbound && matchesReturn;
-    });
-  }, [baseProductsWithoutTagFilter, outboundPlace, returnPlace]);
-
-  const suggestedAirlines = useMemo(() => {
-    return dedupeStrings(routeMatchedProducts.map((item) => item.airline)).sort((a, b) =>
-      a.localeCompare(b)
+    return baseProductsWithoutAirlineOrRouteOrTag.filter((item) =>
+      hasExactSelectedRoutePair(item, selectedOutboundPlaces, selectedReturnPlaces)
     );
-  }, [routeMatchedProducts]);
+  }, [baseProductsWithoutAirlineOrRouteOrTag, selectedOutboundPlaces, selectedReturnPlaces]);
 
-  useEffect(() => {
-    if (!outboundPlace.trim() && !returnPlace.trim()) return;
-
-    if (suggestedAirlines.length === 1) {
-      setAirline((current) => (current === "" || current === suggestedAirlines[0] ? suggestedAirlines[0] : current));
-      return;
-    }
-
-    setAirline((current) => {
-      if (current && !suggestedAirlines.includes(current)) {
-        return "";
-      }
-      return current;
+  const tagMatchedProductsForAirlineOptions = useMemo(() => {
+    return routeMatchedProducts.filter((item) => {
+      if (selectedTags.length === 0) return true;
+      return selectedTags.every((tag) => item.bestFor.includes(tag));
     });
-  }, [outboundPlace, returnPlace, suggestedAirlines]);
+  }, [routeMatchedProducts, selectedTags]);
 
   const airlineOptionsForSelect = useMemo(() => {
-    if (!suggestedAirlines.length) return airlineOptions;
-    const merged = dedupeStrings([...suggestedAirlines, ...airlineOptions]);
-    return merged.sort((a, b) => a.localeCompare(b));
-  }, [suggestedAirlines, airlineOptions]);
+    const scoped =
+      tagMatchedProductsForAirlineOptions.length > 0
+        ? tagMatchedProductsForAirlineOptions
+        : routeMatchedProducts.length > 0
+        ? routeMatchedProducts
+        : baseProductsWithoutAirlineOrRouteOrTag;
 
-  const productsMatchingNonPlaceFilters = useMemo(() => {
-    return baseProductsWithoutTagFilter.filter((item) => {
+    return dedupeStrings(scoped.map((item) => item.airline)).sort((a, b) => a.localeCompare(b));
+  }, [tagMatchedProductsForAirlineOptions, routeMatchedProducts, baseProductsWithoutAirlineOrRouteOrTag]);
+
+  useEffect(() => {
+    setAirline((current) => {
+      if (!current) return current;
+      if (!airlineOptionsForSelect.includes(current)) return "";
+      return current;
+    });
+  }, [airlineOptionsForSelect]);
+
+  const productsMatchingAirlineAndNonRoute = useMemo(() => {
+    return baseProductsWithoutAirlineOrRouteOrTag.filter((item) => {
       const matchesAirline = airline === "" || item.airline === airline;
       return matchesAirline;
     });
-  }, [baseProductsWithoutTagFilter, airline]);
+  }, [baseProductsWithoutAirlineOrRouteOrTag, airline]);
 
   const filteredOutboundPlaces = useMemo(() => {
     return dedupeStrings(
-      productsMatchingNonPlaceFilters.flatMap((item) => item.routePairs.map((pair) => pair.from))
+      productsMatchingAirlineAndNonRoute.flatMap((item) => item.routePairs.map((pair) => pair.from))
     ).sort((a, b) => a.localeCompare(b));
-  }, [productsMatchingNonPlaceFilters]);
+  }, [productsMatchingAirlineAndNonRoute]);
 
   const filteredReturnPlaces = useMemo(() => {
-    let baseProducts = productsMatchingNonPlaceFilters;
+    let base = productsMatchingAirlineAndNonRoute;
 
-    if (outboundPlace.trim()) {
-      baseProducts = baseProducts.filter((item) =>
-        item.routePairs.some((pair) => routeMatchesInput(pair.from, outboundPlace))
+    if (selectedOutboundPlaces.length > 0) {
+      base = base.filter((item) =>
+        item.routePairs.some((pair) => arrayIncludesNormalized(selectedOutboundPlaces, pair.from))
       );
     }
 
-    return dedupeStrings(baseProducts.flatMap((item) => item.routePairs.map((pair) => pair.to))).sort((a, b) =>
+    return dedupeStrings(base.flatMap((item) => item.routePairs.map((pair) => pair.to))).sort((a, b) =>
       a.localeCompare(b)
     );
-  }, [productsMatchingNonPlaceFilters, outboundPlace]);
+  }, [productsMatchingAirlineAndNonRoute, selectedOutboundPlaces]);
 
   const outboundPlaceOptions = useMemo(() => {
-    const base = outboundPlace.trim() ? filteredOutboundPlaces : placeCatalog;
+    const base = outboundInput.trim() ? filteredOutboundPlaces : filteredOutboundPlaces.length ? filteredOutboundPlaces : placeCatalog;
 
     return [...base]
-      .filter((place) => (outboundPlace.trim() ? scoreSuggestion(outboundPlace, place) > 0 : true))
+      .filter((place) => (outboundInput.trim() ? scoreSuggestion(outboundInput, place) > 0 : true))
       .sort(
         (a, b) =>
-          scoreSuggestion(outboundPlace, b) - scoreSuggestion(outboundPlace, a) || a.localeCompare(b)
+          scoreSuggestion(outboundInput, b) - scoreSuggestion(outboundInput, a) || a.localeCompare(b)
       );
-  }, [outboundPlace, filteredOutboundPlaces, placeCatalog]);
+  }, [outboundInput, filteredOutboundPlaces, placeCatalog]);
 
   const returnPlaceOptions = useMemo(() => {
-    const base = returnPlace.trim()
-      ? filteredReturnPlaces
-      : filteredReturnPlaces.length
-      ? filteredReturnPlaces
-      : placeCatalog;
+    const base = returnInput.trim() ? filteredReturnPlaces : filteredReturnPlaces.length ? filteredReturnPlaces : placeCatalog;
 
     return [...base]
-      .filter((place) => (returnPlace.trim() ? scoreSuggestion(returnPlace, place) > 0 : true))
+      .filter((place) => (returnInput.trim() ? scoreSuggestion(returnInput, place) > 0 : true))
       .sort(
         (a, b) =>
-          scoreSuggestion(returnPlace, b) - scoreSuggestion(returnPlace, a) || a.localeCompare(b)
+          scoreSuggestion(returnInput, b) - scoreSuggestion(returnInput, a) || a.localeCompare(b)
       );
-  }, [returnPlace, filteredReturnPlaces, placeCatalog]);
+  }, [returnInput, filteredReturnPlaces, placeCatalog]);
 
   const bestForRankingSource = useMemo(() => {
     return routeMatchedProducts.filter((item) => {
@@ -943,7 +1004,7 @@ export default function HomePage() {
   }, [routeMatchedProducts, airline]);
 
   const topBestForOptions = useMemo(() => {
-    const counts = new Map<string, { count: number; bestRank: number; airlines: Set<string> }>();
+    const counts = new Map<string, { count: number; bestRank: number }>();
 
     for (const item of bestForRankingSource) {
       for (const tag of item.bestFor) {
@@ -952,12 +1013,10 @@ export default function HomePage() {
         if (existing) {
           existing.count += 1;
           existing.bestRank = Math.min(existing.bestRank, item.rank);
-          existing.airlines.add(item.airlineCode);
         } else {
           counts.set(tag, {
             count: 1,
             bestRank: item.rank,
-            airlines: new Set([item.airlineCode]),
           });
         }
       }
@@ -968,28 +1027,20 @@ export default function HomePage() {
         label,
         count: meta.count,
         bestRank: meta.bestRank,
-        airlineCodes: Array.from(meta.airlines).sort(),
       }))
       .sort((a, b) => b.count - a.count || a.bestRank - b.bestRank || a.label.localeCompare(b.label))
       .slice(0, 5);
   }, [bestForRankingSource]);
 
   const filteredProducts = useMemo(() => {
-    return productsMatchingNonPlaceFilters.filter((item) => {
-      const matchesOutbound =
-        !outboundPlace.trim() ||
-        item.routePairs.some((pair) => routeMatchesInput(pair.from, outboundPlace));
-
-      const matchesReturn =
-        !returnPlace.trim() ||
-        item.routePairs.some((pair) => routeMatchesInput(pair.to, returnPlace));
-
+    return productsMatchingAirlineAndNonRoute.filter((item) => {
+      const matchesRoute = hasExactSelectedRoutePair(item, selectedOutboundPlaces, selectedReturnPlaces);
       const matchesTags =
         selectedTags.length === 0 || selectedTags.every((tag) => item.bestFor.includes(tag));
 
-      return matchesOutbound && matchesReturn && matchesTags;
+      return matchesRoute && matchesTags;
     });
-  }, [productsMatchingNonPlaceFilters, outboundPlace, returnPlace, selectedTags]);
+  }, [productsMatchingAirlineAndNonRoute, selectedOutboundPlaces, selectedReturnPlaces, selectedTags]);
 
   const topThree = filteredProducts.slice(0, 3);
 
@@ -999,13 +1050,33 @@ export default function HomePage() {
     );
   }
 
+  function addOutboundPlace(value: string) {
+    setSelectedOutboundPlaces((current) => dedupeSelected([...current, value]));
+    setOutboundInput("");
+  }
+
+  function addReturnPlace(value: string) {
+    setSelectedReturnPlaces((current) => dedupeSelected([...current, value]));
+    setReturnInput("");
+  }
+
+  function removeOutboundPlace(value: string) {
+    setSelectedOutboundPlaces((current) => current.filter((item) => normalizeText(item) !== normalizeText(value)));
+  }
+
+  function removeReturnPlace(value: string) {
+    setSelectedReturnPlaces((current) => current.filter((item) => normalizeText(item) !== normalizeText(value)));
+  }
+
   function resetFilters() {
     setSearch("");
     setAirline("");
     setAircraft("");
     setCabin("");
-    setOutboundPlace("");
-    setReturnPlace("");
+    setOutboundInput("");
+    setReturnInput("");
+    setSelectedOutboundPlaces([]);
+    setSelectedReturnPlaces([]);
     setSelectedTags([]);
   }
 
@@ -1155,13 +1226,13 @@ export default function HomePage() {
                   ))}
                 </select>
 
-                {suggestedAirlines.length > 0 && (
+                {airlineOptionsForSelect.length > 0 && (
                   <div className="mt-2">
                     <p className="text-[11px] uppercase tracking-[0.18em] text-cyan-100/45">
-                      Suggested airlines for this route
+                      Matching airlines
                     </p>
                     <div className="mt-2 flex flex-wrap gap-2">
-                      {suggestedAirlines.map((option) => (
+                      {airlineOptionsForSelect.map((option) => (
                         <button
                           key={option}
                           type="button"
@@ -1217,22 +1288,26 @@ export default function HomePage() {
             </div>
 
             <div className="mt-3 grid gap-3 lg:grid-cols-2">
-              <PlaceAutosuggest
+              <MultiPlaceAutosuggest
                 label="Outbound"
-                placeholder="e.g. Abu Dhabi, Atlanta, Paris CDG, Dallas/Fort Worth"
-                value={outboundPlace}
-                onChange={setOutboundPlace}
+                placeholder="Add one or more origins"
+                value={outboundInput}
+                onChange={setOutboundInput}
                 suggestions={outboundPlaceOptions}
-                onSelect={setOutboundPlace}
+                selectedValues={selectedOutboundPlaces}
+                onSelect={addOutboundPlace}
+                onRemove={removeOutboundPlace}
               />
 
-              <PlaceAutosuggest
+              <MultiPlaceAutosuggest
                 label="Return"
-                placeholder="e.g. Amsterdam, London Heathrow, New York JFK, Singapore"
-                value={returnPlace}
-                onChange={setReturnPlace}
+                placeholder="Add one or more destinations"
+                value={returnInput}
+                onChange={setReturnInput}
                 suggestions={returnPlaceOptions}
-                onSelect={setReturnPlace}
+                selectedValues={selectedReturnPlaces}
+                onSelect={addReturnPlace}
+                onRemove={removeReturnPlace}
               />
             </div>
 
@@ -1271,9 +1346,7 @@ export default function HomePage() {
                         }`}
                       >
                         <span>{option.label}</span>
-                        <span className="ml-2 text-[11px] opacity-75">
-                          {option.count} · {option.airlineCodes.join(", ")}
-                        </span>
+                        <span className="ml-2 text-[11px] opacity-75">{option.count}</span>
                       </button>
                     );
                   })}
@@ -1309,11 +1382,7 @@ export default function HomePage() {
 
               <div className="grid gap-4 lg:grid-cols-3">
                 {topThree.map((item) => {
-                  const matchingRoutes = item.routePairs.filter((pair) => {
-                    const outboundOk = !outboundPlace.trim() || routeMatchesInput(pair.from, outboundPlace);
-                    const returnOk = !returnPlace.trim() || routeMatchesInput(pair.to, returnPlace);
-                    return outboundOk && returnOk;
-                  });
+                  const matchingRoutes = getVisibleRoutePairs(item, selectedOutboundPlaces, selectedReturnPlaces);
 
                   return (
                     <article
@@ -1334,8 +1403,6 @@ export default function HomePage() {
 
                       <div className="p-5">
                         <div className="flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-white/45">
-                          <span>{item.airlineCode}</span>
-                          <span>•</span>
                           <span>{item.airline}</span>
                         </div>
                         <h3 className="mt-2 text-2xl font-semibold">{item.productName}</h3>
@@ -1365,20 +1432,7 @@ export default function HomePage() {
 
           <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {filteredProducts.map((item) => {
-              const matchingRoutes = item.routePairs.filter((pair) => {
-                const outboundOk = !outboundPlace.trim() || routeMatchesInput(pair.from, outboundPlace);
-                const returnOk = !returnPlace.trim() || routeMatchesInput(pair.to, returnPlace);
-                return outboundOk && returnOk;
-              });
-
-              const visibleRoutes =
-                matchingRoutes.length > 0
-                  ? dedupeRoutePairs(
-                      matchingRoutes.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to))
-                    )
-                  : dedupeRoutePairs(
-                      item.routePairs.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to))
-                    );
+              const visibleRoutes = getVisibleRoutePairs(item, selectedOutboundPlaces, selectedReturnPlaces);
 
               return (
                 <article
@@ -1412,9 +1466,6 @@ export default function HomePage() {
                           {item.airline} · {item.aircraft}
                         </p>
                       </div>
-                      <div className="rounded-full border border-cyan-400/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70">
-                        {item.airlineCode}
-                      </div>
                     </div>
 
                     <div className="mt-4 rounded-2xl border border-cyan-400/10 bg-black/20 p-4">
@@ -1427,7 +1478,7 @@ export default function HomePage() {
                           <div className="mt-2 flex flex-wrap gap-2">
                             {visibleRoutes.map((pair) => (
                               <span
-                                key={formatRoute(pair)}
+                                key={routeKey(pair)}
                                 className="rounded-full border border-cyan-400/10 bg-white/5 px-3 py-1 text-xs text-cyan-100/85"
                               >
                                 {pair.from} ⇄ {pair.to}
@@ -1503,7 +1554,7 @@ export default function HomePage() {
             <section className="mt-8 rounded-[28px] border border-dashed border-cyan-400/10 bg-white/5 px-6 py-14 text-center">
               <h2 className="text-2xl font-semibold">No cabins matched those filters</h2>
               <p className="mt-3 text-sm text-white/60">
-                Try broader place text like Atlanta, Amsterdam, Paris CDG, New York JFK, or remove one selected tag.
+                Try broader place combinations, remove one best-for tag, or reset the route filters.
               </p>
               <button
                 onClick={resetFilters}
