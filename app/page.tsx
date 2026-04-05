@@ -1367,53 +1367,6 @@ export default function HomePage() {
             </div>
           </section>
 
-          {filteredProducts.length > 0 && (
-            <section className="mt-8">
-              <div className="mb-4 flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/50">Top matches</p>
-                  <h2 className="mt-1 text-2xl font-semibold">Best shortlist right now</h2>
-                </div>
-                <p className="text-sm text-white/55">
-                  Showing {filteredProducts.length} product{filteredProducts.length === 1 ? "" : "s"}
-                </p>
-              </div>
-
-              <div className="grid gap-4 lg:grid-cols-3">
-                {topThree.map((item) => {
-                  const matchingRoutes = getVisibleRoutePairs(item, selectedOutboundPlaces, selectedReturnPlaces);
-
-                  return (
-                    <article
-                      key={`${item.id}-featured`}
-                      className="overflow-hidden rounded-[24px] border border-cyan-400/10 bg-gradient-to-b from-white/10 to-white/5"
-                    >
-                      <div className="relative h-56 overflow-hidden">
-                        <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
-                        <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
-                          <span className="rounded-full bg-cyan-300 px-3 py-1 text-xs font-semibold text-slate-950">
-                            #{item.rank}
-                          </span>
-                          <span className={`rounded-full px-3 py-1 text-xs font-medium ${cabinAccent[item.cabinType]}`}>
-                            {item.cabinType}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="p-5">
-                        <div className="flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-white/45">
-                          <span>{item.airline}</span>
-                        </div>
-                        <h3 className="mt-2 text-2xl font-semibold">{item.productName}</h3>
-                        <p className="mt-1 text-sm text-white/55">{item.aircraft}</p>
-                        <p className="mt-2 text-sm text-cyan-200/80">
-                          {matchingRoutes[0] ? formatRoute(matchingRoutes[0]) : formatRoute(item.routePairs[0])}
-                        </p>
-                        <p className="mt-4 text-sm leading-6 text-white/70">{item.description}</p>
-
-
-          )}
-
           <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {filteredProducts.map((item) => {
               const visibleRoutes = getVisibleRoutePairs(item, selectedOutboundPlaces, selectedReturnPlaces);
