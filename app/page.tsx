@@ -932,12 +932,11 @@ export default function HomePage() {
                 </div>
 
                 <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-                  Roundtrip city search with one-city suggestions.
+                  Ascend Cabin Optimizer.
                 </h2>
 
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75 sm:text-base">
-                  Outbound and return now suggest one city at a time, while matching still uses the
-                  full route pairs behind the scenes.
+                  Compare Business & First Class products across airlines, aircraft, and layouts with AeroLOPA + seat maps all in one place.
                 </p>
 
                 <p className="mt-4 max-w-2xl text-sm font-medium leading-6 text-cyan-100 sm:text-base">
