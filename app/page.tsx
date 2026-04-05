@@ -4,12 +4,57 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 type CabinType = "Business" | "First";
 
-type RoutePair = {
-  from: string;
-  to: string;
+type AirportCode =
+  | "AKL"
+  | "AMS"
+  | "ATL"
+  | "AUH"
+  | "BNE"
+  | "BOS"
+  | "BRU"
+  | "CDG"
+  | "DEL"
+  | "DFW"
+  | "DOH"
+  | "DTW"
+  | "DXB"
+  | "EWR"
+  | "GVA"
+  | "HKG"
+  | "HND"
+  | "IAD"
+  | "ICN"
+  | "IST"
+  | "JFK"
+  | "JNB"
+  | "LAX"
+  | "LHR"
+  | "MEL"
+  | "MUC"
+  | "NRT"
+  | "ORD"
+  | "PER"
+  | "PHL"
+  | "PVG"
+  | "SFO"
+  | "SIN"
+  | "SYD"
+  | "TPE"
+  | "YVR";
+
+type Airport = {
+  code: AirportCode;
+  city: string;
+  display: string;
+  aliases: string[];
 };
 
-type Product = {
+type RoutePair = {
+  from: AirportCode;
+  to: AirportCode;
+};
+
+type ProductSeed = {
   id: string;
   rank: number;
   productName: string;
@@ -26,8 +71,8 @@ type Product = {
   aerolopaUrl: string;
 };
 
-type RawProduct = Omit<Product, "routePairs"> & {
-  routes: string[];
+type Product = ProductSeed & {
+  expandedRoutePairs: RoutePair[];
 };
 
 function SearchIcon() {
@@ -104,435 +149,66 @@ function RouteIcon() {
   );
 }
 
-const rawProducts: RawProduct[] = [
-  {
-    id: "1",
-    rank: 1,
-    productName: "Allegris First",
-    airline: "Lufthansa",
-    airlineCode: "LH",
-    aircraft: "A350-900 / 787-9",
-    cabinType: "First",
-    routes: [
-      "Munich → New York JFK",
-      "Munich → Chicago",
-      "Munich → San Francisco",
-      "Munich → Shanghai",
-    ],
-    bestFor: ["Privacy", "Luxury"],
-    seatInsight: "Private suite with doors and a fully lie-flat bed, designed for maximum privacy.",
-    description: "Lufthansa’s newest flagship First Class suite under Allegris.",
-    image: "/images/allegris-first.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
-    aerolopaUrl: "https://www.aerolopa.com/lh",
+const AIRPORTS: Record<AirportCode, Airport> = {
+  AKL: { code: "AKL", city: "Auckland", display: "Auckland", aliases: ["akl", "auckland"] },
+  AMS: { code: "AMS", city: "Amsterdam", display: "Amsterdam", aliases: ["ams", "amsterdam"] },
+  ATL: { code: "ATL", city: "Atlanta", display: "Atlanta", aliases: ["atl", "atlanta"] },
+  AUH: { code: "AUH", city: "Abu Dhabi", display: "Abu Dhabi", aliases: ["auh", "abu dhabi"] },
+  BNE: { code: "BNE", city: "Brisbane", display: "Brisbane", aliases: ["bne", "brisbane"] },
+  BOS: { code: "BOS", city: "Boston", display: "Boston", aliases: ["bos", "boston"] },
+  BRU: { code: "BRU", city: "Brussels", display: "Brussels", aliases: ["bru", "brussels"] },
+  CDG: {
+    code: "CDG",
+    city: "Paris",
+    display: "Paris CDG",
+    aliases: ["cdg", "paris", "paris cdg", "charles de gaulle"],
   },
-  {
-    id: "2",
-    rank: 2,
-    productName: "Allegris Business",
-    airline: "Lufthansa",
-    airlineCode: "LH",
-    aircraft: "A350-900 / 787-9",
-    cabinType: "Business",
-    routes: [
-      "Munich → New York JFK",
-      "Munich → Chicago",
-      "Munich → San Francisco",
-      "Munich → Shanghai",
-    ],
-    bestFor: ["Privacy", "Choice"],
-    seatInsight: "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
-    description: "Lufthansa’s new Allegris Business Class.",
-    image: "/images/allegris-business.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
-    aerolopaUrl: "https://www.aerolopa.com/lh",
+  DEL: { code: "DEL", city: "Delhi", display: "Delhi", aliases: ["del", "delhi", "new delhi"] },
+  DFW: {
+    code: "DFW",
+    city: "Dallas/Fort Worth",
+    display: "Dallas/Fort Worth",
+    aliases: ["dfw", "dallas", "fort worth", "dallas fort worth", "dallas/forth worth", "dallas/fort worth"],
   },
-  {
-    id: "3",
-    rank: 3,
-    productName: "The Room",
-    airline: "ANA",
-    airlineCode: "NH",
-    aircraft: "777-300ER",
-    cabinType: "Business",
-    routes: [
-      "Tokyo Haneda → London Heathrow",
-      "Tokyo Haneda → New York JFK",
-      "Tokyo Haneda → Chicago",
-      "Tokyo Narita → Chicago",
-      "Tokyo Haneda → San Francisco",
-      "Tokyo Narita → San Francisco",
-    ],
-    bestFor: ["Space", "Solo"],
-    seatInsight: "Extra-wide 1-2-1 business class seat with direct aisle access and exceptional personal space.",
-    description: "ANA’s flagship business class suite.",
-    image: "/images/the-room.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/nh-ana/",
-    aerolopaUrl: "https://www.aerolopa.com/nh",
+  DOH: { code: "DOH", city: "Doha", display: "Doha", aliases: ["doh", "doha"] },
+  DTW: { code: "DTW", city: "Detroit", display: "Detroit", aliases: ["dtw", "detroit"] },
+  DXB: { code: "DXB", city: "Dubai", display: "Dubai", aliases: ["dxb", "dubai"] },
+  EWR: { code: "EWR", city: "Newark", display: "Newark", aliases: ["ewr", "newark"] },
+  GVA: { code: "GVA", city: "Geneva", display: "Geneva", aliases: ["gva", "geneva"] },
+  HKG: { code: "HKG", city: "Hong Kong", display: "Hong Kong", aliases: ["hkg", "hong kong"] },
+  HND: { code: "HND", city: "Tokyo", display: "Tokyo Haneda", aliases: ["hnd", "haneda", "tokyo haneda", "tokyo"] },
+  IAD: {
+    code: "IAD",
+    city: "Washington",
+    display: "Washington Dulles",
+    aliases: ["iad", "dulles", "washington dulles", "washington"],
   },
-  {
-    id: "4",
-    rank: 4,
-    productName: "Qsuite",
-    airline: "Qatar Airways",
-    airlineCode: "QR",
-    aircraft: "A350-1000 / 777-300ER / 787-9",
-    cabinType: "Business",
-    routes: [
-      "Doha → New York JFK",
-      "Doha → London Heathrow",
-      "Doha → Paris",
-      "Doha → Singapore",
-      "Doha → Sydney",
-      "Doha → Los Angeles",
-    ],
-    bestFor: ["Couples", "Privacy"],
-    seatInsight: "Enclosed suite with doors and flexible seating for couples or groups.",
-    description: "Qatar Airways’ flagship business class product.",
-    image: "/images/qsuite.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/qr-qatar-airways/",
-    aerolopaUrl: "https://www.aerolopa.com/qr",
-  },
-  {
-    id: "5",
-    rank: 5,
-    productName: "Singapore Suites",
-    airline: "Singapore Airlines",
-    airlineCode: "SQ",
-    aircraft: "A380-800",
-    cabinType: "First",
-    routes: ["Singapore → London Heathrow", "Singapore → Sydney", "Singapore → Shanghai"],
-    bestFor: ["Luxury", "Space"],
-    seatInsight: "Large private suite concept on the A380 with one of the most spacious first class products in the sky.",
-    description: "Singapore Airlines flagship Suites product.",
-    image: "/images/singapore-suites.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/sq-singapore-airlines/",
-    aerolopaUrl: "https://www.aerolopa.com/sq",
-  },
-  {
-    id: "6",
-    rank: 6,
-    productName: "Etihad First Apartment",
-    airline: "Etihad Airways",
-    airlineCode: "EY",
-    aircraft: "A380-800",
-    cabinType: "First",
-    routes: ["Abu Dhabi → London Heathrow"],
-    bestFor: ["Space", "Luxury"],
-    seatInsight: "A380 first class with a separate seat and bed concept, offering exceptional personal space.",
-    description: "Etihad’s iconic A380 First Apartment experience.",
-    image: "/images/etihad-apartment.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/ey-etihad-airways/",
-    aerolopaUrl: "https://www.aerolopa.com/ey",
-  },
-  {
-    id: "7",
-    rank: 7,
-    productName: "The Suite",
-    airline: "ANA",
-    airlineCode: "NH",
-    aircraft: "777-300ER",
-    cabinType: "First",
-    routes: ["Tokyo Haneda → New York JFK", "Tokyo Haneda → London Heathrow"],
-    bestFor: ["Privacy", "Luxury"],
-    seatInsight: "Wide enclosed suite with strong privacy and a modern residential-style design.",
-    description: "ANA’s premium first class suite on selected flagship 777-300ER flights.",
-    image: "/images/the-suite.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/nh-ana/boeing-777-300er/",
-    aerolopaUrl: "https://www.aerolopa.com/nh",
-  },
-  {
-    id: "8",
-    rank: 8,
-    productName: "Emirates Game Changer First",
-    airline: "Emirates",
-    airlineCode: "EK",
-    aircraft: "777-300ER",
-    cabinType: "First",
-    routes: ["Dubai → Brussels", "Dubai → Geneva", "Dubai → Tokyo Haneda"],
-    bestFor: ["Privacy", "Solo"],
-    seatInsight: "Fully enclosed suite with very high privacy and a more futuristic first class feel.",
-    description: "Emirates’ newest fully enclosed first class suite on selected 777-300ER aircraft.",
-    image: "/images/emirates-game-changer.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/ek-emirates/",
-    aerolopaUrl: "https://www.aerolopa.com/ek",
-  },
-  {
-    id: "9",
-    rank: 9,
-    productName: "La Première",
-    airline: "Air France",
-    airlineCode: "AF",
-    aircraft: "777-300ER",
-    cabinType: "First",
-    routes: [
-      "Paris CDG → Los Angeles",
-      "Paris CDG → New York JFK",
-      "Paris CDG → Tokyo Haneda",
-      "Paris CDG → Singapore",
-      "Paris CDG → San Francisco",
-    ],
-    bestFor: ["Luxury", "Exclusivity"],
-    seatInsight: "Highly exclusive first class experience with a spacious personal area and refined soft product.",
-    description: "Air France’s exclusive long-haul first class product.",
-    image: "/images/la-premiere.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/af-air-france/",
-    aerolopaUrl: "https://www.aerolopa.com/af",
-  },
-  {
-    id: "10",
-    rank: 10,
-    productName: "Club Suite",
-    airline: "British Airways",
-    airlineCode: "BA",
-    aircraft: "A350-1000 / 777-300ER / 787-10",
-    cabinType: "Business",
-    routes: [
-      "London Heathrow → New York JFK",
-      "London Heathrow → Los Angeles",
-      "London Heathrow → Dubai",
-      "London Heathrow → San Francisco",
-    ],
-    bestFor: ["Privacy", "Network"],
-    seatInsight: "1-2-1 layout with doors and direct aisle access across the cabin.",
-    description: "British Airways’ modern suite-style business class.",
-    image: "/images/club-suite.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/ba-british-airways/",
-    aerolopaUrl: "https://www.aerolopa.com/ba",
-  },
-  {
-    id: "11",
-    rank: 11,
-    productName: "Delta One Suite",
-    airline: "Delta Air Lines",
-    airlineCode: "DL",
-    aircraft: "A350-900 / A330-900neo",
-    cabinType: "Business",
-    routes: [
-      "Los Angeles → Sydney",
-      "New York JFK → London Heathrow",
-      "Detroit → Tokyo Haneda",
-      "Atlanta → Johannesburg",
-    ],
-    bestFor: ["Privacy", "Consistency"],
-    seatInsight: "Suite-style seat with door and direct aisle access on key long-haul aircraft.",
-    description: "Delta’s enclosed suite-style long-haul business class.",
-    image: "/images/delta-one-suite.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/dl-delta-air-lines/",
-    aerolopaUrl: "https://www.aerolopa.com/dl",
-  },
-  {
-    id: "12",
-    rank: 12,
-    productName: "Aria Suite",
-    airline: "Cathay Pacific",
-    airlineCode: "CX",
-    aircraft: "777-300ER",
-    cabinType: "Business",
-    routes: [
-      "Hong Kong → London Heathrow",
-      "Hong Kong → Sydney",
-      "Hong Kong → Vancouver",
-      "Hong Kong → San Francisco",
-    ],
-    bestFor: ["Privacy", "Storage"],
-    seatInsight: "Next-generation suite with door, improved storage, and a refined Cathay design.",
-    description: "Cathay Pacific’s newest flagship business class suite.",
-    image: "/images/cathay-aria.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/cx-cathay-pacific/",
-    aerolopaUrl: "https://www.aerolopa.com/cx",
-  },
-  {
-    id: "13",
-    rank: 13,
-    productName: "Sky Suite",
-    airline: "Japan Airlines",
-    airlineCode: "JL",
-    aircraft: "777-300ER / 787-9",
-    cabinType: "Business",
-    routes: [
-      "Tokyo Haneda → San Francisco",
-      "Tokyo Haneda → New York JFK",
-      "Tokyo Haneda → London Heathrow",
-      "Tokyo Haneda → Dallas/Fort Worth",
-    ],
-    bestFor: ["Comfort", "Solo"],
-    seatInsight: "Direct aisle access layout with a strong balance of privacy and comfort.",
-    description: "Japan Airlines’ well-known Sky Suite business class product.",
-    image: "/images/jal-sky-suite.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/jl-japan-airlines/",
-    aerolopaUrl: "https://www.aerolopa.com/jl",
-  },
-  {
-    id: "14",
-    rank: 14,
-    productName: "Royal Laurel Class",
-    airline: "EVA Air",
-    airlineCode: "BR",
-    aircraft: "777-300ER",
-    cabinType: "Business",
-    routes: [
-      "Taipei → New York JFK",
-      "Taipei → Los Angeles",
-      "Taipei → San Francisco",
-      "Taipei → Paris",
-      "Taipei → London Heathrow",
-    ],
-    bestFor: ["Comfort", "Sleep"],
-    seatInsight: "Reverse herringbone seat with direct aisle access and a strong comfort reputation.",
-    description: "EVA Air’s highly rated long-haul business class cabin.",
-    image: "/images/eva-royal-laurel.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/br-eva-air/",
-    aerolopaUrl: "https://www.aerolopa.com/br",
-  },
-  {
-    id: "15",
-    rank: 15,
-    productName: "Prestige Suite",
-    airline: "Korean Air",
-    airlineCode: "KE",
-    aircraft: "787-9 / 777-300ER",
-    cabinType: "Business",
-    routes: [
-      "Seoul Incheon → Paris CDG",
-      "Seoul Incheon → New York JFK",
-      "Seoul Incheon → Los Angeles",
-      "Seoul Incheon → London Heathrow",
-    ],
-    bestFor: ["Privacy", "Solo"],
-    seatInsight: "Suite-style premium seat with direct aisle access on long-haul aircraft.",
-    description: "Korean Air’s modern long-haul business class suite.",
-    image: "/images/korean-prestige.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/ke-korean-air/",
-    aerolopaUrl: "https://www.aerolopa.com/ke",
-  },
-  {
-    id: "16",
-    rank: 16,
-    productName: "Upper Class Suite",
-    airline: "Virgin Atlantic",
-    airlineCode: "VS",
-    aircraft: "A330-900neo / A350-1000",
-    cabinType: "Business",
-    routes: [
-      "London Heathrow → New York JFK",
-      "London Heathrow → Los Angeles",
-      "London Heathrow → San Francisco",
-      "London Heathrow → Delhi",
-    ],
-    bestFor: ["Couples", "Social"],
-    seatInsight: "1-2-1 seat configuration with direct aisle access. Features The Loft lounge at the back of the aircraft.",
-    description: "Virgin Atlantic’s stylish and modern Upper Class suite.",
-    image: "/images/virgin-upper-class.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/vs-virgin-atlantic/",
-    aerolopaUrl: "https://www.aerolopa.com/vs",
-  },
-  {
-    id: "17",
-    rank: 17,
-    productName: "Mint Studio",
-    airline: "JetBlue",
-    airlineCode: "B6",
-    aircraft: "A321LR / A321XLR",
-    cabinType: "Business",
-    routes: [
-      "New York JFK → Paris CDG",
-      "New York JFK → London Heathrow",
-      "New York JFK → Amsterdam",
-      "Boston → Paris CDG",
-    ],
-    bestFor: ["Space", "Solo"],
-    seatInsight: "Front-row Mint Studio offers more space and a larger suite-style experience than standard Mint seats.",
-    description: "JetBlue’s spacious front-row Mint Studio product on selected Mint-equipped transatlantic flights.",
-    image: "/images/jetblue-mint-studio.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/b6-jetblue-airways/",
-    aerolopaUrl: "https://www.aerolopa.com/b6",
-  },
-  {
-    id: "18",
-    rank: 18,
-    productName: "Business Suite",
-    airline: "Qantas",
-    airlineCode: "QF",
-    aircraft: "A380-800 / 787-9",
-    cabinType: "Business",
-    routes: [
-      "Sydney → Singapore",
-      "Sydney → London Heathrow",
-      "Melbourne → Dallas/Fort Worth",
-      "Perth → London Heathrow",
-    ],
-    bestFor: ["Comfort", "Practicality"],
-    seatInsight: "Direct aisle access layout with a practical and comfortable long-haul design.",
-    description: "Qantas’ modern long-haul business class suite.",
-    image: "/images/qantas-business-suite.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/qf-qantas/",
-    aerolopaUrl: "https://www.aerolopa.com/qf",
-  },
-  {
-    id: "19",
-    rank: 19,
-    productName: "Business Class",
-    airline: "Turkish Airlines",
-    airlineCode: "TK",
-    aircraft: "787-9 / A350-900",
-    cabinType: "Business",
-    routes: [
-      "Istanbul → San Francisco",
-      "Istanbul → New York JFK",
-      "Istanbul → Los Angeles",
-      "Istanbul → Tokyo Haneda",
-    ],
-    bestFor: ["Network", "Value"],
-    seatInsight: "Modern long-haul seat with direct aisle access and improved privacy over older fleet types.",
-    description: "Turkish Airlines’ preferred long-haul business product.",
-    image: "/images/turkish-business.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/tk-turkish-airlines/",
-    aerolopaUrl: "https://www.aerolopa.com/tk",
-  },
-  {
-    id: "20",
-    rank: 20,
-    productName: "Flagship Suite",
-    airline: "American Airlines",
-    airlineCode: "AA",
-    aircraft: "787-9",
-    cabinType: "Business",
-    routes: [
-      "Chicago O'Hare → London Heathrow",
-      "Philadelphia → London Heathrow",
-      "Dallas/Fort Worth → Brisbane",
-      "Dallas/Fort Worth → Auckland",
-    ],
-    bestFor: ["Privacy", "New Product"],
-    seatInsight: "New suite-style business class with doors on American’s latest premium configuration.",
-    description: "American Airlines’ newest Flagship Suite product.",
-    image: "/images/american-flagship.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/aa-american-airlines/",
-    aerolopaUrl: "https://www.aerolopa.com/aa",
-  },
-  {
-    id: "21",
-    rank: 21,
-    productName: "Polaris",
-    airline: "United",
-    airlineCode: "UA",
-    aircraft: "787-9 / 787-10 / 777-300ER",
-    cabinType: "Business",
-    routes: [
-      "San Francisco → Singapore",
-      "Newark → London Heathrow",
-      "Washington Dulles → Tokyo Haneda",
-      "San Francisco → Sydney",
-    ],
-    bestFor: ["Consistency", "Network"],
-    seatInsight: "United’s flagship long-haul seat with direct aisle access and a consistent premium layout.",
-    description: "United’s Polaris long-haul business class product.",
-    image: "/images/united-polaris.jpg",
-    seatmapsUrl: "https://seatmaps.com/airlines/ua-united/",
-    aerolopaUrl: "https://www.aerolopa.com/ua",
-  },
-];
+  ICN: { code: "ICN", city: "Seoul", display: "Seoul Incheon", aliases: ["icn", "incheon", "seoul incheon", "seoul"] },
+  IST: { code: "IST", city: "Istanbul", display: "Istanbul", aliases: ["ist", "istanbul"] },
+  JFK: { code: "JFK", city: "New York", display: "New York JFK", aliases: ["jfk", "new york", "new york jfk", "nyc"] },
+  JNB: { code: "JNB", city: "Johannesburg", display: "Johannesburg", aliases: ["jnb", "johannesburg"] },
+  LAX: { code: "LAX", city: "Los Angeles", display: "Los Angeles", aliases: ["lax", "los angeles", "la"] },
+  LHR: { code: "LHR", city: "London", display: "London Heathrow", aliases: ["lhr", "heathrow", "london heathrow", "london", "lon"] },
+  MEL: { code: "MEL", city: "Melbourne", display: "Melbourne", aliases: ["mel", "melbourne"] },
+  MUC: { code: "MUC", city: "Munich", display: "Munich", aliases: ["muc", "munich"] },
+  NRT: { code: "NRT", city: "Tokyo", display: "Tokyo Narita", aliases: ["nrt", "narita", "tokyo narita", "tokyo"] },
+  ORD: { code: "ORD", city: "Chicago", display: "Chicago O'Hare", aliases: ["ord", "ohare", "o hare", "chicago", "chicago o'hare", "chicago ord"] },
+  PER: { code: "PER", city: "Perth", display: "Perth", aliases: ["per", "perth"] },
+  PHL: { code: "PHL", city: "Philadelphia", display: "Philadelphia", aliases: ["phl", "philadelphia"] },
+  PVG: { code: "PVG", city: "Shanghai", display: "Shanghai", aliases: ["pvg", "sha", "shanghai"] },
+  SFO: { code: "SFO", city: "San Francisco", display: "San Francisco", aliases: ["sfo", "sf", "san francisco"] },
+  SIN: { code: "SIN", city: "Singapore", display: "Singapore", aliases: ["sin", "singapore"] },
+  SYD: { code: "SYD", city: "Sydney", display: "Sydney", aliases: ["syd", "sydney"] },
+  TPE: { code: "TPE", city: "Taipei", display: "Taipei", aliases: ["tpe", "taipei"] },
+  YVR: { code: "YVR", city: "Vancouver", display: "Vancouver", aliases: ["yvr", "vancouver"] },
+};
+
+const curatedBestForOptions = ["Privacy", "Couples", "Space", "Luxury", "Sleep", "Network"];
+
+const cabinAccent: Record<CabinType, string> = {
+  Business: "bg-sky-400/10 text-sky-200 ring-1 ring-inset ring-sky-400/20",
+  First: "bg-amber-400/10 text-amber-200 ring-1 ring-inset ring-amber-400/20",
+};
 
 const boardRows = [
   "LH 410  MUNICH            NEW YORK JFK      08:35   G12   BOARDING",
@@ -549,56 +225,446 @@ const boardRows = [
   "QF 001  SYDNEY            SINGAPORE         16:20   L14   BOARDING",
 ];
 
-const cabinAccent: Record<CabinType, string> = {
-  Business: "bg-sky-400/10 text-sky-200 ring-1 ring-inset ring-sky-400/20",
-  First: "bg-amber-400/10 text-amber-200 ring-1 ring-inset ring-amber-400/20",
-};
-
-const curatedBestForOptions = ["Privacy", "Couples", "Space", "Luxury", "Sleep", "Network"];
-
-const locationAliases: Record<string, string[]> = {
-  "new york jfk": ["new york jfk", "jfk", "new york", "nyc"],
-  "london heathrow": ["london heathrow", "heathrow", "lhr", "london", "lon"],
-  "san francisco": ["san francisco", "sfo", "sf"],
-  "los angeles": ["los angeles", "lax", "la"],
-  "chicago": ["chicago", "ord", "o'hare", "ohare"],
-  "chicago o'hare": ["chicago o'hare", "chicago ord", "ord", "o'hare", "ohare", "chicago"],
-  munich: ["munich", "muc"],
-  doha: ["doha", "doh"],
-  singapore: ["singapore", "sin"],
-  sydney: ["sydney", "syd"],
-  paris: ["paris", "cdg", "par"],
-  "paris cdg": ["paris cdg", "paris", "cdg", "charles de gaulle", "par"],
-  "abu dhabi": ["abu dhabi", "auh"],
-  "tokyo haneda": ["tokyo haneda", "haneda", "hnd", "tokyo"],
-  "tokyo narita": ["tokyo narita", "narita", "nrt", "tokyo"],
-  tokyo: ["tokyo", "hnd", "nrt", "haneda", "narita"],
-  "hong kong": ["hong kong", "hkg"],
-  taipei: ["taipei", "tpe"],
-  "seoul incheon": ["seoul incheon", "incheon", "icn", "seoul"],
-  seoul: ["seoul", "icn", "incheon"],
-  istanbul: ["istanbul", "ist"],
-  dubai: ["dubai", "dxb"],
-  geneva: ["geneva", "gva"],
-  brussels: ["brussels", "bru"],
-  vancouver: ["vancouver", "yvr"],
-  amsterdam: ["amsterdam", "ams"],
-  boston: ["boston", "bos"],
-  delhi: ["delhi", "del", "new delhi"],
-  detroit: ["detroit", "dtw"],
-  atlanta: ["atlanta", "atl"],
-  johannesburg: ["johannesburg", "jnb"],
-  "washington dulles": ["washington dulles", "dulles", "iad", "washington"],
-  newark: ["newark", "ewr"],
-  "dallas fort worth": ["dallas/fort worth", "dallas fort worth", "dfw", "dallas", "fort worth"],
-  "dallas/fort worth": ["dallas/fort worth", "dallas fort worth", "dfw", "dallas", "fort worth"],
-  melbourne: ["melbourne", "mel"],
-  perth: ["perth", "per"],
-  shanghai: ["shanghai", "pvg", "sha"],
-  philadelphia: ["philadelphia", "phl"],
-  brisbane: ["brisbane", "bne"],
-  auckland: ["auckland", "akl"],
-};
+const productSeeds: ProductSeed[] = [
+  {
+    id: "1",
+    rank: 1,
+    productName: "Allegris First",
+    airline: "Lufthansa",
+    airlineCode: "LH",
+    aircraft: "A350-900 / 787-9",
+    cabinType: "First",
+    routePairs: [
+      { from: "MUC", to: "JFK" },
+      { from: "MUC", to: "ORD" },
+      { from: "MUC", to: "SFO" },
+      { from: "MUC", to: "PVG" },
+    ],
+    bestFor: ["Privacy", "Luxury"],
+    seatInsight: "Private suite with doors and a fully lie-flat bed, designed for maximum privacy.",
+    description: "Lufthansa’s newest flagship First Class suite under Allegris. Roundtrip matching is handled automatically from the seeded city pair.",
+    image: "/images/allegris-first.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
+    aerolopaUrl: "https://www.aerolopa.com/lh",
+  },
+  {
+    id: "2",
+    rank: 2,
+    productName: "Allegris Business",
+    airline: "Lufthansa",
+    airlineCode: "LH",
+    aircraft: "A350-900 / 787-9",
+    cabinType: "Business",
+    routePairs: [
+      { from: "MUC", to: "JFK" },
+      { from: "MUC", to: "ORD" },
+      { from: "MUC", to: "SFO" },
+      { from: "MUC", to: "PVG" },
+    ],
+    bestFor: ["Privacy", "Choice"],
+    seatInsight: "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
+    description: "Lufthansa’s new Allegris Business Class with route-aware roundtrip matching.",
+    image: "/images/allegris-business.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
+    aerolopaUrl: "https://www.aerolopa.com/lh",
+  },
+  {
+    id: "3",
+    rank: 3,
+    productName: "The Room",
+    airline: "ANA",
+    airlineCode: "NH",
+    aircraft: "777-300ER",
+    cabinType: "Business",
+    routePairs: [
+      { from: "HND", to: "LHR" },
+      { from: "HND", to: "JFK" },
+      { from: "HND", to: "ORD" },
+      { from: "NRT", to: "ORD" },
+      { from: "HND", to: "SFO" },
+      { from: "NRT", to: "SFO" },
+    ],
+    bestFor: ["Space", "Solo"],
+    seatInsight: "Extra-wide 1-2-1 business class seat with direct aisle access and exceptional personal space.",
+    description: "ANA’s flagship business class suite.",
+    image: "/images/the-room.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/nh-ana/",
+    aerolopaUrl: "https://www.aerolopa.com/nh",
+  },
+  {
+    id: "4",
+    rank: 4,
+    productName: "Qsuite",
+    airline: "Qatar Airways",
+    airlineCode: "QR",
+    aircraft: "A350-1000 / 777-300ER / 787-9",
+    cabinType: "Business",
+    routePairs: [
+      { from: "DOH", to: "JFK" },
+      { from: "DOH", to: "LHR" },
+      { from: "DOH", to: "CDG" },
+      { from: "DOH", to: "SIN" },
+      { from: "DOH", to: "SYD" },
+      { from: "DOH", to: "LAX" },
+    ],
+    bestFor: ["Couples", "Privacy"],
+    seatInsight: "Enclosed suite with doors and flexible seating for couples or groups.",
+    description: "Qatar Airways’ flagship business class product.",
+    image: "/images/qsuite.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/qr-qatar-airways/",
+    aerolopaUrl: "https://www.aerolopa.com/qr",
+  },
+  {
+    id: "5",
+    rank: 5,
+    productName: "Singapore Suites",
+    airline: "Singapore Airlines",
+    airlineCode: "SQ",
+    aircraft: "A380-800",
+    cabinType: "First",
+    routePairs: [
+      { from: "SIN", to: "LHR" },
+      { from: "SIN", to: "SYD" },
+      { from: "SIN", to: "PVG" },
+    ],
+    bestFor: ["Luxury", "Space"],
+    seatInsight: "Large private suite concept on the A380 with one of the most spacious first class products in the sky.",
+    description: "Singapore Airlines flagship Suites product.",
+    image: "/images/singapore-suites.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/sq-singapore-airlines/",
+    aerolopaUrl: "https://www.aerolopa.com/sq",
+  },
+  {
+    id: "6",
+    rank: 6,
+    productName: "Etihad First Apartment",
+    airline: "Etihad Airways",
+    airlineCode: "EY",
+    aircraft: "A380-800",
+    cabinType: "First",
+    routePairs: [{ from: "AUH", to: "LHR" }],
+    bestFor: ["Space", "Luxury"],
+    seatInsight: "A380 first class with a separate seat and bed concept, offering exceptional personal space.",
+    description: "Etihad’s iconic A380 First Apartment experience.",
+    image: "/images/etihad-apartment.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/ey-etihad-airways/",
+    aerolopaUrl: "https://www.aerolopa.com/ey",
+  },
+  {
+    id: "7",
+    rank: 7,
+    productName: "The Suite",
+    airline: "ANA",
+    airlineCode: "NH",
+    aircraft: "777-300ER",
+    cabinType: "First",
+    routePairs: [
+      { from: "HND", to: "JFK" },
+      { from: "HND", to: "LHR" },
+    ],
+    bestFor: ["Privacy", "Luxury"],
+    seatInsight: "Wide enclosed suite with strong privacy and a modern residential-style design.",
+    description: "ANA’s premium first class suite on selected flagship 777-300ER flights.",
+    image: "/images/the-suite.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/nh-ana/boeing-777-300er/",
+    aerolopaUrl: "https://www.aerolopa.com/nh",
+  },
+  {
+    id: "8",
+    rank: 8,
+    productName: "Emirates Game Changer First",
+    airline: "Emirates",
+    airlineCode: "EK",
+    aircraft: "777-300ER",
+    cabinType: "First",
+    routePairs: [
+      { from: "DXB", to: "BRU" },
+      { from: "DXB", to: "GVA" },
+      { from: "DXB", to: "HND" },
+    ],
+    bestFor: ["Privacy", "Solo"],
+    seatInsight: "Fully enclosed suite with very high privacy and a more futuristic first class feel.",
+    description: "Emirates’ newest fully enclosed first class suite on selected 777-300ER aircraft.",
+    image: "/images/emirates-game-changer.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/ek-emirates/",
+    aerolopaUrl: "https://www.aerolopa.com/ek",
+  },
+  {
+    id: "9",
+    rank: 9,
+    productName: "La Première",
+    airline: "Air France",
+    airlineCode: "AF",
+    aircraft: "777-300ER",
+    cabinType: "First",
+    routePairs: [
+      { from: "CDG", to: "LAX" },
+      { from: "CDG", to: "JFK" },
+      { from: "CDG", to: "HND" },
+      { from: "CDG", to: "SIN" },
+      { from: "CDG", to: "SFO" },
+    ],
+    bestFor: ["Luxury", "Exclusivity"],
+    seatInsight: "Highly exclusive first class experience with a spacious personal area and refined soft product.",
+    description: "Air France’s exclusive long-haul first class product.",
+    image: "/images/la-premiere.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/af-air-france/",
+    aerolopaUrl: "https://www.aerolopa.com/af",
+  },
+  {
+    id: "10",
+    rank: 10,
+    productName: "Club Suite",
+    airline: "British Airways",
+    airlineCode: "BA",
+    aircraft: "A350-1000 / 777-300ER / 787-10",
+    cabinType: "Business",
+    routePairs: [
+      { from: "LHR", to: "JFK" },
+      { from: "LHR", to: "LAX" },
+      { from: "LHR", to: "DXB" },
+      { from: "LHR", to: "SFO" },
+    ],
+    bestFor: ["Privacy", "Network"],
+    seatInsight: "1-2-1 layout with doors and direct aisle access across the cabin.",
+    description: "British Airways’ modern suite-style business class.",
+    image: "/images/club-suite.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/ba-british-airways/",
+    aerolopaUrl: "https://www.aerolopa.com/ba",
+  },
+  {
+    id: "11",
+    rank: 11,
+    productName: "Delta One Suite",
+    airline: "Delta Air Lines",
+    airlineCode: "DL",
+    aircraft: "A350-900 / A330-900neo",
+    cabinType: "Business",
+    routePairs: [
+      { from: "LAX", to: "SYD" },
+      { from: "JFK", to: "LHR" },
+      { from: "DTW", to: "HND" },
+      { from: "ATL", to: "JNB" },
+    ],
+    bestFor: ["Privacy", "Consistency"],
+    seatInsight: "Suite-style seat with door and direct aisle access on key long-haul aircraft.",
+    description: "Delta’s enclosed suite-style long-haul business class.",
+    image: "/images/delta-one-suite.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/dl-delta-air-lines/",
+    aerolopaUrl: "https://www.aerolopa.com/dl",
+  },
+  {
+    id: "12",
+    rank: 12,
+    productName: "Aria Suite",
+    airline: "Cathay Pacific",
+    airlineCode: "CX",
+    aircraft: "777-300ER",
+    cabinType: "Business",
+    routePairs: [
+      { from: "HKG", to: "LHR" },
+      { from: "HKG", to: "SYD" },
+      { from: "HKG", to: "YVR" },
+      { from: "HKG", to: "SFO" },
+    ],
+    bestFor: ["Privacy", "Storage"],
+    seatInsight: "Next-generation suite with door, improved storage, and a refined Cathay design.",
+    description: "Cathay Pacific’s newest flagship business class suite.",
+    image: "/images/cathay-aria.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/cx-cathay-pacific/",
+    aerolopaUrl: "https://www.aerolopa.com/cx",
+  },
+  {
+    id: "13",
+    rank: 13,
+    productName: "Sky Suite",
+    airline: "Japan Airlines",
+    airlineCode: "JL",
+    aircraft: "777-300ER / 787-9",
+    cabinType: "Business",
+    routePairs: [
+      { from: "HND", to: "SFO" },
+      { from: "HND", to: "JFK" },
+      { from: "HND", to: "LHR" },
+      { from: "HND", to: "DFW" },
+    ],
+    bestFor: ["Comfort", "Solo"],
+    seatInsight: "Direct aisle access layout with a strong balance of privacy and comfort.",
+    description: "Japan Airlines’ well-known Sky Suite business class product.",
+    image: "/images/jal-sky-suite.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/jl-japan-airlines/",
+    aerolopaUrl: "https://www.aerolopa.com/jl",
+  },
+  {
+    id: "14",
+    rank: 14,
+    productName: "Royal Laurel Class",
+    airline: "EVA Air",
+    airlineCode: "BR",
+    aircraft: "777-300ER",
+    cabinType: "Business",
+    routePairs: [
+      { from: "TPE", to: "JFK" },
+      { from: "TPE", to: "LAX" },
+      { from: "TPE", to: "SFO" },
+      { from: "TPE", to: "CDG" },
+      { from: "TPE", to: "LHR" },
+    ],
+    bestFor: ["Comfort", "Sleep"],
+    seatInsight: "Reverse herringbone seat with direct aisle access and a strong comfort reputation.",
+    description: "EVA Air’s highly rated long-haul business class cabin.",
+    image: "/images/eva-royal-laurel.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/br-eva-air/",
+    aerolopaUrl: "https://www.aerolopa.com/br",
+  },
+  {
+    id: "15",
+    rank: 15,
+    productName: "Prestige Suite",
+    airline: "Korean Air",
+    airlineCode: "KE",
+    aircraft: "787-9 / 777-300ER",
+    cabinType: "Business",
+    routePairs: [
+      { from: "ICN", to: "CDG" },
+      { from: "ICN", to: "JFK" },
+      { from: "ICN", to: "LAX" },
+      { from: "ICN", to: "LHR" },
+    ],
+    bestFor: ["Privacy", "Solo"],
+    seatInsight: "Suite-style premium seat with direct aisle access on long-haul aircraft.",
+    description: "Korean Air’s modern long-haul business class suite.",
+    image: "/images/korean-prestige.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/ke-korean-air/",
+    aerolopaUrl: "https://www.aerolopa.com/ke",
+  },
+  {
+    id: "16",
+    rank: 16,
+    productName: "Upper Class Suite",
+    airline: "Virgin Atlantic",
+    airlineCode: "VS",
+    aircraft: "A330-900neo / A350-1000",
+    cabinType: "Business",
+    routePairs: [
+      { from: "LHR", to: "JFK" },
+      { from: "LHR", to: "LAX" },
+      { from: "LHR", to: "SFO" },
+      { from: "LHR", to: "DEL" },
+    ],
+    bestFor: ["Couples", "Social"],
+    seatInsight: "1-2-1 seat configuration with direct aisle access. Features The Loft lounge at the back of the aircraft.",
+    description: "Virgin Atlantic’s stylish and modern Upper Class suite.",
+    image: "/images/virgin-upper-class.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/vs-virgin-atlantic/",
+    aerolopaUrl: "https://www.aerolopa.com/vs",
+  },
+  {
+    id: "17",
+    rank: 17,
+    productName: "Mint Studio",
+    airline: "JetBlue",
+    airlineCode: "B6",
+    aircraft: "A321LR / A321XLR",
+    cabinType: "Business",
+    routePairs: [
+      { from: "JFK", to: "CDG" },
+      { from: "JFK", to: "LHR" },
+      { from: "JFK", to: "AMS" },
+      { from: "BOS", to: "CDG" },
+    ],
+    bestFor: ["Space", "Solo"],
+    seatInsight: "Front-row Mint Studio offers more space and a larger suite-style experience than standard Mint seats.",
+    description: "JetBlue’s spacious front-row Mint Studio product on selected Mint-equipped transatlantic flights.",
+    image: "/images/jetblue-mint-studio.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/b6-jetblue-airways/",
+    aerolopaUrl: "https://www.aerolopa.com/b6",
+  },
+  {
+    id: "18",
+    rank: 18,
+    productName: "Business Suite",
+    airline: "Qantas",
+    airlineCode: "QF",
+    aircraft: "A380-800 / 787-9",
+    cabinType: "Business",
+    routePairs: [
+      { from: "SYD", to: "SIN" },
+      { from: "SYD", to: "LHR" },
+      { from: "MEL", to: "DFW" },
+      { from: "PER", to: "LHR" },
+    ],
+    bestFor: ["Comfort", "Practicality"],
+    seatInsight: "Direct aisle access layout with a practical and comfortable long-haul design.",
+    description: "Qantas’ modern long-haul business class suite.",
+    image: "/images/qantas-business-suite.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/qf-qantas/",
+    aerolopaUrl: "https://www.aerolopa.com/qf",
+  },
+  {
+    id: "19",
+    rank: 19,
+    productName: "Business Class",
+    airline: "Turkish Airlines",
+    airlineCode: "TK",
+    aircraft: "787-9 / A350-900",
+    cabinType: "Business",
+    routePairs: [
+      { from: "IST", to: "SFO" },
+      { from: "IST", to: "JFK" },
+      { from: "IST", to: "LAX" },
+      { from: "IST", to: "HND" },
+    ],
+    bestFor: ["Network", "Value"],
+    seatInsight: "Modern long-haul seat with direct aisle access and improved privacy over older fleet types.",
+    description: "Turkish Airlines’ preferred long-haul business product.",
+    image: "/images/turkish-business.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/tk-turkish-airlines/",
+    aerolopaUrl: "https://www.aerolopa.com/tk",
+  },
+  {
+    id: "20",
+    rank: 20,
+    productName: "Flagship Suite",
+    airline: "American Airlines",
+    airlineCode: "AA",
+    aircraft: "787-9",
+    cabinType: "Business",
+    routePairs: [
+      { from: "ORD", to: "LHR" },
+      { from: "PHL", to: "LHR" },
+      { from: "DFW", to: "BNE" },
+      { from: "DFW", to: "AKL" },
+    ],
+    bestFor: ["Privacy", "New Product"],
+    seatInsight: "New suite-style business class with doors on American’s latest premium configuration.",
+    description: "American Airlines’ newest Flagship Suite product.",
+    image: "/images/american-flagship.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/aa-american-airlines/",
+    aerolopaUrl: "https://www.aerolopa.com/aa",
+  },
+  {
+    id: "21",
+    rank: 21,
+    productName: "Polaris",
+    airline: "United",
+    airlineCode: "UA",
+    aircraft: "787-9 / 787-10 / 777-300ER",
+    cabinType: "Business",
+    routePairs: [
+      { from: "SFO", to: "SIN" },
+      { from: "EWR", to: "LHR" },
+      { from: "IAD", to: "HND" },
+      { from: "SFO", to: "SYD" },
+    ],
+    bestFor: ["Consistency", "Network"],
+    seatInsight: "United’s flagship long-haul seat with direct aisle access and a consistent premium layout.",
+    description: "United’s Polaris long-haul business class product.",
+    image: "/images/united-polaris.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/ua-united/",
+    aerolopaUrl: "https://www.aerolopa.com/ua",
+  },
+];
 
 function normalizeText(value: string) {
   return value
@@ -613,46 +679,24 @@ function normalizeText(value: string) {
     .trim();
 }
 
-function splitRoute(route: string): RoutePair | null {
-  const parts = route.split("→").map((part) => part.trim());
-  if (parts.length !== 2) return null;
-  return { from: parts[0], to: parts[1] };
+function getAirport(code: AirportCode) {
+  return AIRPORTS[code];
 }
 
-function dedupeRoutePairs(routePairs: RoutePair[]) {
-  const map = new Map<string, RoutePair>();
-
-  for (const pair of routePairs) {
-    const key = `${normalizeText(pair.from)}__${normalizeText(pair.to)}`;
-    if (!map.has(key)) {
-      map.set(key, pair);
-    }
-  }
-
-  return Array.from(map.values());
+function formatAirport(code: AirportCode) {
+  return getAirport(code).display;
 }
 
-function getLocationTokens(location: string) {
-  const normalized = normalizeText(location);
-  const aliasValues = locationAliases[normalized] ?? [];
-  const tokenSet = new Set<string>([normalized, ...aliasValues.map(normalizeText)]);
-
-  normalized.split(" ").forEach((part) => {
-    if (part) tokenSet.add(part);
-  });
-
-  return Array.from(tokenSet).filter(Boolean);
+function formatRoute(pair: RoutePair) {
+  return `${formatAirport(pair.from)} → ${formatAirport(pair.to)}`;
 }
 
-function matchesLocation(input: string, location: string) {
-  const normalizedInput = normalizeText(input);
-  if (!normalizedInput) return true;
+function formatRoundtrip(pair: RoutePair) {
+  return `${formatAirport(pair.from)} ⇄ ${formatAirport(pair.to)}`;
+}
 
-  const locationTokens = getLocationTokens(location);
-
-  return locationTokens.some(
-    (token) => token.includes(normalizedInput) || normalizedInput.includes(token)
-  );
+function reverseRoute(pair: RoutePair): RoutePair {
+  return { from: pair.to, to: pair.from };
 }
 
 function parseRouteInput(input: string): { from: string; to: string; raw: string } {
@@ -673,38 +717,73 @@ function parseRouteInput(input: string): { from: string; to: string; raw: string
   return { from: "", to: "", raw: normalized };
 }
 
-function matchesRoutePair(pair: RoutePair, input: string) {
-  const parsedInput = parseRouteInput(input);
-  if (!parsedInput.raw) return true;
+function getAirportTokens(code: AirportCode) {
+  const airport = getAirport(code);
+  const base = [airport.code, airport.city, airport.display, ...airport.aliases].map(normalizeText);
+  return Array.from(new Set(base.flatMap((value) => value.split(" ").concat(value)))).filter(Boolean);
+}
 
-  if (parsedInput.from && parsedInput.to) {
-    return matchesLocation(parsedInput.from, pair.from) && matchesLocation(parsedInput.to, pair.to);
+function matchesAirport(input: string, code: AirportCode) {
+  const normalizedInput = normalizeText(input);
+  if (!normalizedInput) return true;
+
+  const tokens = getAirportTokens(code);
+  return tokens.some((token) => token.includes(normalizedInput) || normalizedInput.includes(token));
+}
+
+function matchesRoutePair(routePair: RoutePair, input: string) {
+  const parsed = parseRouteInput(input);
+  if (!parsed.raw) return true;
+
+  if (parsed.from && parsed.to) {
+    return matchesAirport(parsed.from, routePair.from) && matchesAirport(parsed.to, routePair.to);
   }
 
-  return matchesLocation(parsedInput.raw, pair.from) || matchesLocation(parsedInput.raw, pair.to);
+  return matchesAirport(parsed.raw, routePair.from) || matchesAirport(parsed.raw, routePair.to);
 }
 
-function formatRoute(pair: RoutePair) {
-  return `${pair.from} → ${pair.to}`;
+function makeBidirectionalRoutes(routePairs: RoutePair[]) {
+  const map = new Map<string, RoutePair>();
+
+  for (const pair of routePairs) {
+    const forwardKey = `${pair.from}-${pair.to}`;
+    const reverse = reverseRoute(pair);
+    const reverseKey = `${reverse.from}-${reverse.to}`;
+
+    map.set(forwardKey, pair);
+    map.set(reverseKey, reverse);
+  }
+
+  return Array.from(map.values());
 }
 
-function scoreSuggestion(input: string, route: string) {
+function uniqueRoundtripPairs(routePairs: RoutePair[]) {
+  const map = new Map<string, RoutePair>();
+
+  for (const pair of routePairs) {
+    const sorted = [pair.from, pair.to].sort();
+    const key = `${sorted[0]}-${sorted[1]}`;
+    if (!map.has(key)) {
+      map.set(key, { from: sorted[0] as AirportCode, to: sorted[1] as AirportCode });
+    }
+  }
+
+  return Array.from(map.values()).sort((a, b) => formatRoundtrip(a).localeCompare(formatRoundtrip(b)));
+}
+
+function getSuggestionScore(input: string, routeLabel: string) {
   const normalizedInput = normalizeText(input);
-  const normalizedRoute = normalizeText(route);
+  const normalizedRoute = normalizeText(routeLabel);
 
   if (!normalizedInput) return 0;
   if (normalizedRoute.startsWith(normalizedInput)) return 100;
   if (normalizedRoute.includes(normalizedInput)) return 80;
 
-  const parsed = splitRoute(route);
-  if (!parsed) return 0;
-
-  const fromMatch = matchesLocation(normalizedInput, parsed.from);
-  const toMatch = matchesLocation(normalizedInput, parsed.to);
-
-  if (fromMatch && toMatch) return 70;
-  if (fromMatch) return 60;
-  if (toMatch) return 50;
+  const parsed = parseRouteInput(routeLabel);
+  if (parsed.from && parsed.to) {
+    if (normalizedInput === parsed.from) return 70;
+    if (normalizedInput === parsed.to) return 65;
+  }
 
   return 0;
 }
@@ -739,8 +818,6 @@ function RouteAutosuggest({
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
 
-  const shouldShow = open && suggestions.length > 0;
-
   return (
     <div ref={wrapperRef} className="relative">
       <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-100/60">
@@ -760,7 +837,7 @@ function RouteAutosuggest({
         className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-cyan-400/40"
       />
 
-      {shouldShow && (
+      {open && suggestions.length > 0 && (
         <div className="absolute z-30 mt-2 max-h-72 w-full overflow-auto rounded-2xl border border-cyan-400/10 bg-slate-950/95 p-2 shadow-2xl shadow-black/50 backdrop-blur-xl">
           {suggestions.map((suggestion) => (
             <button
@@ -782,9 +859,9 @@ function RouteAutosuggest({
   );
 }
 
-const premiumProducts: Product[] = rawProducts.map(({ routes, ...item }) => ({
+const premiumProducts: Product[] = productSeeds.map((item) => ({
   ...item,
-  routePairs: dedupeRoutePairs(routes.map((route) => splitRoute(route)).filter(Boolean) as RoutePair[]),
+  expandedRoutePairs: makeBidirectionalRoutes(item.routePairs),
 }));
 
 export default function HomePage() {
@@ -792,7 +869,8 @@ export default function HomePage() {
   const [airline, setAirline] = useState("");
   const [aircraft, setAircraft] = useState("");
   const [cabin, setCabin] = useState("");
-  const [route, setRoute] = useState("");
+  const [outboundRoute, setOutboundRoute] = useState("");
+  const [returnRoute, setReturnRoute] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const airlineOptions = useMemo(
@@ -808,7 +886,7 @@ export default function HomePage() {
   const routeCatalog = useMemo(() => {
     return Array.from(
       new Set(
-        premiumProducts.flatMap((item) => item.routePairs.map((pair) => formatRoute(pair)))
+        premiumProducts.flatMap((item) => item.expandedRoutePairs.map((pair) => formatRoute(pair)))
       )
     ).sort((a, b) => a.localeCompare(b));
   }, []);
@@ -822,47 +900,77 @@ export default function HomePage() {
         item.productName.toLowerCase().includes(query) ||
         item.airline.toLowerCase().includes(query) ||
         item.aircraft.toLowerCase().includes(query) ||
-        item.routePairs.some((pair) => formatRoute(pair).toLowerCase().includes(query)) ||
+        item.expandedRoutePairs.some((pair) => formatRoute(pair).toLowerCase().includes(query)) ||
         item.bestFor.some((value) => value.toLowerCase().includes(query));
 
       const matchesAirline = airline === "" || item.airline === airline;
       const matchesAircraft = aircraft === "" || item.aircraft === aircraft;
       const matchesCabin = cabin === "" || item.cabinType === cabin;
-      const matchesTags =
-        selectedTags.length === 0 || selectedTags.every((tag) => item.bestFor.includes(tag));
+      const matchesTags = selectedTags.length === 0 || selectedTags.every((tag) => item.bestFor.includes(tag));
 
       return matchesSearch && matchesAirline && matchesAircraft && matchesCabin && matchesTags;
     });
   }, [search, airline, aircraft, cabin, selectedTags]);
 
-  const routeSuggestions = useMemo(() => {
+  const outboundSuggestions = useMemo(() => {
     const scopedRoutes = Array.from(
       new Set(
-        productsMatchingNonRouteFilters.flatMap((item) =>
-          item.routePairs.map((pair) => formatRoute(pair))
-        )
+        productsMatchingNonRouteFilters.flatMap((item) => item.expandedRoutePairs.map((pair) => formatRoute(pair)))
       )
     );
 
-    const base = route.trim() ? scopedRoutes : routeCatalog;
+    const source = outboundRoute.trim() ? scopedRoutes : routeCatalog;
 
-    return [...base]
-      .filter((itemRoute) => (route.trim() ? scoreSuggestion(route, itemRoute) > 0 : true))
-      .sort(
-        (a, b) =>
-          scoreSuggestion(route, b) - scoreSuggestion(route, a) || a.localeCompare(b)
-      )
+    return [...source]
+      .filter((route) => (outboundRoute.trim() ? getSuggestionScore(outboundRoute, route) > 0 : true))
+      .sort((a, b) => getSuggestionScore(outboundRoute, b) - getSuggestionScore(outboundRoute, a) || a.localeCompare(b))
       .slice(0, 8);
-  }, [route, productsMatchingNonRouteFilters, routeCatalog]);
+  }, [outboundRoute, productsMatchingNonRouteFilters, routeCatalog]);
+
+  const returnSuggestions = useMemo(() => {
+    if (outboundRoute.trim()) {
+      const outboundParsed = parseRouteInput(outboundRoute);
+      if (outboundParsed.from && outboundParsed.to) {
+        const reverseLabel = `${outboundParsed.to
+          .split(" ")
+          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+          .join(" ")} → ${outboundParsed.from
+          .split(" ")
+          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+          .join(" ")}`;
+
+        const reverseMatched = routeCatalog.find(
+          (route) => normalizeText(route) === normalizeText(reverseLabel)
+        );
+
+        if (reverseMatched) {
+          const rest = routeCatalog.filter((route) => route !== reverseMatched);
+          return [reverseMatched, ...rest.filter((route) => !returnRoute.trim() || getSuggestionScore(returnRoute, route) > 0)].slice(0, 8);
+        }
+      }
+    }
+
+    const scopedRoutes = Array.from(
+      new Set(
+        productsMatchingNonRouteFilters.flatMap((item) => item.expandedRoutePairs.map((pair) => formatRoute(pair)))
+      )
+    );
+
+    const source = returnRoute.trim() ? scopedRoutes : routeCatalog;
+
+    return [...source]
+      .filter((route) => (returnRoute.trim() ? getSuggestionScore(returnRoute, route) > 0 : true))
+      .sort((a, b) => getSuggestionScore(returnRoute, b) - getSuggestionScore(returnRoute, a) || a.localeCompare(b))
+      .slice(0, 8);
+  }, [outboundRoute, returnRoute, productsMatchingNonRouteFilters, routeCatalog]);
 
   const filteredProducts = useMemo(() => {
     return productsMatchingNonRouteFilters.filter((item) => {
-      const matchesSelectedRoute =
-        !route.trim() || item.routePairs.some((pair) => matchesRoutePair(pair, route));
-
-      return matchesSelectedRoute;
+      const matchesOutbound = !outboundRoute.trim() || item.expandedRoutePairs.some((pair) => matchesRoutePair(pair, outboundRoute));
+      const matchesReturn = !returnRoute.trim() || item.expandedRoutePairs.some((pair) => matchesRoutePair(pair, returnRoute));
+      return matchesOutbound && matchesReturn;
     });
-  }, [productsMatchingNonRouteFilters, route]);
+  }, [productsMatchingNonRouteFilters, outboundRoute, returnRoute]);
 
   const topThree = filteredProducts.slice(0, 3);
 
@@ -877,7 +985,8 @@ export default function HomePage() {
     setAirline("");
     setAircraft("");
     setCabin("");
-    setRoute("");
+    setOutboundRoute("");
+    setReturnRoute("");
     setSelectedTags([]);
   }
 
@@ -903,19 +1012,19 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="content-layer relative z-10">
+      <div className="relative z-10">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-          <div className="top-brand flex items-center gap-4">
+          <div className="flex items-center gap-4">
             <img
               src="/images/ascend-logo.png"
               alt="Ascend Logo"
               width={90}
               height={90}
-              className="brand-logo h-[90px] w-[90px] object-contain"
+              className="h-[90px] w-[90px] object-contain"
             />
             <div>
               <p className="text-xs uppercase tracking-[0.32em] text-cyan-100/55">Ascend</p>
-              <h1 className="brand-title text-3xl font-semibold sm:text-4xl">Cabin Optimizer</h1>
+              <h1 className="text-3xl font-semibold sm:text-4xl">Cabin Optimizer</h1>
             </div>
           </div>
 
@@ -928,34 +1037,25 @@ export default function HomePage() {
                 </div>
 
                 <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-                  One-way route search with live route suggestions.
+                  Normalized airport-driven route search with cleaner seed data.
                 </h2>
 
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75 sm:text-base">
-                  This version uses a single route field only, so users search one route at a time
-                  without seeing outbound and return together.
+                  This pass converts the cabin dataset into structured airport codes and canonical route pairs, so naming stays consistent across search, filtering, route display, and roundtrip logic.
                 </p>
-
-                <p className="mt-4 max-w-2xl text-sm font-medium leading-6 text-cyan-100 sm:text-base">
-                  Airline, aircraft, cabin, and best-for filters still dynamically scope the route options.
-                </p>
-
-                <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-100">
-                  Updated for a one-way routing flow so the UI no longer suggests two routes for the same search.
-                </div>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-4">
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{premiumProducts.length}</p>
-                    <p className="mt-1 text-sm text-white/60">curated products</p>
+                    <p className="mt-1 text-sm text-white/60">products</p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{airlineOptions.length}</p>
                     <p className="mt-1 text-sm text-white/60">airlines</p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
-                    <p className="text-2xl font-semibold">{routeCatalog.length}</p>
-                    <p className="mt-1 text-sm text-white/60">searchable one-way routes</p>
+                    <p className="text-2xl font-semibold">{Object.keys(AIRPORTS).length}</p>
+                    <p className="mt-1 text-sm text-white/60">normalized airports</p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{filteredProducts.length}</p>
@@ -967,18 +1067,14 @@ export default function HomePage() {
               <div className="rounded-[24px] border border-cyan-400/10 bg-black/45 p-5">
                 <p className="flex items-center gap-2 text-sm font-medium text-white">
                   <StarIcon />
-                  What changed
+                  Data model upgrades
                 </p>
 
                 <div className="mt-4 space-y-3 text-sm leading-6 text-white/75">
-                  <p>Removed the return route field completely.</p>
-                  <p>Removed reverse-route auto-fill logic.</p>
-                  <p>Routes now display one-way only in cards and suggestions.</p>
-                  <p>Airline, aircraft, cabin, and tags still filter the route suggestion list.</p>
-                </div>
-
-                <div className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-sm text-cyan-100">
-                  Tip: type a city, airport code, or a full route like JFK to Doha.
+                  <p>All routes now use airport-code pairs instead of freeform route strings.</p>
+                  <p>Display labels are generated from one airport dictionary, so the UI stays consistent.</p>
+                  <p>Alias search is centralized per airport, making route suggestions and filters more reliable.</p>
+                  <p>Roundtrip coverage is automatically expanded from each seeded route pair.</p>
                 </div>
               </div>
             </div>
@@ -1055,14 +1151,34 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="mt-3">
+            <div className="mt-3 grid gap-3 lg:grid-cols-2">
               <RouteAutosuggest
-                label="Route"
+                label="Outbound"
                 placeholder="e.g. JFK to Doha or Munich"
-                value={route}
-                onChange={setRoute}
-                suggestions={routeSuggestions}
-                onSelect={setRoute}
+                value={outboundRoute}
+                onChange={setOutboundRoute}
+                suggestions={outboundSuggestions}
+                onSelect={(route) => {
+                  setOutboundRoute(route);
+                  const parsed = parseRouteInput(route);
+                  if (!returnRoute.trim() && parsed.from && parsed.to) {
+                    const reverseMatch = routeCatalog.find(
+                      (candidate) => normalizeText(candidate) === normalizeText(`${parsed.to} → ${parsed.from}`)
+                    );
+                    if (reverseMatch) {
+                      setReturnRoute(reverseMatch);
+                    }
+                  }
+                }}
+              />
+
+              <RouteAutosuggest
+                label="Return"
+                placeholder="e.g. Doha to JFK or Shanghai"
+                value={returnRoute}
+                onChange={setReturnRoute}
+                suggestions={returnSuggestions}
+                onSelect={setReturnRoute}
               />
             </div>
 
@@ -1141,9 +1257,7 @@ export default function HomePage() {
                     <div className="relative h-56 overflow-hidden">
                       <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
                       <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
-                        <span className="rounded-full bg-cyan-300 px-3 py-1 text-xs font-semibold text-slate-950">
-                          #{item.rank}
-                        </span>
+                        <span className="rounded-full bg-cyan-300 px-3 py-1 text-xs font-semibold text-slate-950">#{item.rank}</span>
                         <span className={`rounded-full px-3 py-1 text-xs font-medium ${cabinAccent[item.cabinType]}`}>
                           {item.cabinType}
                         </span>
@@ -1158,7 +1272,7 @@ export default function HomePage() {
                       </div>
                       <h3 className="mt-2 text-2xl font-semibold">{item.productName}</h3>
                       <p className="mt-1 text-sm text-white/55">{item.aircraft}</p>
-                      <p className="mt-2 text-sm text-cyan-200/80">{formatRoute(item.routePairs[0])}</p>
+                      <p className="mt-2 text-sm text-cyan-200/80">{formatRoute(item.expandedRoutePairs[0])}</p>
                       <p className="mt-4 text-sm leading-6 text-white/70">{item.description}</p>
 
                       <div className="mt-4 flex flex-wrap gap-2">
@@ -1192,12 +1306,8 @@ export default function HomePage() {
                   />
 
                   <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
-                    <span className="rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur">
-                      #{item.rank}
-                    </span>
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-medium backdrop-blur ${cabinAccent[item.cabinType]}`}
-                    >
+                    <span className="rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur">#{item.rank}</span>
+                    <span className={`rounded-full px-3 py-1 text-xs font-medium backdrop-blur ${cabinAccent[item.cabinType]}`}>
                       {item.cabinType}
                     </span>
                   </div>
@@ -1220,16 +1330,14 @@ export default function HomePage() {
                     <div className="flex items-start gap-3">
                       <RouteIcon />
                       <div className="w-full">
-                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">
-                          Available routes
-                        </p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">Roundtrip route list</p>
                         <div className="mt-2 flex flex-wrap gap-2">
-                          {item.routePairs.map((pair) => (
+                          {uniqueRoundtripPairs(item.expandedRoutePairs).map((pair) => (
                             <span
-                              key={formatRoute(pair)}
+                              key={`${pair.from}-${pair.to}`}
                               className="rounded-full border border-cyan-400/10 bg-white/5 px-3 py-1 text-xs text-cyan-100/85"
                             >
-                              {formatRoute(pair)}
+                              {formatRoundtrip(pair)}
                             </span>
                           ))}
                         </div>
