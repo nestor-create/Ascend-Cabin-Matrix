@@ -170,7 +170,8 @@ const rawProducts: RawProduct[] = [
       "Frankfurt → Kuala Lumpur",
     ],
     bestFor: ["Privacy", "Choice"],
-    seatInsight: "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
+    seatInsight:
+      "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
     description: "Lufthansa’s new Allegris Business Class.",
     image: "/images/allegris-business.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
@@ -232,7 +233,8 @@ const rawProducts: RawProduct[] = [
     cabinType: "First",
     routes: ["Singapore → London Heathrow", "Singapore → Sydney", "Singapore → Shanghai"],
     bestFor: ["Luxury", "Space"],
-    seatInsight: "Large private suite concept on the A380 with one of the most spacious first class products in the sky.",
+    seatInsight:
+      "Large private suite concept on the A380 with one of the most spacious first class products in the sky.",
     description: "Singapore Airlines flagship Suites product.",
     image: "/images/singapore-suites.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/sq-singapore-airlines/",
@@ -445,7 +447,8 @@ const rawProducts: RawProduct[] = [
       "Seoul Incheon → Frankfurt",
     ],
     bestFor: ["Privacy", "Luxury"],
-    seatInsight: "Fully enclosed next-generation first class suite with strong privacy, refined finishes, and a flagship long-haul experience.",
+    seatInsight:
+      "Fully enclosed next-generation first class suite with strong privacy, refined finishes, and a flagship long-haul experience.",
     description: "Korean Air’s Kosmo Suites 2.0 flagship First Class product.",
     image: "/images/korean-kosmo-suites-2.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ke-korean-air/",
@@ -475,7 +478,8 @@ const rawProducts: RawProduct[] = [
       "Seoul Incheon → Tokyo Haneda",
     ],
     bestFor: ["Privacy", "Solo"],
-    seatInsight: "Suite-style business class seat with door, direct aisle access, and a more private next-generation Korean Air layout.",
+    seatInsight:
+      "Suite-style business class seat with door, direct aisle access, and a more private next-generation Korean Air layout.",
     description: "Korean Air’s newer Prestige Suite 2.0 Business Class product.",
     image: "/images/korean-prestige-suite-2.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ke-korean-air/",
@@ -496,7 +500,8 @@ const rawProducts: RawProduct[] = [
       "London Heathrow → Delhi",
     ],
     bestFor: ["Couples", "Social"],
-    seatInsight: "1-2-1 seat configuration with direct aisle access. Features The Loft lounge at the back of the aircraft.",
+    seatInsight:
+      "1-2-1 seat configuration with direct aisle access. Features The Loft lounge at the back of the aircraft.",
     description: "Virgin Atlantic’s stylish and modern Upper Class suite.",
     image: "/images/virgin-upper-class.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/vs-virgin-atlantic/",
@@ -517,7 +522,8 @@ const rawProducts: RawProduct[] = [
       "Boston → Paris CDG",
     ],
     bestFor: ["Space", "Solo"],
-    seatInsight: "Front-row Mint Studio offers more space and a larger suite-style experience than standard Mint seats.",
+    seatInsight:
+      "Front-row Mint Studio offers more space and a larger suite-style experience than standard Mint seats.",
     description: "JetBlue’s spacious front-row Mint Studio product on selected Mint-equipped transatlantic flights.",
     image: "/images/jetblue-mint-studio.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/b6-jetblue-airways/",
@@ -629,8 +635,6 @@ const cabinAccent: Record<CabinType, string> = {
   First: "bg-amber-400/10 text-amber-200 ring-1 ring-inset ring-amber-400/20",
 };
 
-const curatedBestForOptions = ["Privacy", "Couples", "Space", "Luxury", "Sleep", "Network"];
-
 function normalizeText(value: string) {
   return value
     .toLowerCase()
@@ -702,6 +706,11 @@ function scoreSuggestion(input: string, value: string) {
   if (normalizedValue.startsWith(normalizedInput)) return 100;
   if (normalizedValue.includes(normalizedInput)) return 80;
   return 0;
+}
+
+function routeMatchesInput(value: string, input: string) {
+  if (!input.trim()) return true;
+  return normalizeText(value).includes(normalizeText(input));
 }
 
 function PlaceAutosuggest({
@@ -807,7 +816,7 @@ export default function HomePage() {
     ).sort((a, b) => a.localeCompare(b));
   }, []);
 
-  const productsMatchingNonPlaceFilters = useMemo(() => {
+  const baseProductsWithoutTagFilter = useMemo(() => {
     return premiumProducts.filter((item) => {
       const query = search.trim().toLowerCase();
 
@@ -824,15 +833,61 @@ export default function HomePage() {
         ) ||
         item.bestFor.some((value) => value.toLowerCase().includes(query));
 
-      const matchesAirline = airline === "" || item.airline === airline;
       const matchesAircraft = aircraft === "" || item.aircraft === aircraft;
       const matchesCabin = cabin === "" || item.cabinType === cabin;
-      const matchesTags =
-        selectedTags.length === 0 || selectedTags.every((tag) => item.bestFor.includes(tag));
 
-      return matchesSearch && matchesAirline && matchesAircraft && matchesCabin && matchesTags;
+      return matchesSearch && matchesAircraft && matchesCabin;
     });
-  }, [search, airline, aircraft, cabin, selectedTags]);
+  }, [search, aircraft, cabin]);
+
+  const routeMatchedProducts = useMemo(() => {
+    return baseProductsWithoutTagFilter.filter((item) => {
+      const matchesOutbound =
+        !outboundPlace.trim() ||
+        item.routePairs.some((pair) => routeMatchesInput(pair.from, outboundPlace));
+
+      const matchesReturn =
+        !returnPlace.trim() ||
+        item.routePairs.some((pair) => routeMatchesInput(pair.to, returnPlace));
+
+      return matchesOutbound && matchesReturn;
+    });
+  }, [baseProductsWithoutTagFilter, outboundPlace, returnPlace]);
+
+  const suggestedAirlines = useMemo(() => {
+    return dedupeStrings(routeMatchedProducts.map((item) => item.airline)).sort((a, b) =>
+      a.localeCompare(b)
+    );
+  }, [routeMatchedProducts]);
+
+  useEffect(() => {
+    if (!outboundPlace.trim() && !returnPlace.trim()) return;
+
+    if (suggestedAirlines.length === 1) {
+      setAirline((current) => (current === "" || current === suggestedAirlines[0] ? suggestedAirlines[0] : current));
+      return;
+    }
+
+    setAirline((current) => {
+      if (current && !suggestedAirlines.includes(current)) {
+        return "";
+      }
+      return current;
+    });
+  }, [outboundPlace, returnPlace, suggestedAirlines]);
+
+  const airlineOptionsForSelect = useMemo(() => {
+    if (!suggestedAirlines.length) return airlineOptions;
+    const merged = dedupeStrings([...suggestedAirlines, ...airlineOptions]);
+    return merged.sort((a, b) => a.localeCompare(b));
+  }, [suggestedAirlines, airlineOptions]);
+
+  const productsMatchingNonPlaceFilters = useMemo(() => {
+    return baseProductsWithoutTagFilter.filter((item) => {
+      const matchesAirline = airline === "" || item.airline === airline;
+      return matchesAirline;
+    });
+  }, [baseProductsWithoutTagFilter, airline]);
 
   const filteredOutboundPlaces = useMemo(() => {
     return dedupeStrings(
@@ -845,7 +900,7 @@ export default function HomePage() {
 
     if (outboundPlace.trim()) {
       baseProducts = baseProducts.filter((item) =>
-        item.routePairs.some((pair) => normalizeText(pair.from).includes(normalizeText(outboundPlace)))
+        item.routePairs.some((pair) => routeMatchesInput(pair.from, outboundPlace))
       );
     }
 
@@ -880,19 +935,61 @@ export default function HomePage() {
       );
   }, [returnPlace, filteredReturnPlaces, placeCatalog]);
 
+  const bestForRankingSource = useMemo(() => {
+    return routeMatchedProducts.filter((item) => {
+      const matchesAirline = airline === "" || item.airline === airline;
+      return matchesAirline;
+    });
+  }, [routeMatchedProducts, airline]);
+
+  const topBestForOptions = useMemo(() => {
+    const counts = new Map<string, { count: number; bestRank: number; airlines: Set<string> }>();
+
+    for (const item of bestForRankingSource) {
+      for (const tag of item.bestFor) {
+        const existing = counts.get(tag);
+
+        if (existing) {
+          existing.count += 1;
+          existing.bestRank = Math.min(existing.bestRank, item.rank);
+          existing.airlines.add(item.airlineCode);
+        } else {
+          counts.set(tag, {
+            count: 1,
+            bestRank: item.rank,
+            airlines: new Set([item.airlineCode]),
+          });
+        }
+      }
+    }
+
+    return Array.from(counts.entries())
+      .map(([label, meta]) => ({
+        label,
+        count: meta.count,
+        bestRank: meta.bestRank,
+        airlineCodes: Array.from(meta.airlines).sort(),
+      }))
+      .sort((a, b) => b.count - a.count || a.bestRank - b.bestRank || a.label.localeCompare(b.label))
+      .slice(0, 5);
+  }, [bestForRankingSource]);
+
   const filteredProducts = useMemo(() => {
     return productsMatchingNonPlaceFilters.filter((item) => {
       const matchesOutbound =
         !outboundPlace.trim() ||
-        item.routePairs.some((pair) => normalizeText(pair.from).includes(normalizeText(outboundPlace)));
+        item.routePairs.some((pair) => routeMatchesInput(pair.from, outboundPlace));
 
       const matchesReturn =
         !returnPlace.trim() ||
-        item.routePairs.some((pair) => normalizeText(pair.to).includes(normalizeText(returnPlace)));
+        item.routePairs.some((pair) => routeMatchesInput(pair.to, returnPlace));
 
-      return matchesOutbound && matchesReturn;
+      const matchesTags =
+        selectedTags.length === 0 || selectedTags.every((tag) => item.bestFor.includes(tag));
+
+      return matchesOutbound && matchesReturn && matchesTags;
     });
-  }, [productsMatchingNonPlaceFilters, outboundPlace, returnPlace]);
+  }, [productsMatchingNonPlaceFilters, outboundPlace, returnPlace, selectedTags]);
 
   const topThree = filteredProducts.slice(0, 3);
 
@@ -946,7 +1043,7 @@ export default function HomePage() {
             />
             <div>
               <p className="text-xs uppercase tracking-[0.32em] text-cyan-100/55">Ascend</p>
-            
+              <h1 className="brand-title text-3xl font-semibold sm:text-4xl">Ascend Cabin Optimizer</h1>
             </div>
           </div>
 
@@ -992,12 +1089,20 @@ export default function HomePage() {
                   Ready to book?
                 </div>
 
-                <h3 className="mt-5 text-2xl font-semibold text-white">
-                  Experience 24/7 access to travel concierge.
-                </h3>
+                <div className="mt-5 rounded-3xl border border-cyan-300/15 bg-white/5 p-5">
+                  <p className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/55">Premium savings</p>
+                  <h3 className="mt-2 text-2xl font-semibold leading-tight text-white sm:text-3xl">
+                    <span className="bg-gradient-to-r from-cyan-200 via-white to-cyan-300 bg-clip-text text-transparent">
+                      Save an average of 35% on Business and First Class
+                    </span>
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-cyan-50/85">
+                    while booking with a premium travel experience designed around flexibility, speed, and expert support.
+                  </p>
+                </div>
 
-                <p className="mt-4 text-sm leading-6 text-cyan-50/80">
-                  Save an average of 35% on Business and First Class while booking with a premium travel experience designed around flexibility, speed, and expert support.
+                <p className="mt-5 text-sm leading-6 text-white/70">
+                  Experience 24/7 access to travel concierge.
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-white/10 bg-black/25 p-4 text-sm leading-6 text-white/75">
@@ -1043,12 +1148,36 @@ export default function HomePage() {
                   className="w-full rounded-2xl border border-cyan-400/10 bg-black/75 px-4 py-3 text-sm text-white outline-none focus:border-cyan-400/40"
                 >
                   <option value="">All airlines</option>
-                  {airlineOptions.map((option) => (
+                  {airlineOptionsForSelect.map((option) => (
                     <option key={option} value={option}>
                       {option}
                     </option>
                   ))}
                 </select>
+
+                {suggestedAirlines.length > 0 && (
+                  <div className="mt-2">
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-cyan-100/45">
+                      Suggested airlines for this route
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {suggestedAirlines.map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          onClick={() => setAirline(option)}
+                          className={`rounded-full px-2.5 py-1 text-xs transition ${
+                            airline === option
+                              ? "bg-cyan-300 text-slate-950"
+                              : "border border-cyan-400/10 bg-white/5 text-white/70 hover:bg-white/10"
+                          }`}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div>
@@ -1127,27 +1256,32 @@ export default function HomePage() {
                     All
                   </button>
 
-                  {curatedBestForOptions.map((option) => {
-                    const isActive = selectedTags.includes(option);
+                  {topBestForOptions.map((option) => {
+                    const isActive = selectedTags.includes(option.label);
 
                     return (
                       <button
-                        key={option}
+                        key={option.label}
                         type="button"
-                        onClick={() => toggleTag(option)}
+                        onClick={() => toggleTag(option.label)}
                         className={`rounded-full px-3 py-2 text-sm transition ${
                           isActive
                             ? "bg-cyan-400 text-slate-950"
                             : "border border-cyan-400/10 bg-white/5 text-white/70 hover:bg-white/10"
                         }`}
                       >
-                        {option}
+                        <span>{option.label}</span>
+                        <span className="ml-2 text-[11px] opacity-75">
+                          {option.count} · {option.airlineCodes.join(", ")}
+                        </span>
                       </button>
                     );
                   })}
                 </div>
 
-                <p className="mt-2 text-xs text-white/45">You can select multiple options at once.</p>
+                <p className="mt-2 text-xs text-white/45">
+                  Top 5 best-for tags are calculated from the currently relevant matching airline seats.
+                </p>
               </div>
 
               <div className="flex items-end">
@@ -1176,12 +1310,8 @@ export default function HomePage() {
               <div className="grid gap-4 lg:grid-cols-3">
                 {topThree.map((item) => {
                   const matchingRoutes = item.routePairs.filter((pair) => {
-                    const outboundOk =
-                      !outboundPlace.trim() ||
-                      normalizeText(pair.from).includes(normalizeText(outboundPlace));
-                    const returnOk =
-                      !returnPlace.trim() ||
-                      normalizeText(pair.to).includes(normalizeText(returnPlace));
+                    const outboundOk = !outboundPlace.trim() || routeMatchesInput(pair.from, outboundPlace);
+                    const returnOk = !returnPlace.trim() || routeMatchesInput(pair.to, returnPlace);
                     return outboundOk && returnOk;
                   });
 
@@ -1236,12 +1366,8 @@ export default function HomePage() {
           <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {filteredProducts.map((item) => {
               const matchingRoutes = item.routePairs.filter((pair) => {
-                const outboundOk =
-                  !outboundPlace.trim() ||
-                  normalizeText(pair.from).includes(normalizeText(outboundPlace));
-                const returnOk =
-                  !returnPlace.trim() ||
-                  normalizeText(pair.to).includes(normalizeText(returnPlace));
+                const outboundOk = !outboundPlace.trim() || routeMatchesInput(pair.from, outboundPlace);
+                const returnOk = !returnPlace.trim() || routeMatchesInput(pair.to, returnPlace);
                 return outboundOk && returnOk;
               });
 
