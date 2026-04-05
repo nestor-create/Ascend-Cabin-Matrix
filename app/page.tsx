@@ -946,7 +946,7 @@ export default function HomePage() {
             />
             <div>
               <p className="text-xs uppercase tracking-[0.32em] text-cyan-100/55">Ascend</p>
-              <h1 className="brand-title text-3xl font-semibold sm:text-4xl">Ascend Cabin Optimizer</h1>
+            
             </div>
           </div>
 
