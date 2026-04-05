@@ -431,10 +431,31 @@ const rawProducts: RawProduct[] = [
   {
     id: "15",
     rank: 15,
-    productName: "Prestige Suite",
+    productName: "Kosmo Suites 2.0",
     airline: "Korean Air",
     airlineCode: "KE",
-    aircraft: "787-9 / 777-300ER",
+    aircraft: "747-8",
+    cabinType: "First",
+    routes: [
+      "Seoul Incheon → Paris CDG",
+      "Seoul Incheon → New York JFK",
+      "Seoul Incheon → Los Angeles",
+      "Seoul Incheon → London Heathrow",
+    ],
+    bestFor: ["Privacy", "Luxury"],
+    seatInsight: "Fully enclosed next-generation first class suite with strong privacy, refined finishes, and a flagship long-haul experience.",
+    description: "Korean Air’s Kosmo Suites 2.0 flagship First Class product.",
+    image: "/images/korean-kosmo-suites-2.jpg",
+    seatmapsUrl: "https://seatmaps.com/airlines/ke-korean-air/",
+    aerolopaUrl: "https://www.aerolopa.com/ke",
+  },
+  {
+    id: "16",
+    rank: 16,
+    productName: "Prestige Suite 2.0",
+    airline: "Korean Air",
+    airlineCode: "KE",
+    aircraft: "787-10 / 777-300ER",
     cabinType: "Business",
     routes: [
       "Seoul Incheon → Paris CDG",
@@ -443,15 +464,15 @@ const rawProducts: RawProduct[] = [
       "Seoul Incheon → London Heathrow",
     ],
     bestFor: ["Privacy", "Solo"],
-    seatInsight: "Suite-style premium seat with direct aisle access on long-haul aircraft.",
-    description: "Korean Air’s modern long-haul business class suite.",
-    image: "/images/korean-prestige.jpg",
+    seatInsight: "Suite-style business class seat with door, direct aisle access, and a more private next-generation Korean Air layout.",
+    description: "Korean Air’s newer Prestige Suite 2.0 Business Class product.",
+    image: "/images/korean-prestige-suite-2.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ke-korean-air/",
     aerolopaUrl: "https://www.aerolopa.com/ke",
   },
   {
-    id: "16",
-    rank: 16,
+    id: "17",
+    rank: 17,
     productName: "Upper Class Suite",
     airline: "Virgin Atlantic",
     airlineCode: "VS",
@@ -471,8 +492,8 @@ const rawProducts: RawProduct[] = [
     aerolopaUrl: "https://www.aerolopa.com/vs",
   },
   {
-    id: "17",
-    rank: 17,
+    id: "18",
+    rank: 18,
     productName: "Mint Studio",
     airline: "JetBlue",
     airlineCode: "B6",
@@ -492,8 +513,8 @@ const rawProducts: RawProduct[] = [
     aerolopaUrl: "https://www.aerolopa.com/b6",
   },
   {
-    id: "18",
-    rank: 18,
+    id: "19",
+    rank: 19,
     productName: "Business Suite",
     airline: "Qantas",
     airlineCode: "QF",
@@ -513,8 +534,8 @@ const rawProducts: RawProduct[] = [
     aerolopaUrl: "https://www.aerolopa.com/qf",
   },
   {
-    id: "19",
-    rank: 19,
+    id: "20",
+    rank: 20,
     productName: "Business Class",
     airline: "Turkish Airlines",
     airlineCode: "TK",
@@ -534,8 +555,8 @@ const rawProducts: RawProduct[] = [
     aerolopaUrl: "https://www.aerolopa.com/tk",
   },
   {
-    id: "20",
-    rank: 20,
+    id: "21",
+    rank: 21,
     productName: "Flagship Suite",
     airline: "American Airlines",
     airlineCode: "AA",
@@ -555,8 +576,8 @@ const rawProducts: RawProduct[] = [
     aerolopaUrl: "https://www.aerolopa.com/aa",
   },
   {
-    id: "21",
-    rank: 21,
+    id: "22",
+    rank: 22,
     productName: "Polaris",
     airline: "United",
     airlineCode: "UA",
@@ -724,7 +745,7 @@ function PlaceAutosuggest({
       />
 
       {shouldShow && (
-        <div className="absolute z-30 mt-2 max-h-72 w-full overflow-auto rounded-2xl border border-cyan-400/10 bg-slate-950/95 p-2 shadow-2xl shadow-black/50 backdrop-blur-xl">
+        <div className="absolute z-30 mt-2 max-h-80 w-full overflow-auto rounded-2xl border border-cyan-400/10 bg-slate-950/95 p-2 shadow-2xl shadow-black/50 backdrop-blur-xl">
           {suggestions.map((suggestion) => (
             <button
               key={suggestion}
@@ -830,8 +851,7 @@ export default function HomePage() {
       .sort(
         (a, b) =>
           scoreSuggestion(outboundPlace, b) - scoreSuggestion(outboundPlace, a) || a.localeCompare(b)
-      )
-      .slice(0, 8);
+      );
   }, [outboundPlace, filteredOutboundPlaces, placeCatalog]);
 
   const returnPlaceOptions = useMemo(() => {
@@ -846,8 +866,7 @@ export default function HomePage() {
       .sort(
         (a, b) =>
           scoreSuggestion(returnPlace, b) - scoreSuggestion(returnPlace, a) || a.localeCompare(b)
-      )
-      .slice(0, 8);
+      );
   }, [returnPlace, filteredReturnPlaces, placeCatalog]);
 
   const filteredProducts = useMemo(() => {
