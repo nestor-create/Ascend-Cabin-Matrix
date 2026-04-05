@@ -121,8 +121,7 @@ const rawProducts: RawProduct[] = [
     ],
     bestFor: ["Privacy", "Luxury"],
     seatInsight: "Private suite with doors and a fully lie-flat bed, designed for maximum privacy.",
-    description:
-      "Lufthansa’s newest flagship First Class suite under Allegris. Treated here as roundtrip-capable on listed city pairs.",
+    description: "Lufthansa’s newest flagship First Class suite under Allegris.",
     image: "/images/allegris-first.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
     aerolopaUrl: "https://www.aerolopa.com/lh",
@@ -143,7 +142,7 @@ const rawProducts: RawProduct[] = [
     ],
     bestFor: ["Privacy", "Choice"],
     seatInsight: "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
-    description: "Lufthansa’s new Allegris Business Class with route-aware roundtrip matching.",
+    description: "Lufthansa’s new Allegris Business Class.",
     image: "/images/allegris-business.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
     aerolopaUrl: "https://www.aerolopa.com/lh",
@@ -592,6 +591,7 @@ const locationAliases: Record<string, string[]> = {
   "washington dulles": ["washington dulles", "dulles", "iad", "washington"],
   newark: ["newark", "ewr"],
   "dallas fort worth": ["dallas/fort worth", "dallas fort worth", "dfw", "dallas", "fort worth"],
+  "dallas/fort worth": ["dallas/fort worth", "dallas fort worth", "dfw", "dallas", "fort worth"],
   melbourne: ["melbourne", "mel"],
   perth: ["perth", "per"],
   shanghai: ["shanghai", "pvg", "sha"],
@@ -613,14 +613,6 @@ function normalizeText(value: string) {
     .trim();
 }
 
-function titleCase(value: string) {
-  return value
-    .split(" ")
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
-
 function splitRoute(route: string): RoutePair | null {
   const parts = route.split("→").map((part) => part.trim());
   if (parts.length !== 2) return null;
@@ -638,20 +630,6 @@ function dedupeRoutePairs(routePairs: RoutePair[]) {
   }
 
   return Array.from(map.values());
-}
-
-function toBidirectionalPairs(routes: string[]) {
-  const pairs: RoutePair[] = [];
-
-  for (const route of routes) {
-    const parsed = splitRoute(route);
-    if (!parsed) continue;
-
-    pairs.push(parsed);
-    pairs.push({ from: parsed.to, to: parsed.from });
-  }
-
-  return dedupeRoutePairs(pairs);
 }
 
 function getLocationTokens(location: string) {
@@ -708,12 +686,6 @@ function matchesRoutePair(pair: RoutePair, input: string) {
 
 function formatRoute(pair: RoutePair) {
   return `${pair.from} → ${pair.to}`;
-}
-
-function reverseRouteLabel(route: string) {
-  const parsed = splitRoute(route);
-  if (!parsed) return "";
-  return `${parsed.to} → ${parsed.from}`;
 }
 
 function scoreSuggestion(input: string, route: string) {
@@ -812,7 +784,7 @@ function RouteAutosuggest({
 
 const premiumProducts: Product[] = rawProducts.map(({ routes, ...item }) => ({
   ...item,
-  routePairs: toBidirectionalPairs(routes),
+  routePairs: dedupeRoutePairs(routes.map((route) => splitRoute(route)).filter(Boolean) as RoutePair[]),
 }));
 
 export default function HomePage() {
@@ -820,8 +792,7 @@ export default function HomePage() {
   const [airline, setAirline] = useState("");
   const [aircraft, setAircraft] = useState("");
   const [cabin, setCabin] = useState("");
-  const [outboundRoute, setOutboundRoute] = useState("");
-  const [returnRoute, setReturnRoute] = useState("");
+  const [route, setRoute] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const airlineOptions = useMemo(
@@ -864,7 +835,7 @@ export default function HomePage() {
     });
   }, [search, airline, aircraft, cabin, selectedTags]);
 
-  const outboundSuggestions = useMemo(() => {
+  const routeSuggestions = useMemo(() => {
     const scopedRoutes = Array.from(
       new Set(
         productsMatchingNonRouteFilters.flatMap((item) =>
@@ -873,92 +844,25 @@ export default function HomePage() {
       )
     );
 
-    const base = outboundRoute.trim() ? scopedRoutes : routeCatalog;
+    const base = route.trim() ? scopedRoutes : routeCatalog;
 
     return [...base]
-      .filter((route) => (outboundRoute.trim() ? scoreSuggestion(outboundRoute, route) > 0 : true))
-      .sort((a, b) => scoreSuggestion(outboundRoute, b) - scoreSuggestion(outboundRoute, a) || a.localeCompare(b))
-      .slice(0, 8);
-  }, [outboundRoute, productsMatchingNonRouteFilters, routeCatalog]);
-
-  const returnSuggestions = useMemo(() => {
-    if (outboundRoute.trim()) {
-      const directReverse = reverseRouteLabel(outboundRoute);
-      if (directReverse) {
-        const reverseMatches = productsMatchingNonRouteFilters.some((item) =>
-          item.routePairs.some((pair) => formatRoute(pair) === directReverse)
-        );
-
-        if (reverseMatches) {
-          const rest = routeCatalog.filter((route) => route !== directReverse);
-          return [directReverse, ...rest.filter((route) => scoreSuggestion(returnRoute || directReverse, route) > 0)].slice(0, 8);
-        }
-      }
-    }
-
-    const scopedRoutes = Array.from(
-      new Set(
-        productsMatchingNonRouteFilters.flatMap((item) =>
-          item.routePairs.map((pair) => formatRoute(pair))
-        )
+      .filter((itemRoute) => (route.trim() ? scoreSuggestion(route, itemRoute) > 0 : true))
+      .sort(
+        (a, b) =>
+          scoreSuggestion(route, b) - scoreSuggestion(route, a) || a.localeCompare(b)
       )
-    );
-
-    const base = returnRoute.trim() ? scopedRoutes : routeCatalog;
-
-    return [...base]
-      .filter((route) => (returnRoute.trim() ? scoreSuggestion(returnRoute, route) > 0 : true))
-      .sort((a, b) => scoreSuggestion(returnRoute, b) - scoreSuggestion(returnRoute, a) || a.localeCompare(b))
       .slice(0, 8);
-  }, [outboundRoute, returnRoute, productsMatchingNonRouteFilters, routeCatalog]);
-
-  useEffect(() => {
-    if (!outboundRoute.trim()) return;
-    if (returnRoute.trim()) return;
-
-    const reversed = reverseRouteLabel(outboundRoute);
-    if (!reversed) return;
-
-    const exists = routeCatalog.includes(reversed);
-    if (exists) {
-      setReturnRoute(reversed);
-    }
-  }, [outboundRoute, returnRoute, routeCatalog]);
+  }, [route, productsMatchingNonRouteFilters, routeCatalog]);
 
   const filteredProducts = useMemo(() => {
     return productsMatchingNonRouteFilters.filter((item) => {
-      const matchesOutbound =
-        !outboundRoute.trim() || item.routePairs.some((pair) => matchesRoutePair(pair, outboundRoute));
+      const matchesSelectedRoute =
+        !route.trim() || item.routePairs.some((pair) => matchesRoutePair(pair, route));
 
-      const matchesReturn =
-        !returnRoute.trim() || item.routePairs.some((pair) => matchesRoutePair(pair, returnRoute));
-
-      if (!matchesOutbound || !matchesReturn) return false;
-
-      if (outboundRoute.trim() && returnRoute.trim()) {
-        const outboundParsed = splitRoute(outboundRoute);
-        const returnParsed = splitRoute(returnRoute);
-
-        if (outboundParsed && returnParsed) {
-          const hasExactRoundtrip =
-            item.routePairs.some(
-              (pair) =>
-                normalizeText(pair.from) === normalizeText(outboundParsed.from) &&
-                normalizeText(pair.to) === normalizeText(outboundParsed.to)
-            ) &&
-            item.routePairs.some(
-              (pair) =>
-                normalizeText(pair.from) === normalizeText(returnParsed.from) &&
-                normalizeText(pair.to) === normalizeText(returnParsed.to)
-            );
-
-          return hasExactRoundtrip;
-        }
-      }
-
-      return true;
+      return matchesSelectedRoute;
     });
-  }, [productsMatchingNonRouteFilters, outboundRoute, returnRoute]);
+  }, [productsMatchingNonRouteFilters, route]);
 
   const topThree = filteredProducts.slice(0, 3);
 
@@ -973,8 +877,7 @@ export default function HomePage() {
     setAirline("");
     setAircraft("");
     setCabin("");
-    setOutboundRoute("");
-    setReturnRoute("");
+    setRoute("");
     setSelectedTags([]);
   }
 
@@ -1025,20 +928,20 @@ export default function HomePage() {
                 </div>
 
                 <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-                  Roundtrip route search that suggests live matches as you type.
+                  One-way route search with live route suggestions.
                 </h2>
 
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75 sm:text-base">
-                  This version turns every seeded route into a bidirectional route pair, so products can match outbound and return searches correctly.
-                  Type JFK, London, MUC, PVG, or a full route like Munich to Shanghai and the dropdown will suggest valid routes from your own data.
+                  This version uses a single route field only, so users search one route at a time
+                  without seeing outbound and return together.
                 </p>
 
                 <p className="mt-4 max-w-2xl text-sm font-medium leading-6 text-cyan-100 sm:text-base">
-                  Example: if Allegris is loaded for Munich → Shanghai, the app will also support Shanghai → Munich automatically.
+                  Airline, aircraft, cabin, and best-for filters still dynamically scope the route options.
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-100">
-                  For long-term accuracy, keep the route seed data updated. The logic is now built so future route edits only need to be entered once per city pair.
+                  Updated for a one-way routing flow so the UI no longer suggests two routes for the same search.
                 </div>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-4">
@@ -1052,7 +955,7 @@ export default function HomePage() {
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{routeCatalog.length}</p>
-                    <p className="mt-1 text-sm text-white/60">searchable routes</p>
+                    <p className="mt-1 text-sm text-white/60">searchable one-way routes</p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/10 bg-black/35 p-4">
                     <p className="text-2xl font-semibold">{filteredProducts.length}</p>
@@ -1068,14 +971,14 @@ export default function HomePage() {
                 </p>
 
                 <div className="mt-4 space-y-3 text-sm leading-6 text-white/75">
-                  <p>Outbound and return are now autosuggest inputs, not plain text only.</p>
-                  <p>Routes are stored as roundtrip-capable pairs and expanded bidirectionally.</p>
-                  <p>Return route auto-fills with the reverse of the outbound route when available.</p>
-                  <p>Search respects airline, aircraft, cabin, and best-for filters before building route suggestions.</p>
+                  <p>Removed the return route field completely.</p>
+                  <p>Removed reverse-route auto-fill logic.</p>
+                  <p>Routes now display one-way only in cards and suggestions.</p>
+                  <p>Airline, aircraft, cabin, and tags still filter the route suggestion list.</p>
                 </div>
 
                 <div className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-sm text-cyan-100">
-                  Tip: type a city, airport code, or a full route. Suggestions are generated from the routes already added to your dataset.
+                  Tip: type a city, airport code, or a full route like JFK to Doha.
                 </div>
               </div>
             </div>
@@ -1152,29 +1055,14 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="mt-3 grid gap-3 lg:grid-cols-2">
+            <div className="mt-3">
               <RouteAutosuggest
-                label="Outbound"
+                label="Route"
                 placeholder="e.g. JFK to Doha or Munich"
-                value={outboundRoute}
-                onChange={setOutboundRoute}
-                suggestions={outboundSuggestions}
-                onSelect={(route) => {
-                  setOutboundRoute(route);
-                  if (!returnRoute.trim()) {
-                    const reversed = reverseRouteLabel(route);
-                    if (reversed) setReturnRoute(reversed);
-                  }
-                }}
-              />
-
-              <RouteAutosuggest
-                label="Return"
-                placeholder="e.g. Doha to JFK or Shanghai"
-                value={returnRoute}
-                onChange={setReturnRoute}
-                suggestions={returnSuggestions}
-                onSelect={setReturnRoute}
+                value={route}
+                onChange={setRoute}
+                suggestions={routeSuggestions}
+                onSelect={setRoute}
               />
             </div>
 
@@ -1333,19 +1221,15 @@ export default function HomePage() {
                       <RouteIcon />
                       <div className="w-full">
                         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">
-                          Roundtrip route list
+                          Available routes
                         </p>
                         <div className="mt-2 flex flex-wrap gap-2">
-                          {dedupeRoutePairs(
-                            item.routePairs.filter(
-                              (pair) => normalizeText(pair.from) <= normalizeText(pair.to)
-                            )
-                          ).map((pair) => (
+                          {item.routePairs.map((pair) => (
                             <span
                               key={formatRoute(pair)}
                               className="rounded-full border border-cyan-400/10 bg-white/5 px-3 py-1 text-xs text-cyan-100/85"
                             >
-                              {pair.from} ⇄ {pair.to}
+                              {formatRoute(pair)}
                             </span>
                           ))}
                         </div>
