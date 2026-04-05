@@ -1042,7 +1042,6 @@ export default function HomePage() {
     });
   }, [productsMatchingAirlineAndNonRoute, selectedOutboundPlaces, selectedReturnPlaces, selectedTags]);
 
-  const topThree = filteredProducts.slice(0, 3);
 
   function toggleTag(tag: string) {
     setSelectedTags((current) =>
@@ -1114,7 +1113,7 @@ export default function HomePage() {
             />
             <div>
               <p className="text-xs uppercase tracking-[0.32em] text-cyan-100/55">Ascend</p>
-              <h1 className="brand-title text-3xl font-semibold sm:text-4xl">Ascend Cabin Optimizer</h1>
+        
             </div>
           </div>
 
@@ -1412,22 +1411,7 @@ export default function HomePage() {
                         </p>
                         <p className="mt-4 text-sm leading-6 text-white/70">{item.description}</p>
 
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          {item.bestFor.map((value) => (
-                            <span
-                              key={value}
-                              className="rounded-full border border-cyan-400/10 bg-white/5 px-3 py-1 text-xs text-white/75"
-                            >
-                              Best for {value}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
-            </section>
+
           )}
 
           <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
