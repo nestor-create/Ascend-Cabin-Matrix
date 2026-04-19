@@ -1172,44 +1172,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        <section
-          className="mb-8 overflow-hidden"
-          style={{
-            border: `1px solid ${COLORS.border}`,
-            borderRadius: 2,
-            background: "linear-gradient(160deg, rgba(18,25,51,0.95) 0%, rgba(11,16,32,0.92) 100%)",
-          }}
-        >
-          <div className="p-8 lg:p-10">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div className="flex items-center gap-4">
-                <img
-                  src={BRAND_LOGO}
-                  alt="Ascend Cabin Optimizer"
-                  className="h-16 w-16 rounded-2xl object-cover shadow-lg shadow-[#6C63E6]/20"
-                />
-                <div>
-                  <div
-                    className="font-serif-display text-3xl font-normal leading-none tracking-[-0.02em]"
-                    style={{ color: COLORS.white }}
-                  >
-                    Ascend
-                  </div>
-                  <div
-                    className="mt-2 text-[11px] font-medium uppercase tracking-[0.28em]"
-                    style={{ color: COLORS.indigo }}
-                  >
-                    Cabin Optimizer
-                  </div>
-                </div>
-              </div>
-
-              <div className="max-w-xl text-sm leading-6" style={{ color: COLORS.whiteSoft }}>
-                Search by route, aircraft, airline, and cabin to compare premium products in one clean view.
-              </div>
-            </div>
-          </div>
-        </section>
 
         <section
           className="mb-8 p-6 lg:p-8"
