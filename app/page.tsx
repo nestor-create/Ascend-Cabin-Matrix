@@ -30,9 +30,6 @@ type RawProduct = Omit<Product, "routePairs"> & {
   routes: string[];
 };
 
-const ASCEND_LOGO =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALUAAAAlCAYAAAAENajqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAc9SURBVHhe7Z1rbBRFGMf3zhYEvBVQBG0Q0WjFh5jGQ4JAEpA0xGQQE6PR5EATjQY8Qh5i0MbY4mjpIY0mJgglQqOY0Z8V0WQxQeK2V1AIBH6iB4FVEQ6K0S0IuL3q9/t4m7N3d3f3zuzs7M7s7v7v5mZ2d2Z2dnZ2dkhEISL8N7gDkR0B0p9H7QJwJ8C8C7gQk0m1m3wG8BvgE8B4wJ0a8R0mVgN8F3gH8APgM8C7gTqv6l5I4m1r4AmgB9G9C3gW4D1gL9P0V3M2c2V0Q7gM8KkP0mJ4S0m9Jm4BfA24F2gQ6bPz8n3vW8m8q0kq1R8m6mG1lCwW2b5u8Hn0mGgA2b+1wG8B7QF8B7QF8A7QH8mY2mJq7Y7n+gP2xWb2S+7wq3qf4Jm4A/BvwN8B7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8C0m9V8y8mS0r3x1VfQb4FvAN4K+gH6S8mL8m3m7m2l8h5F6n2F1m7QK6D3gA8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8C5wB8D3gF8A7QH8K5W7t0aYf6zv1i8v2Uqf2+6xZ7v7o6zqgkHjYfF9d0cQm3z8vKk0Nf1L9uQ8wT8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8AzgN8FPAI8C/AH8DPAe0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AO4D3gY8CjwL8AfwM8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A7gPeBjwKPAfwB/AzwHtAfwDeA/wHtAfwDeA/wHtAfwDeA/wHtAfwDeA/wHtAfwDeA/wHtAfwDuA94GPAo8B/AH8DPAe0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AO4D3gY8CjwL8AfwM8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A7gPeBjwKPAfwB/AzwHtAfwDeA/wHtAfwDeA/wHtAfwDeA/wHtAfwDeA/wHtAfwDeA/wHtAfwDuA94GPAo8B/AH8DPAe0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AO4D3gY8CjwL8AfwM8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8C6m2oQk8Y3AAAAAElFTkSuQmCC";
-
 function SearchIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -93,6 +90,14 @@ function RouteIcon() {
       <path d="M3 17h6" />
       <path d="M15 7h6" />
       <path d="M9 17a4 4 0 1 0 0-8h6a4 4 0 1 1 0 8" />
+    </svg>
+  );
+}
+
+function DiamondIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-3 w-3" fill="currentColor">
+      <path d="M12 2l10 10-10 10L2 12 12 2Z" />
     </svg>
   );
 }
@@ -717,8 +722,6 @@ export default function HomePage() {
     });
   }, [productsMatchingNonPlaceFilters, outboundPlace, returnPlace]);
 
-  const topThree = filteredProducts.slice(0, 3);
-
   function toggleTag(tag: string) {
     setSelectedTags((current) =>
       current.includes(tag) ? current.filter((value) => value !== tag) : [...current, tag]
@@ -812,34 +815,8 @@ export default function HomePage() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        <header className="pb-4">
-          <div className="flex items-center gap-3">
-            <img src={ASCEND_LOGO} alt="Ascend logo" className="h-8 w-auto object-contain" />
-            <div>
-              <div className="text-[26px] font-semibold leading-none text-white">
-                Ascend Cabin Optimizer
-              </div>
-              <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-[#6C63E6]">
-                Ascend Cabin Optimizer
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <div className="border-t border-[#6C63E6]/20" />
-
         <section className="py-12 sm:py-16 lg:py-20">
           <div className="max-w-3xl">
-            <div className="mb-8 inline-flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-[#6C63E6]">
-              <span className="block h-px w-6 bg-[#6C63E6]" />
-              Premium cabin intelligence
-            </div>
-
-            <div className="mb-6 flex items-center gap-3">
-              <img src={ASCEND_LOGO} alt="Ascend logo" className="h-10 w-auto object-contain" />
-              <span className="text-lg font-medium text-white/90">Ascend Cabin Optimizer</span>
-            </div>
-
             <h1 className="text-5xl font-semibold leading-[0.95] tracking-[-0.04em] text-white sm:text-6xl lg:text-[74px]">
               Find your perfect
               <br />
@@ -861,7 +838,7 @@ export default function HomePage() {
             { n: filteredProducts.length, l: "Showing" },
           ].map(({ n, l }) => (
             <div key={l}>
-              <div className="text-5xl font-semibold text-[#6C63E6]">{n}</div>
+              <div className="text-5xl font-semibold text-white">{n}</div>
               <div className="mt-2 text-[11px] uppercase tracking-[0.18em] text-[#6C63E6]/65">{l}</div>
             </div>
           ))}
@@ -1048,105 +1025,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
-        {filteredProducts.length > 0 && (
-          <section className="mb-8">
-            <div className="mb-5 flex items-center justify-between gap-4">
-              <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#6C63E6]">
-                  Top matches
-                </p>
-                <h2 className="mt-1 text-2xl font-semibold tracking-[-0.02em] text-white">
-                  Best shortlist right now
-                </h2>
-              </div>
-              <p className="text-sm text-white/45">
-                Showing {filteredProducts.length} product{filteredProducts.length === 1 ? "" : "s"}
-              </p>
-            </div>
-
-            <div className="grid gap-4 lg:grid-cols-3">
-              {topThree.map((item) => {
-                const matchingRoutes = item.routePairs.filter((pair) => {
-                  const outOk = !outboundPlace.trim() || normalizeText(pair.from).includes(normalizeText(outboundPlace));
-                  const retOk = !returnPlace.trim() || normalizeText(pair.to).includes(normalizeText(returnPlace));
-                  return outOk && retOk;
-                });
-
-                return (
-                  <article
-                    key={`${item.id}-featured`}
-                    className="cabin-card overflow-hidden"
-                    style={{
-                      border: "1px solid rgba(108,99,230,0.24)",
-                      borderRadius: 2,
-                      background: "linear-gradient(180deg, rgba(16,19,46,0.96) 0%, rgba(8,11,24,0.92) 100%)",
-                    }}
-                  >
-                    <div className="relative h-56 overflow-hidden">
-                      <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#080B18]/60 to-transparent pointer-events-none" />
-                      <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
-                        <span
-                          className="text-xs font-medium uppercase tracking-[0.12em]"
-                          style={{
-                            background: "#6C63E6",
-                            color: "#FFFFFF",
-                            padding: "4px 10px",
-                            borderRadius: 2,
-                          }}
-                        >
-                          #{item.rank}
-                        </span>
-                        <span
-                          className={`text-xs font-medium ${cabinAccentFeatured[item.cabinType]}`}
-                          style={{ padding: "4px 10px", borderRadius: 2 }}
-                        >
-                          {item.cabinType}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="p-5">
-                      <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-[#6C63E6]">
-                        <span>{item.airlineCode}</span>
-                        <span className="text-[#6C63E6]/35">·</span>
-                        <span>{item.airline}</span>
-                      </div>
-                      <h3 className="mt-2 text-xl font-semibold leading-tight tracking-[-0.01em] text-white">
-                        {item.productName}
-                      </h3>
-                      <p className="mt-1 text-sm text-white/45">{item.aircraft}</p>
-                      <p className="mt-2 text-sm text-[#B9B4FF]">
-                        {matchingRoutes[0] ? formatRoute(matchingRoutes[0]) : formatRoute(item.routePairs[0])}
-                      </p>
-                      <p className="mt-3 text-sm leading-6 text-white/60">
-                        {item.description}
-                      </p>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {item.bestFor.map((value) => (
-                          <span
-                            key={value}
-                            className="text-[10px] font-medium uppercase tracking-[0.10em]"
-                            style={{
-                              border: "1px solid rgba(108,99,230,0.22)",
-                              background: "rgba(108,99,230,0.08)",
-                              color: "#D9D7FF",
-                              padding: "3px 10px",
-                              borderRadius: 2,
-                            }}
-                          >
-                            {value}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-        )}
 
         <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {filteredProducts.map((item) => {
@@ -1373,6 +1251,85 @@ export default function HomePage() {
             </button>
           </section>
         )}
+
+        <section
+          className="mt-12 px-4 py-8 sm:px-6 lg:px-8"
+          style={{
+            border: "1px solid rgba(108,99,230,0.18)",
+            background:
+              "radial-gradient(circle at 50% 50%, rgba(108,99,230,0.10) 0%, rgba(8,11,24,0.96) 65%), linear-gradient(180deg, rgba(12,19,42,0.98) 0%, rgba(8,11,24,0.98) 100%)",
+            borderRadius: 2,
+          }}
+        >
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.16em] text-[#D7B46C]">
+              <DiamondIcon />
+              Never book your own flight again
+            </div>
+
+            <h2 className="mt-6 text-4xl font-semibold leading-[1.02] tracking-[-0.03em] text-white sm:text-5xl lg:text-[58px]">
+              24/7 access to your
+              <br />
+              travel concierge
+            </h2>
+
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-white/60">
+              Save time and money booking premium travel. Message on WhatsApp, compare your best options, and move from shortlist to booking — all handled in one place.
+            </p>
+
+            <div className="mt-10 grid gap-6 sm:grid-cols-3">
+              <div>
+                <div className="text-5xl font-semibold text-[#D7B46C]">35%</div>
+                <div className="mt-2 text-[11px] uppercase tracking-[0.08em] text-white/40">
+                  Average savings on premium cabins
+                </div>
+              </div>
+              <div>
+                <div className="text-5xl font-semibold text-[#D7B46C]">82%</div>
+                <div className="mt-2 text-[11px] uppercase tracking-[0.08em] text-white/40">
+                  Members recoup in first 2 trips
+                </div>
+              </div>
+              <div>
+                <div className="text-5xl font-semibold text-[#D7B46C]">60s</div>
+                <div className="mt-2 text-[11px] uppercase tracking-[0.08em] text-white/40">
+                  Concierge response time
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-10 space-y-3">
+              <a
+                href="https://www.joinascend.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center px-6 py-4 text-base font-medium uppercase tracking-[0.04em] transition-colors"
+                style={{
+                  borderRadius: 2,
+                  background: "#D7B46C",
+                  color: "#081728",
+                }}
+              >
+                Apply for membership
+              </a>
+
+              <a
+                href="https://www.joinascend.com/pricing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center px-6 py-4 text-base font-medium uppercase tracking-[0.04em] transition-colors"
+                style={{
+                  borderRadius: 2,
+                  border: "1px solid rgba(215,180,108,0.18)",
+                  background: "transparent",
+                  color: "rgba(255,255,255,0.45)",
+                }}
+              >
+                View pricing
+              </a>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
   );
