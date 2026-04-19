@@ -98,14 +98,6 @@ function RouteIcon() {
   );
 }
 
-function ChevronIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
-
 function DiamondIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-3 w-3" fill="currentColor">
@@ -113,6 +105,24 @@ function DiamondIcon() {
     </svg>
   );
 }
+
+// ─── Theme ────────────────────────────────────────────────────────────────────
+
+const COLORS = {
+  bg: "#0B1020",
+  bgAlt: "#121933",
+  panel: "rgba(18, 25, 51, 0.92)",
+  panelSoft: "rgba(18, 25, 51, 0.72)",
+  border: "rgba(108, 99, 230, 0.22)",
+  borderStrong: "rgba(108, 99, 230, 0.38)",
+  indigo: "#6C63E6",
+  indigoSoft: "rgba(108, 99, 230, 0.10)",
+  indigoMid: "rgba(108, 99, 230, 0.18)",
+  white: "#FFFFFF",
+  whiteSoft: "rgba(255,255,255,0.72)",
+  whiteMuted: "rgba(255,255,255,0.52)",
+  whiteFaint: "rgba(255,255,255,0.32)",
+};
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -151,8 +161,10 @@ const rawProducts: RawProduct[] = [
       "Munich → Bengaluru",
     ],
     bestFor: ["Privacy", "Luxury"],
-    seatInsight: "Private suite with closing doors and a fully lie-flat bed, engineered for maximum privacy on long-haul routes.",
-    description: "Lufthansa's newest flagship First Class suite under the Allegris product family — the most refined hard product the airline has ever offered.",
+    seatInsight:
+      "Private suite with closing doors and a fully lie-flat bed, engineered for maximum privacy on long-haul routes.",
+    description:
+      "Lufthansa's newest flagship First Class suite under the Allegris product family — the most refined hard product the airline has ever offered.",
     image: "/images/allegris-first.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
     aerolopaUrl: "https://www.aerolopa.com/lh",
@@ -197,8 +209,10 @@ const rawProducts: RawProduct[] = [
       "Frankfurt → Kuala Lumpur",
     ],
     bestFor: ["Privacy", "Choice"],
-    seatInsight: "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
-    description: "Lufthansa's new Allegris Business Class offers more seat variety than any other carrier — a genuine upgrade to the cabin experience.",
+    seatInsight:
+      "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
+    description:
+      "Lufthansa's new Allegris Business Class offers more seat variety than any other carrier — a genuine upgrade to the cabin experience.",
     image: "/images/allegris-business.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
     aerolopaUrl: "https://www.aerolopa.com/lh",
@@ -220,8 +234,10 @@ const rawProducts: RawProduct[] = [
       "Tokyo Narita → San Francisco",
     ],
     bestFor: ["Space", "Solo"],
-    seatInsight: "Extra-wide 1-2-1 business class suite with direct aisle access, a sliding door, and exceptional personal space throughout.",
-    description: "ANA's flagship business class suite, widely regarded as one of the world's best for solo travellers seeking space and privacy.",
+    seatInsight:
+      "Extra-wide 1-2-1 business class suite with direct aisle access, a sliding door, and exceptional personal space throughout.",
+    description:
+      "ANA's flagship business class suite, widely regarded as one of the world's best for solo travellers seeking space and privacy.",
     image: "/images/the-room.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/nh-ana/",
     aerolopaUrl: "https://www.aerolopa.com/nh",
@@ -243,8 +259,10 @@ const rawProducts: RawProduct[] = [
       "Doha → Los Angeles",
     ],
     bestFor: ["Couples", "Privacy"],
-    seatInsight: "Enclosed suite with closing doors and innovative double-bed configuration — centre pairs convert to a shared space for couples.",
-    description: "Qatar Airways' award-winning flagship business class, setting the benchmark for privacy and flexibility in the cabin.",
+    seatInsight:
+      "Enclosed suite with closing doors and innovative double-bed configuration — centre pairs convert to a shared space for couples.",
+    description:
+      "Qatar Airways' award-winning flagship business class, setting the benchmark for privacy and flexibility in the cabin.",
     image: "/images/qsuite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/qr-qatar-airways/",
     aerolopaUrl: "https://www.aerolopa.com/qr",
@@ -257,14 +275,12 @@ const rawProducts: RawProduct[] = [
     airlineCode: "SQ",
     aircraft: "A380-800",
     cabinType: "First",
-    routes: [
-      "Singapore → London Heathrow",
-      "Singapore → Sydney",
-      "Singapore → Shanghai",
-    ],
+    routes: ["Singapore → London Heathrow", "Singapore → Sydney", "Singapore → Shanghai"],
     bestFor: ["Luxury", "Space"],
-    seatInsight: "One of the largest private suites in commercial aviation, with a separate ottoman, wardrobe, and convertible double bed.",
-    description: "Singapore Airlines' Suites product on the A380 is widely considered the pinnacle of commercial aviation luxury.",
+    seatInsight:
+      "One of the largest private suites in commercial aviation, with a separate ottoman, wardrobe, and convertible double bed.",
+    description:
+      "Singapore Airlines' Suites product on the A380 is widely considered the pinnacle of commercial aviation luxury.",
     image: "/images/singapore-suites.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/sq-singapore-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/sq",
@@ -284,8 +300,10 @@ const rawProducts: RawProduct[] = [
       "Abu Dhabi → Singapore",
     ],
     bestFor: ["Space", "Luxury"],
-    seatInsight: "A380 first class with a separate armchair and fully flat bed in a distinct suite — truly apartment-scale dimensions in the sky.",
-    description: "Etihad's iconic A380 First Apartment remains one of the most spacious first class experiences available on any airline.",
+    seatInsight:
+      "A380 first class with a separate armchair and fully flat bed in a distinct suite — truly apartment-scale dimensions in the sky.",
+    description:
+      "Etihad's iconic A380 First Apartment remains one of the most spacious first class experiences available on any airline.",
     image: "/images/etihad-apartment.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ey-etihad-airways/",
     aerolopaUrl: "https://www.aerolopa.com/ey",
@@ -298,13 +316,12 @@ const rawProducts: RawProduct[] = [
     airlineCode: "NH",
     aircraft: "777-300ER",
     cabinType: "First",
-    routes: [
-      "Tokyo Haneda → New York JFK",
-      "Tokyo Haneda → London Heathrow",
-    ],
+    routes: ["Tokyo Haneda → New York JFK", "Tokyo Haneda → London Heathrow"],
     bestFor: ["Privacy", "Luxury"],
-    seatInsight: "Enclosed suite with strong acoustic and visual privacy, a residential-style design, and a wide fully flat bed.",
-    description: "ANA's flagship first class suite on selected 777-300ER flights — the quietest and most residential first class in its class.",
+    seatInsight:
+      "Enclosed suite with strong acoustic and visual privacy, a residential-style design, and a wide fully flat bed.",
+    description:
+      "ANA's flagship first class suite on selected 777-300ER flights — the quietest and most residential first class in its class.",
     image: "/images/the-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/nh-ana/boeing-777-300er/",
     aerolopaUrl: "https://www.aerolopa.com/nh",
@@ -317,14 +334,12 @@ const rawProducts: RawProduct[] = [
     airlineCode: "EK",
     aircraft: "777-300ER",
     cabinType: "First",
-    routes: [
-      "Dubai → Brussels",
-      "Dubai → Geneva",
-      "Dubai → Tokyo Haneda",
-    ],
+    routes: ["Dubai → Brussels", "Dubai → Geneva", "Dubai → Tokyo Haneda"],
     bestFor: ["Privacy", "Solo"],
-    seatInsight: "Fully enclosed suite with floor-to-ceiling privacy walls, zero-gravity seating, and a premium personal minibar.",
-    description: "Emirates' newest first class product, delivering complete visual privacy and a futuristic design language unlike anything else in the sky.",
+    seatInsight:
+      "Fully enclosed suite with floor-to-ceiling privacy walls, zero-gravity seating, and a premium personal minibar.",
+    description:
+      "Emirates' newest first class product, delivering complete visual privacy and a futuristic design language unlike anything else in the sky.",
     image: "/images/emirates-game-changer.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ek-emirates/",
     aerolopaUrl: "https://www.aerolopa.com/ek",
@@ -354,8 +369,10 @@ const rawProducts: RawProduct[] = [
       "Paris CDG → Washington D.C.",
     ],
     bestFor: ["Luxury", "Exclusivity"],
-    seatInsight: "Highly exclusive first class with just four suites per aircraft, refined French service, and a spacious fully flat bed.",
-    description: "Air France's La Première is one of the most exclusive first class products available — only four seats per flight.",
+    seatInsight:
+      "Highly exclusive first class with just four suites per aircraft, refined French service, and a spacious fully flat bed.",
+    description:
+      "Air France's La Première is one of the most exclusive first class products available — only four seats per flight.",
     image: "/images/la-premiere.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/af-air-france/",
     aerolopaUrl: "https://www.aerolopa.com/af",
@@ -375,8 +392,10 @@ const rawProducts: RawProduct[] = [
       "London Heathrow → San Francisco",
     ],
     bestFor: ["Privacy", "Network"],
-    seatInsight: "1-2-1 layout with closing doors and direct aisle access for every seat — a substantial improvement over older Club World.",
-    description: "British Airways' modern Club Suite is a strong option for LHR-routed itineraries on an unrivalled global network.",
+    seatInsight:
+      "1-2-1 layout with closing doors and direct aisle access for every seat — a substantial improvement over older Club World.",
+    description:
+      "British Airways' modern Club Suite is a strong option for LHR-routed itineraries on an unrivalled global network.",
     image: "/images/club-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ba-british-airways/",
     aerolopaUrl: "https://www.aerolopa.com/ba",
@@ -396,8 +415,10 @@ const rawProducts: RawProduct[] = [
       "Atlanta → Johannesburg",
     ],
     bestFor: ["Privacy", "Consistency"],
-    seatInsight: "Suite-style seat with a sliding door and direct aisle access — Delta's most private business class product.",
-    description: "Delta One Suite is the most consistent enclosed business class product on US carriers for transatlantic and transpacific routes.",
+    seatInsight:
+      "Suite-style seat with a sliding door and direct aisle access — Delta's most private business class product.",
+    description:
+      "Delta One Suite is the most consistent enclosed business class product on US carriers for transatlantic and transpacific routes.",
     image: "/images/delta-one-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/dl-delta-air-lines/",
     aerolopaUrl: "https://www.aerolopa.com/dl",
@@ -417,8 +438,10 @@ const rawProducts: RawProduct[] = [
       "Hong Kong → San Francisco",
     ],
     bestFor: ["Privacy", "Storage"],
-    seatInsight: "Next-generation suite with a closing door, generous storage throughout, and Cathay's signature attention to ergonomics.",
-    description: "Cathay Pacific's newest flagship business class suite — a significant upgrade in privacy and material quality over the prior product.",
+    seatInsight:
+      "Next-generation suite with a closing door, generous storage throughout, and Cathay's signature attention to ergonomics.",
+    description:
+      "Cathay Pacific's newest flagship business class suite — a significant upgrade in privacy and material quality over the prior product.",
     image: "/images/cathay-aria.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/cx-cathay-pacific/",
     aerolopaUrl: "https://www.aerolopa.com/cx",
@@ -438,8 +461,10 @@ const rawProducts: RawProduct[] = [
       "Tokyo Haneda → Dallas/Fort Worth",
     ],
     bestFor: ["Comfort", "Solo"],
-    seatInsight: "Direct aisle access for every seat with a thoughtful 1-2-1 layout and Japan Airlines' renowned soft product.",
-    description: "JAL's Sky Suite is consistently rated among the best business class experiences for comfort and service quality.",
+    seatInsight:
+      "Direct aisle access for every seat with a thoughtful 1-2-1 layout and Japan Airlines' renowned soft product.",
+    description:
+      "JAL's Sky Suite is consistently rated among the best business class experiences for comfort and service quality.",
     image: "/images/jal-sky-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/jl-japan-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/jl",
@@ -460,8 +485,10 @@ const rawProducts: RawProduct[] = [
       "Taipei → London Heathrow",
     ],
     bestFor: ["Comfort", "Sleep"],
-    seatInsight: "Reverse herringbone seating with direct aisle access, exceptional bed length, and a strong reputation for sleep quality.",
-    description: "EVA Air's Royal Laurel is among the highest-rated business class cabins for sleep, particularly on Pacific routes.",
+    seatInsight:
+      "Reverse herringbone seating with direct aisle access, exceptional bed length, and a strong reputation for sleep quality.",
+    description:
+      "EVA Air's Royal Laurel is among the highest-rated business class cabins for sleep, particularly on Pacific routes.",
     image: "/images/eva-royal-laurel.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/br-eva-air/",
     aerolopaUrl: "https://www.aerolopa.com/br",
@@ -483,8 +510,10 @@ const rawProducts: RawProduct[] = [
       "Seoul Incheon → Frankfurt",
     ],
     bestFor: ["Privacy", "Luxury"],
-    seatInsight: "Fully enclosed next-generation first class suite with strong visual and acoustic privacy and highly refined finishes.",
-    description: "Korean Air's Kosmo Suites 2.0 is a flagship first class product that outperforms many European equivalents in hard product quality.",
+    seatInsight:
+      "Fully enclosed next-generation first class suite with strong visual and acoustic privacy and highly refined finishes.",
+    description:
+      "Korean Air's Kosmo Suites 2.0 is a flagship first class product that outperforms many European equivalents in hard product quality.",
     image: "/images/korean-kosmo-suites-2.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ke-korean-air/",
     aerolopaUrl: "https://www.aerolopa.com/ke",
@@ -513,8 +542,10 @@ const rawProducts: RawProduct[] = [
       "Seoul Incheon → Tokyo Haneda",
     ],
     bestFor: ["Privacy", "Solo"],
-    seatInsight: "Suite-style business class with a sliding door, direct aisle access, and the most private layout in Korean Air's fleet.",
-    description: "Korean Air's Prestige Suite 2.0 is an underrated business class product available across a wide global network.",
+    seatInsight:
+      "Suite-style business class with a sliding door, direct aisle access, and the most private layout in Korean Air's fleet.",
+    description:
+      "Korean Air's Prestige Suite 2.0 is an underrated business class product available across a wide global network.",
     image: "/images/korean-prestige-suite-2.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ke-korean-air/",
     aerolopaUrl: "https://www.aerolopa.com/ke",
@@ -534,8 +565,10 @@ const rawProducts: RawProduct[] = [
       "London Heathrow → Delhi",
     ],
     bestFor: ["Couples", "Social"],
-    seatInsight: "1-2-1 layout with direct aisle access and a unique social lounge (The Loft) at the rear of the upper class cabin.",
-    description: "Virgin Atlantic's Upper Class Suite stands apart for its social design and distinctive cabin atmosphere on transatlantic routes.",
+    seatInsight:
+      "1-2-1 layout with direct aisle access and a unique social lounge (The Loft) at the rear of the upper class cabin.",
+    description:
+      "Virgin Atlantic's Upper Class Suite stands apart for its social design and distinctive cabin atmosphere on transatlantic routes.",
     image: "/images/virgin-upper-class.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/vs-virgin-atlantic/",
     aerolopaUrl: "https://www.aerolopa.com/vs",
@@ -555,8 +588,10 @@ const rawProducts: RawProduct[] = [
       "Boston → Paris CDG",
     ],
     bestFor: ["Space", "Solo"],
-    seatInsight: "The front-row Mint Studio offers a larger enclosed suite with more storage and a distinctly premium feel over standard Mint seats.",
-    description: "JetBlue's Mint Studio is the best value premium transatlantic product for solo travellers on core North Atlantic routes.",
+    seatInsight:
+      "The front-row Mint Studio offers a larger enclosed suite with more storage and a distinctly premium feel over standard Mint seats.",
+    description:
+      "JetBlue's Mint Studio is the best value premium transatlantic product for solo travellers on core North Atlantic routes.",
     image: "/images/jetblue-mint-studio.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/b6-jetblue-airways/",
     aerolopaUrl: "https://www.aerolopa.com/b6",
@@ -576,8 +611,10 @@ const rawProducts: RawProduct[] = [
       "Perth → London Heathrow",
     ],
     bestFor: ["Comfort", "Practicality"],
-    seatInsight: "Direct aisle access 1-2-1 layout with a practical design, generous storage, and Qantas' well-regarded service.",
-    description: "Qantas' Business Suite is a reliable, comfortable choice on key Australia–Europe and Australia–North America routes.",
+    seatInsight:
+      "Direct aisle access 1-2-1 layout with a practical design, generous storage, and Qantas' well-regarded service.",
+    description:
+      "Qantas' Business Suite is a reliable, comfortable choice on key Australia–Europe and Australia–North America routes.",
     image: "/images/qantas-business-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/qf-qantas/",
     aerolopaUrl: "https://www.aerolopa.com/qf",
@@ -597,8 +634,10 @@ const rawProducts: RawProduct[] = [
       "Istanbul → Tokyo Haneda",
     ],
     bestFor: ["Network", "Value"],
-    seatInsight: "Modern long-haul seat with direct aisle access and improved privacy, backed by Turkish Airlines' extensive hub connections.",
-    description: "Turkish Airlines' preferred long-haul business product — a strong value option on one of the world's widest networks.",
+    seatInsight:
+      "Modern long-haul seat with direct aisle access and improved privacy, backed by Turkish Airlines' extensive hub connections.",
+    description:
+      "Turkish Airlines' preferred long-haul business product — a strong value option on one of the world's widest networks.",
     image: "/images/turkish-business.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/tk-turkish-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/tk",
@@ -618,8 +657,10 @@ const rawProducts: RawProduct[] = [
       "Dallas/Fort Worth → Auckland",
     ],
     bestFor: ["Privacy", "New Product"],
-    seatInsight: "New suite-style business class with closing doors, a wider seat, and a significantly improved hard product over older Flagship Business.",
-    description: "American Airlines' newest Flagship Suite is a material upgrade, expanding to more routes through 2025–26.",
+    seatInsight:
+      "New suite-style business class with closing doors, a wider seat, and a significantly improved hard product over older Flagship Business.",
+    description:
+      "American Airlines' newest Flagship Suite is a material upgrade, expanding to more routes through 2025–26.",
     image: "/images/american-flagship.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/aa-american-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/aa",
@@ -639,8 +680,10 @@ const rawProducts: RawProduct[] = [
       "San Francisco → Sydney",
     ],
     bestFor: ["Consistency", "Network"],
-    seatInsight: "Direct aisle access 1-2-1 layout with a consistent product across a large widebody fleet and extensive global network.",
-    description: "United's Polaris is the most consistent premium long-haul product on US carriers, particularly for Star Alliance routing.",
+    seatInsight:
+      "Direct aisle access 1-2-1 layout with a consistent product across a large widebody fleet and extensive global network.",
+    description:
+      "United's Polaris is the most consistent premium long-haul product on US carriers, particularly for Star Alliance routing.",
     image: "/images/united-polaris.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ua-united/",
     aerolopaUrl: "https://www.aerolopa.com/ua",
@@ -650,13 +693,13 @@ const rawProducts: RawProduct[] = [
 // ─── Cabin styling ────────────────────────────────────────────────────────────
 
 const cabinAccent: Record<CabinType, string> = {
-  First:    "bg-[#2A1F0A]/90 text-[#C9A96E] ring-1 ring-inset ring-[#C9A96E]/30",
-  Business: "bg-[#0B1829]/90 text-[#8BBDD9] ring-1 ring-inset ring-[#8BBDD9]/20",
+  First: "bg-white/10 text-white ring-1 ring-inset ring-white/15",
+  Business: "bg-[#6C63E6]/15 text-[#6C63E6] ring-1 ring-inset ring-[#6C63E6]/25",
 };
 
 const cabinAccentFeatured: Record<CabinType, string> = {
-  First:    "bg-[#C9A96E] text-[#0B1829]",
-  Business: "bg-[#0B1829] text-[#8BBDD9] ring-1 ring-[#8BBDD9]/30",
+  First: "bg-white text-[#0B1020]",
+  Business: "bg-[#6C63E6] text-white",
 };
 
 const curatedBestForOptions = ["Privacy", "Couples", "Space", "Luxury", "Sleep", "Network"];
@@ -757,7 +800,10 @@ function PlaceAutosuggest({
 
   return (
     <div ref={wrapperRef} className="relative">
-      <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
+      <label
+        className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]"
+        style={{ color: COLORS.indigo }}
+      >
         <RouteIcon />
         {label}
       </label>
@@ -766,25 +812,42 @@ function PlaceAutosuggest({
         value={value}
         placeholder={placeholder}
         onFocus={() => setOpen(true)}
-        onChange={(e) => { onChange(e.target.value); setOpen(true); }}
-        className="w-full border border-[#C9A96E]/15 bg-[#0B1829]/80 px-4 py-3 text-sm text-[#F5F0E8] outline-none placeholder:text-[#F5F0E8]/25 focus:border-[#C9A96E]/40 transition-colors duration-200"
-        style={{ borderRadius: 2 }}
+        onChange={(e) => {
+          onChange(e.target.value);
+          setOpen(true);
+        }}
+        className="w-full px-4 py-3 text-sm outline-none transition-colors duration-200 placeholder:text-white/30"
+        style={{
+          border: `1px solid ${COLORS.border}`,
+          background: COLORS.panelSoft,
+          color: COLORS.white,
+          borderRadius: 2,
+        }}
       />
       {shouldShow && (
         <div
-          className="absolute z-30 mt-1 max-h-72 w-full overflow-auto border border-[#C9A96E]/20 bg-[#0B1829]/98 p-1.5 shadow-2xl shadow-black/60"
-          style={{ borderRadius: 2 }}
+          className="absolute z-30 mt-1 max-h-72 w-full overflow-auto p-1.5 shadow-2xl shadow-black/60"
+          style={{
+            border: `1px solid ${COLORS.borderStrong}`,
+            background: "#10162B",
+            borderRadius: 2,
+          }}
         >
           {suggestions.map((suggestion) => (
             <button
               key={suggestion}
               type="button"
-              onClick={() => { onSelect(suggestion); setOpen(false); }}
-              className="flex w-full items-center justify-between px-3 py-2.5 text-left text-sm text-[#F5F0E8]/80 transition-colors hover:bg-[#C9A96E]/10 hover:text-[#F5F0E8]"
-              style={{ borderRadius: 2 }}
+              onClick={() => {
+                onSelect(suggestion);
+                setOpen(false);
+              }}
+              className="flex w-full items-center justify-between px-3 py-2.5 text-left text-sm transition-colors hover:bg-[#6C63E6]/10"
+              style={{ color: COLORS.whiteSoft, borderRadius: 2 }}
             >
               <span>{suggestion}</span>
-              <span className="text-[10px] uppercase tracking-[0.16em] text-[#C9A96E]/50">Available</span>
+              <span className="text-[10px] uppercase tracking-[0.16em]" style={{ color: COLORS.indigo }}>
+                Available
+              </span>
             </button>
           ))}
         </div>
@@ -843,10 +906,11 @@ export default function HomePage() {
         ) ||
         item.bestFor.some((value) => value.toLowerCase().includes(query));
 
-      const matchesAirline  = airline === "" || item.airline === airline;
+      const matchesAirline = airline === "" || item.airline === airline;
       const matchesAircraft = aircraft === "" || item.aircraft === aircraft;
-      const matchesCabin    = cabin === "" || item.cabinType === cabin;
-      const matchesTags     = selectedTags.length === 0 || selectedTags.every((tag) => item.bestFor.includes(tag));
+      const matchesCabin = cabin === "" || item.cabinType === cabin;
+      const matchesTags =
+        selectedTags.length === 0 || selectedTags.every((tag) => item.bestFor.includes(tag));
 
       return matchesSearch && matchesAirline && matchesAircraft && matchesCabin && matchesTags;
     });
@@ -920,19 +984,17 @@ export default function HomePage() {
 
   return (
     <main
-      className="min-h-screen overflow-hidden text-[#F5F0E8]"
+      className="min-h-screen overflow-hidden text-white"
       style={{
-        background: "#0B1829",
+        background: COLORS.bg,
         fontFamily: "'DM Sans', 'Inter', ui-sans-serif, system-ui, sans-serif",
       }}
     >
-      {/* ── Google Fonts ── */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
         .font-serif-display { font-family: 'Playfair Display', Georgia, serif; }
 
-        /* Airport board background */
         .board-bg {
           position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
         }
@@ -940,7 +1002,7 @@ export default function HomePage() {
           position: absolute; left: 0; right: 0;
           font-family: 'Courier New', Courier, monospace;
           font-size: 11px; letter-spacing: 0.06em;
-          color: rgba(201,169,110,0.07);
+          color: rgba(108, 99, 230, 0.08);
           white-space: pre; line-height: 2.4;
           user-select: none;
         }
@@ -949,31 +1011,30 @@ export default function HomePage() {
         .board-track-three { top: 75%; animation: boardScroll1 110s linear infinite reverse; }
         @keyframes boardScroll1 { from { transform: translateY(0); } to { transform: translateY(-50%); } }
         @keyframes boardScroll2 { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+
         .board-glow {
           position: absolute; inset: 0;
-          background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,169,110,0.04) 0%, transparent 60%);
+          background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(108, 99, 230, 0.08) 0%, transparent 60%);
         }
+
         .board-vignette {
           position: absolute; inset: 0;
           background:
-            linear-gradient(to bottom, #0B1829 0%, transparent 15%, transparent 85%, #0B1829 100%),
-            linear-gradient(to right, #0B1829 0%, transparent 8%, transparent 92%, #0B1829 100%);
+            linear-gradient(to bottom, #0B1020 0%, transparent 15%, transparent 85%, #0B1020 100%),
+            linear-gradient(to right, #0B1020 0%, transparent 8%, transparent 92%, #0B1020 100%);
         }
 
-        /* Ticker */
         .ticker-track { display:flex; gap:0; white-space:nowrap; animation: tickerScroll 60s linear infinite; will-change: transform; }
         .ticker-track:hover { animation-play-state: paused; }
         @keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* Card hover */
         .cabin-card { transition: transform 0.25s cubic-bezier(.22,.68,0,1.2), border-color 0.2s; }
         .cabin-card:hover { transform: translateY(-3px); }
         .cabin-card img { transition: transform 0.5s cubic-bezier(.22,.68,0,1.2); }
         .cabin-card:hover img { transform: scale(1.04); }
 
-        /* Select arrow */
         .ascend-select {
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C9A96E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236C63E6' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
           background-repeat: no-repeat;
           background-position: right 12px center;
           -webkit-appearance: none; appearance: none;
@@ -981,7 +1042,6 @@ export default function HomePage() {
         }
       `}</style>
 
-      {/* ── Airport board background ── */}
       <div className="board-bg" aria-hidden="true">
         <div className="board-glow" />
         <div className="board-track board-track-one">
@@ -990,9 +1050,11 @@ export default function HomePage() {
           ))}
         </div>
         <div className="board-track board-track-two">
-          {[...boardRows.slice().reverse(), ...boardRows.slice().reverse(), ...boardRows.slice().reverse()].map((row, i) => (
-            <div key={`t2-${i}`}>{row}</div>
-          ))}
+          {[...boardRows.slice().reverse(), ...boardRows.slice().reverse(), ...boardRows.slice().reverse()].map(
+            (row, i) => (
+              <div key={`t2-${i}`}>{row}</div>
+            )
+          )}
         </div>
         <div className="board-track board-track-three">
           {[...boardRows, ...boardRows, ...boardRows].map((row, i) => (
@@ -1002,155 +1064,130 @@ export default function HomePage() {
         <div className="board-vignette" />
       </div>
 
-      {/* ── Ticker ── */}
       <div
         className="relative z-20 overflow-hidden border-b"
-        style={{ borderColor: "rgba(201,169,110,0.15)", background: "rgba(11,24,41,0.96)", height: 34 }}
+        style={{ borderColor: COLORS.border, background: "rgba(11, 16, 32, 0.96)", height: 34 }}
       >
         <div className="ticker-track flex h-full items-center">
           {[...premiumProducts, ...premiumProducts].map((item, i) => (
             <span
               key={`tick-${i}`}
               className="flex items-center gap-2 px-8 text-[10px] uppercase tracking-[0.16em]"
-              style={{ color: "rgba(201,169,110,0.45)", whiteSpace: "nowrap" }}
+              style={{ color: "rgba(255,255,255,0.40)", whiteSpace: "nowrap" }}
             >
               <DiamondIcon />
-              <span style={{ color: "#C9A96E", fontWeight: 500 }}>{item.airlineCode}</span>
+              <span style={{ color: COLORS.indigo, fontWeight: 500 }}>{item.airlineCode}</span>
               <span>{item.productName}</span>
-              <span style={{ color: "rgba(201,169,110,0.25)" }}>·</span>
+              <span style={{ color: "rgba(255,255,255,0.20)" }}>·</span>
               <span>{item.cabinType}</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* ── Nav ── */}
       <nav
         className="sticky top-0 z-50 flex items-center justify-between px-6 lg:px-10"
         style={{
           height: 60,
-          background: "rgba(11,24,41,0.94)",
+          background: "rgba(11, 16, 32, 0.94)",
           backdropFilter: "blur(16px)",
           WebkitBackdropFilter: "blur(16px)",
-          borderBottom: "1px solid rgba(201,169,110,0.15)",
+          borderBottom: `1px solid ${COLORS.border}`,
         }}
       >
         <div className="flex items-center gap-3">
-          <img src="/images/ascend-logo.png" alt="Ascend" className="h-8 w-8 object-contain" style={{ filter: "brightness(0) invert(1)" }} />
+          <img
+            src="/images/ascend-logo.png"
+            alt="Ascend"
+            className="h-8 w-8 object-contain"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
           <div>
-            <div className="font-serif-display text-base font-normal tracking-wide" style={{ color: "#F5F0E8", lineHeight: 1 }}>
+            <div
+              className="font-serif-display text-base font-normal tracking-wide"
+              style={{ color: COLORS.white, lineHeight: 1 }}
+            >
               Ascend
             </div>
-            <div className="text-[9px] font-medium uppercase tracking-[0.22em]" style={{ color: "#C9A96E" }}>
+            <div
+              className="text-[9px] font-medium uppercase tracking-[0.22em]"
+              style={{ color: COLORS.indigo }}
+            >
               Cabin Optimizer
             </div>
           </div>
         </div>
 
-        <div className="hidden items-center gap-8 lg:flex">
-          {[
-            { label: "How it works", href: "https://www.joinascend.com/#ac-process" },
-            { label: "Pricing",      href: "https://www.joinascend.com/#ac-pricing" },
-            { label: "Case studies", href: "https://www.joinascend.com/#ac-proven-result" },
-          ].map(({ label, href }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[11px] font-medium uppercase tracking-[0.14em] transition-colors duration-200"
-              style={{ color: "rgba(245,240,232,0.45)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#F5F0E8")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(245,240,232,0.45)")}
-            >
-              {label}
-            </a>
-          ))}
+        <div className="hidden lg:block text-[10px] uppercase tracking-[0.18em]" style={{ color: COLORS.whiteMuted }}>
+          Premium cabin search
         </div>
-
-        <a
-          href="https://www.joinascend.com/join-ascend"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[10px] font-medium uppercase tracking-[0.16em] transition-colors duration-200"
-          style={{ background: "#C9A96E", color: "#0B1829", padding: "9px 20px", borderRadius: 2 }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#DFC49A")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#C9A96E")}
-        >
-          Apply for membership
-        </a>
       </nav>
 
-      {/* ── Content ── */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-
-        {/* ── Hero ── */}
-        <div className="flex items-end justify-between gap-6 flex-wrap mb-10">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <div
-              className="mb-4 inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]"
-              style={{ color: "#C9A96E" }}
-            >
-              <DiamondIcon />
-              Premium cabin intelligence
-            </div>
             <h1
               className="font-serif-display text-4xl font-normal leading-[1.1] tracking-[-0.02em] sm:text-5xl lg:text-6xl"
-              style={{ color: "#F5F0E8" }}
+              style={{ color: COLORS.white }}
             >
-              Find your <em style={{ color: "#C9A96E", fontStyle: "italic" }}>perfect</em>
-              <br />seat in the sky
+              Find your <em style={{ color: COLORS.indigo, fontStyle: "italic" }}>perfect</em>
+              <br />
+              seat in the sky
             </h1>
-            <p className="mt-4 max-w-lg text-base leading-7 font-light" style={{ color: "rgba(245,240,232,0.60)" }}>
-              Compare Business and First Class products across airlines, aircraft, and layouts — with AeroLOPA and seat maps in one view. Curated by Ascend's concierge team.
+            <p className="mt-4 max-w-lg text-base leading-7 font-light" style={{ color: COLORS.whiteSoft }}>
+              Compare Business and First Class products across airlines, aircraft, and layouts — with
+              AeroLOPA and seat maps in one view.
             </p>
           </div>
 
-          {/* Stats */}
           <div
             className="flex gap-px overflow-hidden"
-            style={{ border: "1px solid rgba(201,169,110,0.15)", borderRadius: 2 }}
+            style={{ border: `1px solid ${COLORS.border}`, borderRadius: 2 }}
           >
             {[
               { n: premiumProducts.length, l: "Products" },
-              { n: airlineOptions.length,  l: "Airlines" },
-              { n: placeCatalog.length,    l: "Places" },
+              { n: airlineOptions.length, l: "Airlines" },
+              { n: placeCatalog.length, l: "Places" },
               { n: filteredProducts.length, l: "Showing" },
             ].map(({ n, l }, i) => (
               <div
                 key={l}
-                className="flex flex-col items-center justify-center px-5 py-4"
+                className="flex min-w-[72px] flex-col items-center justify-center px-5 py-4"
                 style={{
-                  background: i % 2 === 0 ? "rgba(11,24,41,0.9)" : "rgba(15,32,53,0.9)",
-                  borderRight: i < 3 ? "1px solid rgba(201,169,110,0.15)" : undefined,
-                  minWidth: 72,
+                  background: i % 2 === 0 ? "rgba(11,16,32,0.88)" : "rgba(18,25,51,0.88)",
+                  borderRight: i < 3 ? `1px solid ${COLORS.border}` : undefined,
                 }}
               >
-                <span className="font-serif-display text-2xl font-normal" style={{ color: "#C9A96E" }}>{n}</span>
-                <span className="mt-1 text-[9px] font-medium uppercase tracking-[0.14em]" style={{ color: "rgba(245,240,232,0.40)" }}>{l}</span>
+                <span className="font-serif-display text-2xl font-normal" style={{ color: COLORS.indigo }}>
+                  {n}
+                </span>
+                <span
+                  className="mt-1 text-[9px] font-medium uppercase tracking-[0.14em]"
+                  style={{ color: COLORS.whiteFaint }}
+                >
+                  {l}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* ── Hero panel ── */}
         <section
           className="mb-8 overflow-hidden"
           style={{
-            border: "1px solid rgba(201,169,110,0.15)",
+            border: `1px solid ${COLORS.border}`,
             borderRadius: 2,
-            background: "linear-gradient(160deg, rgba(15,32,53,0.95) 0%, rgba(11,24,41,0.90) 100%)",
+            background: "linear-gradient(160deg, rgba(18,25,51,0.95) 0%, rgba(11,16,32,0.92) 100%)",
           }}
         >
           <div className="grid gap-0 lg:grid-cols-[1.3fr_0.7fr]">
-            {/* Left */}
-            <div className="p-8 lg:p-10" style={{ borderRight: "1px solid rgba(201,169,110,0.12)" }}>
+            <div className="p-8 lg:p-10" style={{ borderRight: `1px solid ${COLORS.border}` }}>
               <div
                 className="mb-6 inline-flex items-center gap-2 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em]"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.25)",
-                  background: "rgba(201,169,110,0.06)",
-                  color: "#C9A96E",
+                  border: `1px solid ${COLORS.borderStrong}`,
+                  background: COLORS.indigoSoft,
+                  color: COLORS.indigo,
                   borderRadius: 2,
                 }}
               >
@@ -1159,116 +1196,96 @@ export default function HomePage() {
               </div>
               <h2
                 className="font-serif-display text-3xl font-normal leading-tight tracking-[-0.02em] sm:text-4xl"
-                style={{ color: "#F5F0E8" }}
+                style={{ color: COLORS.white }}
               >
                 Compare Business &amp; First Class
               </h2>
-              <p className="mt-4 text-base font-light leading-7" style={{ color: "rgba(245,240,232,0.60)" }}>
-                Compare cabins across airlines, aircraft, and layouts — with AeroLOPA and seat maps all in one place.
+              <p className="mt-4 text-base font-light leading-7" style={{ color: COLORS.whiteSoft }}>
+                Compare cabins across airlines, aircraft, and layouts — with AeroLOPA and seat maps all in
+                one place.
               </p>
-              <div className="mt-8 grid grid-cols-3 gap-px overflow-hidden" style={{ border: "1px solid rgba(201,169,110,0.15)", borderRadius: 2 }}>
+
+              <div
+                className="mt-8 grid grid-cols-3 gap-px overflow-hidden"
+                style={{ border: `1px solid ${COLORS.border}`, borderRadius: 2 }}
+              >
                 {[
-                  { n: "35%", l: "Average savings" },
-                  { n: "82%", l: "Recoup in 2 trips" },
-                  { n: "60s", l: "Response time" },
+                  { n: premiumProducts.length, l: "Curated cabins" },
+                  { n: airlineOptions.length, l: "Global airlines" },
+                  { n: placeCatalog.length, l: "Route points" },
                 ].map(({ n, l }, i) => (
                   <div
                     key={l}
-                    className="flex flex-col items-center justify-center py-4 px-3 text-center"
-                    style={{ background: i % 2 === 0 ? "rgba(11,24,41,0.8)" : "rgba(15,32,53,0.8)" }}
+                    className="flex flex-col items-center justify-center px-3 py-4 text-center"
+                    style={{ background: i % 2 === 0 ? "rgba(11,16,32,0.8)" : "rgba(18,25,51,0.8)" }}
                   >
-                    <span className="font-serif-display text-xl font-normal" style={{ color: "#C9A96E" }}>{n}</span>
-                    <span className="mt-1 text-[9px] uppercase tracking-[0.14em]" style={{ color: "rgba(245,240,232,0.40)" }}>{l}</span>
+                    <span className="font-serif-display text-xl font-normal" style={{ color: COLORS.indigo }}>
+                      {n}
+                    </span>
+                    <span
+                      className="mt-1 text-[9px] uppercase tracking-[0.14em]"
+                      style={{ color: COLORS.whiteFaint }}
+                    >
+                      {l}
+                    </span>
                   </div>
-                ))}
-              </div>
-              <div className="mt-6 flex flex-wrap gap-3">
-                {["24/7 concierge access", "WhatsApp-first workflow", "Premium fare access"].map((badge) => (
-                  <span
-                    key={badge}
-                    className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.14em]"
-                    style={{ color: "rgba(245,240,232,0.45)" }}
-                  >
-                    <DiamondIcon />
-                    {badge}
-                  </span>
                 ))}
               </div>
             </div>
 
-            {/* Right — CTA */}
-            <div className="flex flex-col p-8 lg:p-10" style={{ background: "rgba(11,24,41,0.5)" }}>
+            <div className="flex flex-col p-8 lg:p-10" style={{ background: "rgba(11,16,32,0.5)" }}>
               <div
                 className="mb-5 inline-flex items-center gap-2 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em]"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.25)",
-                  background: "rgba(201,169,110,0.06)",
-                  color: "#C9A96E",
+                  border: `1px solid ${COLORS.borderStrong}`,
+                  background: COLORS.indigoSoft,
+                  color: COLORS.indigo,
                   borderRadius: 2,
                 }}
               >
                 <DiamondIcon />
-                Ready to book?
+                Explore products
               </div>
               <h3
                 className="font-serif-display text-2xl font-normal leading-tight tracking-[-0.02em]"
-                style={{ color: "#F5F0E8" }}
+                style={{ color: COLORS.white }}
               >
-                24/7 access to your travel concierge
+                Search premium cabins with clarity
               </h3>
-              <p className="mt-4 flex-1 text-sm font-light leading-6" style={{ color: "rgba(245,240,232,0.55)" }}>
-                Save an average of 35% on Business and First Class. Apply for membership to unlock personalised flight sourcing, premium fare monitoring, and concierge support at every step.
+              <p className="mt-4 flex-1 text-sm font-light leading-6" style={{ color: COLORS.whiteMuted }}>
+                Filter by airline, aircraft, cabin, route, and trip type to narrow down the strongest
+                Business and First Class options quickly.
               </p>
               <div
                 className="mt-6 p-4 text-sm font-light leading-6"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.15)",
-                  background: "rgba(201,169,110,0.04)",
-                  color: "rgba(245,240,232,0.55)",
+                  border: `1px solid ${COLORS.border}`,
+                  background: COLORS.indigoSoft,
+                  color: COLORS.whiteSoft,
                   borderRadius: 2,
                 }}
               >
-                All approved applicants receive a complimentary booking to experience the service firsthand.
+                Use the route filters below to surface products that fit your exact origin and destination
+                pairing.
               </div>
-              <a
-                href="https://www.joinascend.com/join-ascend"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-5 flex w-full items-center justify-center text-sm font-medium uppercase tracking-[0.12em] transition-colors duration-200"
-                style={{ background: "#C9A96E", color: "#0B1829", padding: "14px 24px", borderRadius: 2 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#DFC49A")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#C9A96E")}
-              >
-                Apply at joinascend.com
-              </a>
-              <a
-                href="https://www.joinascend.com/#ac-pricing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 flex w-full items-center justify-center text-sm font-medium uppercase tracking-[0.12em] transition-colors duration-200"
-                style={{ border: "1px solid rgba(201,169,110,0.25)", color: "rgba(245,240,232,0.60)", padding: "13px 24px", borderRadius: 2 }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(201,169,110,0.5)")}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(201,169,110,0.25)")}
-              >
-                View pricing
-              </a>
             </div>
           </div>
         </section>
 
-        {/* ── Filters ── */}
         <section
           className="mb-8 p-6 lg:p-8"
           style={{
-            border: "1px solid rgba(201,169,110,0.15)",
-            background: "linear-gradient(180deg, rgba(15,32,53,0.92) 0%, rgba(11,24,41,0.88) 100%)",
+            border: `1px solid ${COLORS.border}`,
+            background: "linear-gradient(180deg, rgba(18,25,51,0.92) 0%, rgba(11,16,32,0.88) 100%)",
             borderRadius: 2,
           }}
         >
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
-            {/* Search */}
             <div className="xl:col-span-2">
-              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]" style={{ color: "rgba(201,169,110,0.70)" }}>
+              <label
+                className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]"
+                style={{ color: COLORS.indigo }}
+              >
                 <SearchIcon />
                 Search cabins
               </label>
@@ -1277,21 +1294,21 @@ export default function HomePage() {
                 placeholder="Product, airline, aircraft, route, best for…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
+                className="w-full px-4 py-3 text-sm outline-none transition-colors duration-200 placeholder:text-white/30"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.15)",
-                  background: "rgba(11,24,41,0.8)",
-                  color: "#F5F0E8",
+                  border: `1px solid ${COLORS.border}`,
+                  background: COLORS.panelSoft,
+                  color: COLORS.white,
                   borderRadius: 2,
                 }}
-                onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(201,169,110,0.40)")}
-                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(201,169,110,0.15)")}
               />
             </div>
 
-            {/* Airline */}
             <div>
-              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]" style={{ color: "rgba(201,169,110,0.70)" }}>
+              <label
+                className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]"
+                style={{ color: COLORS.indigo }}
+              >
                 <PlaneIcon />
                 Airline
               </label>
@@ -1300,22 +1317,26 @@ export default function HomePage() {
                 onChange={(e) => setAirline(e.target.value)}
                 className="ascend-select w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.15)",
-                  background: "rgba(11,24,41,0.8)",
-                  color: "#F5F0E8",
+                  border: `1px solid ${COLORS.border}`,
+                  background: COLORS.panelSoft,
+                  color: COLORS.white,
                   borderRadius: 2,
                 }}
               >
                 <option value="">All airlines</option>
                 {airlineOptions.map((option) => (
-                  <option key={option} value={option} style={{ background: "#0B1829" }}>{option}</option>
+                  <option key={option} value={option} style={{ background: "#10162B" }}>
+                    {option}
+                  </option>
                 ))}
               </select>
             </div>
 
-            {/* Aircraft */}
             <div>
-              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]" style={{ color: "rgba(201,169,110,0.70)" }}>
+              <label
+                className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]"
+                style={{ color: COLORS.indigo }}
+              >
                 <PlaneIcon />
                 Aircraft
               </label>
@@ -1324,22 +1345,26 @@ export default function HomePage() {
                 onChange={(e) => setAircraft(e.target.value)}
                 className="ascend-select w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.15)",
-                  background: "rgba(11,24,41,0.8)",
-                  color: "#F5F0E8",
+                  border: `1px solid ${COLORS.border}`,
+                  background: COLORS.panelSoft,
+                  color: COLORS.white,
                   borderRadius: 2,
                 }}
               >
                 <option value="">All aircraft</option>
                 {aircraftOptions.map((option) => (
-                  <option key={option} value={option} style={{ background: "#0B1829" }}>{option}</option>
+                  <option key={option} value={option} style={{ background: "#10162B" }}>
+                    {option}
+                  </option>
                 ))}
               </select>
             </div>
 
-            {/* Cabin */}
             <div>
-              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]" style={{ color: "rgba(201,169,110,0.70)" }}>
+              <label
+                className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]"
+                style={{ color: COLORS.indigo }}
+              >
                 <SeatIcon />
                 Cabin
               </label>
@@ -1348,20 +1373,23 @@ export default function HomePage() {
                 onChange={(e) => setCabin(e.target.value)}
                 className="ascend-select w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.15)",
-                  background: "rgba(11,24,41,0.8)",
-                  color: "#F5F0E8",
+                  border: `1px solid ${COLORS.border}`,
+                  background: COLORS.panelSoft,
+                  color: COLORS.white,
                   borderRadius: 2,
                 }}
               >
                 <option value="">All cabins</option>
-                <option value="Business" style={{ background: "#0B1829" }}>Business</option>
-                <option value="First" style={{ background: "#0B1829" }}>First</option>
+                <option value="Business" style={{ background: "#10162B" }}>
+                  Business
+                </option>
+                <option value="First" style={{ background: "#10162B" }}>
+                  First
+                </option>
               </select>
             </div>
           </div>
 
-          {/* Route filters */}
           <div className="mt-3 grid gap-3 lg:grid-cols-2">
             <PlaceAutosuggest
               label="Outbound"
@@ -1381,10 +1409,12 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Best for tags */}
           <div className="mt-5 grid gap-3 xl:grid-cols-[1fr_auto]">
             <div>
-              <label className="mb-3 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]" style={{ color: "rgba(201,169,110,0.70)" }}>
+              <label
+                className="mb-3 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]"
+                style={{ color: COLORS.indigo }}
+              >
                 <StarIcon />
                 Best for
               </label>
@@ -1395,9 +1425,11 @@ export default function HomePage() {
                   className="px-4 py-2 text-xs font-medium uppercase tracking-[0.10em] transition-all duration-150"
                   style={{
                     borderRadius: 2,
-                    background: selectedTags.length === 0 ? "#C9A96E" : "rgba(201,169,110,0.06)",
-                    color: selectedTags.length === 0 ? "#0B1829" : "rgba(245,240,232,0.55)",
-                    border: selectedTags.length === 0 ? "1px solid #C9A96E" : "1px solid rgba(201,169,110,0.20)",
+                    background: selectedTags.length === 0 ? COLORS.indigo : COLORS.indigoSoft,
+                    color: COLORS.white,
+                    border: `1px solid ${
+                      selectedTags.length === 0 ? COLORS.indigo : "rgba(108, 99, 230, 0.25)"
+                    }`,
                   }}
                 >
                   All
@@ -1412,9 +1444,9 @@ export default function HomePage() {
                       className="px-4 py-2 text-xs font-medium uppercase tracking-[0.10em] transition-all duration-150"
                       style={{
                         borderRadius: 2,
-                        background: isActive ? "#C9A96E" : "rgba(201,169,110,0.06)",
-                        color: isActive ? "#0B1829" : "rgba(245,240,232,0.55)",
-                        border: isActive ? "1px solid #C9A96E" : "1px solid rgba(201,169,110,0.20)",
+                        background: isActive ? COLORS.indigo : COLORS.indigoSoft,
+                        color: COLORS.white,
+                        border: `1px solid ${isActive ? COLORS.indigo : "rgba(108, 99, 230, 0.25)"}`,
                       }}
                     >
                       {option}
@@ -1422,7 +1454,7 @@ export default function HomePage() {
                   );
                 })}
               </div>
-              <p className="mt-2 text-xs" style={{ color: "rgba(245,240,232,0.30)" }}>
+              <p className="mt-2 text-xs" style={{ color: COLORS.whiteFaint }}>
                 You can select multiple options at once.
               </p>
             </div>
@@ -1431,13 +1463,11 @@ export default function HomePage() {
                 onClick={resetFilters}
                 className="w-full px-5 py-3 text-xs font-medium uppercase tracking-[0.12em] transition-colors duration-150 xl:w-auto"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.20)",
-                  background: "rgba(201,169,110,0.04)",
-                  color: "rgba(245,240,232,0.50)",
+                  border: `1px solid ${COLORS.border}`,
+                  background: COLORS.indigoSoft,
+                  color: COLORS.whiteSoft,
                   borderRadius: 2,
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#F5F0E8")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(245,240,232,0.50)")}
               >
                 Reset filters
               </button>
@@ -1445,19 +1475,21 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── Top 3 featured ── */}
         {filteredProducts.length > 0 && (
           <section className="mb-8">
             <div className="mb-5 flex items-center justify-between gap-4">
               <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.22em]" style={{ color: "#C9A96E" }}>
+                <p className="text-[10px] font-medium uppercase tracking-[0.22em]" style={{ color: COLORS.indigo }}>
                   Top matches
                 </p>
-                <h2 className="font-serif-display mt-1 text-2xl font-normal tracking-[-0.02em]" style={{ color: "#F5F0E8" }}>
+                <h2
+                  className="font-serif-display mt-1 text-2xl font-normal tracking-[-0.02em]"
+                  style={{ color: COLORS.white }}
+                >
                   Best shortlist right now
                 </h2>
               </div>
-              <p className="text-sm" style={{ color: "rgba(245,240,232,0.45)" }}>
+              <p className="text-sm" style={{ color: COLORS.whiteMuted }}>
                 Showing {filteredProducts.length} product{filteredProducts.length === 1 ? "" : "s"}
               </p>
             </div>
@@ -1465,8 +1497,10 @@ export default function HomePage() {
             <div className="grid gap-4 lg:grid-cols-3">
               {topThree.map((item) => {
                 const matchingRoutes = item.routePairs.filter((pair) => {
-                  const outOk = !outboundPlace.trim() || normalizeText(pair.from).includes(normalizeText(outboundPlace));
-                  const retOk = !returnPlace.trim() || normalizeText(pair.to).includes(normalizeText(returnPlace));
+                  const outOk =
+                    !outboundPlace.trim() || normalizeText(pair.from).includes(normalizeText(outboundPlace));
+                  const retOk =
+                    !returnPlace.trim() || normalizeText(pair.to).includes(normalizeText(returnPlace));
                   return outOk && retOk;
                 });
 
@@ -1475,20 +1509,20 @@ export default function HomePage() {
                     key={`${item.id}-featured`}
                     className="cabin-card overflow-hidden"
                     style={{
-                      border: "1px solid rgba(201,169,110,0.20)",
+                      border: `1px solid ${COLORS.borderStrong}`,
                       borderRadius: 2,
-                      background: "linear-gradient(180deg, rgba(15,32,53,0.96) 0%, rgba(11,24,41,0.92) 100%)",
+                      background: "linear-gradient(180deg, rgba(18,25,51,0.96) 0%, rgba(11,16,32,0.92) 100%)",
                     }}
                   >
                     <div className="relative h-56 overflow-hidden">
                       <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1829]/60 to-transparent pointer-events-none" />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B1020]/70 to-transparent" />
                       <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
                         <span
                           className="text-xs font-medium uppercase tracking-[0.12em]"
                           style={{
-                            background: "#C9A96E",
-                            color: "#0B1829",
+                            background: COLORS.indigo,
+                            color: COLORS.white,
                             padding: "4px 10px",
                             borderRadius: 2,
                           }}
@@ -1507,20 +1541,25 @@ export default function HomePage() {
                     <div className="p-5">
                       <div
                         className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em]"
-                        style={{ color: "#C9A96E" }}
+                        style={{ color: COLORS.indigo }}
                       >
                         <span>{item.airlineCode}</span>
-                        <span style={{ color: "rgba(201,169,110,0.35)" }}>·</span>
+                        <span style={{ color: "rgba(255,255,255,0.25)" }}>·</span>
                         <span>{item.airline}</span>
                       </div>
-                      <h3 className="font-serif-display mt-2 text-xl font-normal leading-tight tracking-[-0.01em]" style={{ color: "#F5F0E8" }}>
+                      <h3
+                        className="font-serif-display mt-2 text-xl font-normal leading-tight tracking-[-0.01em]"
+                        style={{ color: COLORS.white }}
+                      >
                         {item.productName}
                       </h3>
-                      <p className="mt-1 text-sm" style={{ color: "rgba(245,240,232,0.45)" }}>{item.aircraft}</p>
-                      <p className="mt-2 text-sm" style={{ color: "#C9A96E" }}>
+                      <p className="mt-1 text-sm" style={{ color: COLORS.whiteMuted }}>
+                        {item.aircraft}
+                      </p>
+                      <p className="mt-2 text-sm" style={{ color: COLORS.indigo }}>
                         {matchingRoutes[0] ? formatRoute(matchingRoutes[0]) : formatRoute(item.routePairs[0])}
                       </p>
-                      <p className="mt-3 text-sm font-light leading-6" style={{ color: "rgba(245,240,232,0.60)" }}>
+                      <p className="mt-3 text-sm font-light leading-6" style={{ color: COLORS.whiteSoft }}>
                         {item.description}
                       </p>
                       <div className="mt-4 flex flex-wrap gap-2">
@@ -1529,9 +1568,9 @@ export default function HomePage() {
                             key={value}
                             className="text-[10px] font-medium uppercase tracking-[0.10em]"
                             style={{
-                              border: "1px solid rgba(201,169,110,0.20)",
-                              background: "rgba(201,169,110,0.06)",
-                              color: "#C9A96E",
+                              border: `1px solid ${COLORS.border}`,
+                              background: COLORS.indigoSoft,
+                              color: COLORS.white,
                               padding: "3px 10px",
                               borderRadius: 2,
                             }}
@@ -1548,12 +1587,13 @@ export default function HomePage() {
           </section>
         )}
 
-        {/* ── Full grid ── */}
         <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {filteredProducts.map((item) => {
             const matchingRoutes = item.routePairs.filter((pair) => {
-              const outOk = !outboundPlace.trim() || normalizeText(pair.from).includes(normalizeText(outboundPlace));
-              const retOk = !returnPlace.trim() || normalizeText(pair.to).includes(normalizeText(returnPlace));
+              const outOk =
+                !outboundPlace.trim() || normalizeText(pair.from).includes(normalizeText(outboundPlace));
+              const retOk =
+                !returnPlace.trim() || normalizeText(pair.to).includes(normalizeText(returnPlace));
               return outOk && retOk;
             });
 
@@ -1567,23 +1607,20 @@ export default function HomePage() {
                 key={item.id}
                 className="cabin-card group overflow-hidden"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.13)",
+                  border: `1px solid ${COLORS.border}`,
                   borderRadius: 2,
-                  background: "linear-gradient(180deg, rgba(12,24,35,0.94) 0%, rgba(11,24,41,0.90) 100%)",
+                  background: "linear-gradient(180deg, rgba(14,20,40,0.94) 0%, rgba(11,16,32,0.90) 100%)",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(201,169,110,0.30)")}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(201,169,110,0.13)")}
               >
-                {/* Image */}
                 <div className="relative h-52 overflow-hidden">
                   <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1829]/50 to-transparent pointer-events-none" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B1020]/60 to-transparent" />
                   <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
                     <span
                       className="text-[10px] font-medium uppercase tracking-[0.12em]"
                       style={{
-                        background: "rgba(11,24,41,0.85)",
-                        color: "rgba(245,240,232,0.70)",
+                        background: "rgba(11,16,32,0.85)",
+                        color: COLORS.whiteSoft,
                         padding: "4px 9px",
                         borderRadius: 2,
                         backdropFilter: "blur(4px)",
@@ -1600,22 +1637,24 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* Body */}
                 <div className="p-5">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <h3 className="font-serif-display text-lg font-normal leading-tight tracking-[-0.01em]" style={{ color: "#F5F0E8" }}>
+                      <h3
+                        className="font-serif-display text-lg font-normal leading-tight tracking-[-0.01em]"
+                        style={{ color: COLORS.white }}
+                      >
                         {item.productName}
                       </h3>
-                      <p className="mt-1 text-xs" style={{ color: "rgba(245,240,232,0.45)" }}>
+                      <p className="mt-1 text-xs" style={{ color: COLORS.whiteMuted }}>
                         {item.airline} · {item.aircraft}
                       </p>
                     </div>
                     <span
                       className="flex-shrink-0 text-[10px] font-medium uppercase tracking-[0.14em]"
                       style={{
-                        border: "1px solid rgba(201,169,110,0.20)",
-                        color: "#C9A96E",
+                        border: `1px solid ${COLORS.border}`,
+                        color: COLORS.indigo,
                         padding: "3px 8px",
                         borderRadius: 2,
                       }}
@@ -1624,19 +1663,23 @@ export default function HomePage() {
                     </span>
                   </div>
 
-                  {/* Routes */}
                   <div
                     className="mt-4 p-4"
                     style={{
-                      border: "1px solid rgba(201,169,110,0.12)",
-                      background: "rgba(11,24,41,0.50)",
+                      border: `1px solid ${COLORS.border}`,
+                      background: "rgba(18,25,51,0.5)",
                       borderRadius: 2,
                     }}
                   >
                     <div className="flex items-start gap-3">
-                      <span style={{ color: "#C9A96E", marginTop: 1, flexShrink: 0 }}><RouteIcon /></span>
+                      <span style={{ color: COLORS.indigo, marginTop: 1, flexShrink: 0 }}>
+                        <RouteIcon />
+                      </span>
                       <div className="w-full">
-                        <p className="text-[10px] font-medium uppercase tracking-[0.20em]" style={{ color: "rgba(245,240,232,0.35)" }}>
+                        <p
+                          className="text-[10px] font-medium uppercase tracking-[0.20em]"
+                          style={{ color: COLORS.whiteFaint }}
+                        >
                           Route pairs
                         </p>
                         <div className="mt-2 flex flex-wrap gap-1.5">
@@ -1645,9 +1688,9 @@ export default function HomePage() {
                               key={formatRoute(pair)}
                               className="text-[11px]"
                               style={{
-                                border: "1px solid rgba(201,169,110,0.15)",
-                                background: "rgba(201,169,110,0.04)",
-                                color: "rgba(245,240,232,0.60)",
+                                border: `1px solid ${COLORS.border}`,
+                                background: COLORS.indigoSoft,
+                                color: COLORS.whiteSoft,
                                 padding: "3px 9px",
                                 borderRadius: 2,
                               }}
@@ -1660,15 +1703,14 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  {/* Best for */}
                   <div className="mt-4 flex flex-wrap gap-1.5">
                     {item.bestFor.map((value) => (
                       <span
                         key={value}
                         className="text-[10px] font-medium uppercase tracking-[0.10em]"
                         style={{
-                          border: "1px solid rgba(201,169,110,0.18)",
-                          color: "rgba(245,240,232,0.50)",
+                          border: `1px solid ${COLORS.border}`,
+                          color: COLORS.whiteMuted,
                           padding: "3px 9px",
                           borderRadius: 2,
                         }}
@@ -1678,23 +1720,27 @@ export default function HomePage() {
                     ))}
                   </div>
 
-                  {/* Seat insight */}
                   <div className="mt-4 space-y-2.5">
                     <div
                       className="p-4"
                       style={{
-                        border: "1px solid rgba(201,169,110,0.12)",
-                        background: "rgba(11,24,41,0.50)",
+                        border: `1px solid ${COLORS.border}`,
+                        background: "rgba(18,25,51,0.5)",
                         borderRadius: 2,
                       }}
                     >
                       <div className="flex items-start gap-3">
-                        <span style={{ color: "#C9A96E", marginTop: 1, flexShrink: 0 }}><SeatIcon /></span>
+                        <span style={{ color: COLORS.indigo, marginTop: 1, flexShrink: 0 }}>
+                          <SeatIcon />
+                        </span>
                         <div>
-                          <p className="text-[10px] font-medium uppercase tracking-[0.20em]" style={{ color: "rgba(245,240,232,0.35)" }}>
+                          <p
+                            className="text-[10px] font-medium uppercase tracking-[0.20em]"
+                            style={{ color: COLORS.whiteFaint }}
+                          >
                             Seat insight
                           </p>
-                          <p className="mt-2 text-sm font-light leading-6" style={{ color: "rgba(245,240,232,0.70)" }}>
+                          <p className="mt-2 text-sm font-light leading-6" style={{ color: COLORS.whiteSoft }}>
                             {item.seatInsight}
                           </p>
                         </div>
@@ -1704,18 +1750,23 @@ export default function HomePage() {
                     <div
                       className="p-4"
                       style={{
-                        border: "1px solid rgba(201,169,110,0.12)",
-                        background: "rgba(11,24,41,0.50)",
+                        border: `1px solid ${COLORS.border}`,
+                        background: "rgba(18,25,51,0.5)",
                         borderRadius: 2,
                       }}
                     >
                       <div className="flex items-start gap-3">
-                        <span style={{ color: "#C9A96E", marginTop: 1, flexShrink: 0 }}><NoteIcon /></span>
+                        <span style={{ color: COLORS.indigo, marginTop: 1, flexShrink: 0 }}>
+                          <NoteIcon />
+                        </span>
                         <div>
-                          <p className="text-[10px] font-medium uppercase tracking-[0.20em]" style={{ color: "rgba(245,240,232,0.35)" }}>
+                          <p
+                            className="text-[10px] font-medium uppercase tracking-[0.20em]"
+                            style={{ color: COLORS.whiteFaint }}
+                          >
                             Why it stands out
                           </p>
-                          <p className="mt-2 text-sm font-light leading-6" style={{ color: "rgba(245,240,232,0.60)" }}>
+                          <p className="mt-2 text-sm font-light leading-6" style={{ color: COLORS.whiteMuted }}>
                             {item.description}
                           </p>
                         </div>
@@ -1723,16 +1774,18 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  {/* CTA buttons */}
                   <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
                     <a
                       href={item.aerolopaUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-[0.10em] transition-colors duration-200"
-                      style={{ background: "#C9A96E", color: "#0B1829", padding: "11px 16px", borderRadius: 2 }}
-                      onMouseEnter={(e) => (e.currentTarget.style.background = "#DFC49A")}
-                      onMouseLeave={(e) => (e.currentTarget.style.background = "#C9A96E")}
+                      style={{
+                        background: COLORS.indigo,
+                        color: COLORS.white,
+                        padding: "11px 16px",
+                        borderRadius: 2,
+                      }}
                     >
                       <MapIcon />
                       AeroLOPA
@@ -1743,14 +1796,12 @@ export default function HomePage() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-[0.10em] transition-colors duration-200"
                       style={{
-                        border: "1px solid rgba(201,169,110,0.25)",
-                        background: "rgba(201,169,110,0.04)",
-                        color: "rgba(245,240,232,0.65)",
+                        border: `1px solid ${COLORS.border}`,
+                        background: COLORS.indigoSoft,
+                        color: COLORS.whiteSoft,
                         padding: "11px 16px",
                         borderRadius: 2,
                       }}
-                      onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(201,169,110,0.45)"; e.currentTarget.style.color = "#F5F0E8"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(201,169,110,0.25)"; e.currentTarget.style.color = "rgba(245,240,232,0.65)"; }}
                     >
                       <SeatIcon />
                       SeatMaps
@@ -1762,115 +1813,51 @@ export default function HomePage() {
           })}
         </section>
 
-        {/* ── Empty state ── */}
         {filteredProducts.length === 0 && (
           <section
             className="mt-2 px-6 py-16 text-center"
             style={{
-              border: "1px dashed rgba(201,169,110,0.20)",
-              background: "rgba(201,169,110,0.03)",
+              border: `1px dashed ${COLORS.borderStrong}`,
+              background: COLORS.indigoSoft,
               borderRadius: 2,
             }}
           >
-            <h2 className="font-serif-display text-2xl font-normal tracking-[-0.02em]" style={{ color: "#F5F0E8" }}>
+            <h2
+              className="font-serif-display text-2xl font-normal tracking-[-0.02em]"
+              style={{ color: COLORS.white }}
+            >
               No cabins matched those filters
             </h2>
-            <p className="mt-3 text-sm font-light" style={{ color: "rgba(245,240,232,0.50)" }}>
-              Try broader place text like Atlanta, Amsterdam, Paris CDG, or New York JFK — or remove a selected tag.
+            <p className="mt-3 text-sm font-light" style={{ color: COLORS.whiteMuted }}>
+              Try broader place text like Atlanta, Amsterdam, Paris CDG, or New York JFK — or remove a
+              selected tag.
             </p>
             <button
               onClick={resetFilters}
               className="mt-6 text-sm font-medium uppercase tracking-[0.12em] transition-colors duration-200"
-              style={{ background: "#C9A96E", color: "#0B1829", padding: "12px 24px", borderRadius: 2 }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#DFC49A")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#C9A96E")}
+              style={{
+                background: COLORS.indigo,
+                color: COLORS.white,
+                padding: "12px 24px",
+                borderRadius: 2,
+              }}
             >
               Reset and show all cabins
             </button>
           </section>
         )}
 
-        {/* ── Footer CTA ── */}
-        <section
-          className="mt-14 mb-4 p-8 lg:p-12"
-          style={{
-            border: "1px solid rgba(201,169,110,0.18)",
-            background: "linear-gradient(160deg, rgba(15,32,53,0.96) 0%, rgba(11,24,41,0.92) 100%)",
-            borderRadius: 2,
-          }}
-        >
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div>
-              <div
-                className="mb-4 inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em]"
-                style={{ color: "#C9A96E" }}
-              >
-                <DiamondIcon />
-                Never book your own flight again
-              </div>
-              <h2 className="font-serif-display text-3xl font-normal leading-tight tracking-[-0.02em] sm:text-4xl" style={{ color: "#F5F0E8" }}>
-                24/7 access to your<br />travel concierge
-              </h2>
-              <p className="mt-4 max-w-lg text-base font-light leading-7" style={{ color: "rgba(245,240,232,0.55)" }}>
-                Save time and money booking premium travel. Message on WhatsApp, compare your best options, and move from shortlist to booking — all handled in one place.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-6">
-                {[
-                  { n: "35%", l: "Average savings on premium cabins" },
-                  { n: "82%", l: "Members recoup in first 2 trips" },
-                  { n: "60s", l: "Concierge response time" },
-                ].map(({ n, l }) => (
-                  <div key={l}>
-                    <div className="font-serif-display text-2xl font-normal" style={{ color: "#C9A96E" }}>{n}</div>
-                    <div className="mt-1 text-[10px] uppercase tracking-[0.12em]" style={{ color: "rgba(245,240,232,0.40)" }}>{l}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-col gap-3 lg:min-w-[220px]">
-              <a
-                href="https://www.joinascend.com/join-ascend"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center text-sm font-medium uppercase tracking-[0.12em] transition-colors duration-200"
-                style={{ background: "#C9A96E", color: "#0B1829", padding: "14px 28px", borderRadius: 2 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#DFC49A")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#C9A96E")}
-              >
-                Apply for membership
-              </a>
-              <a
-                href="https://www.joinascend.com/#ac-pricing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center text-sm font-medium uppercase tracking-[0.12em] transition-colors duration-200"
-                style={{
-                  border: "1px solid rgba(201,169,110,0.25)",
-                  color: "rgba(245,240,232,0.60)",
-                  padding: "13px 28px",
-                  borderRadius: 2,
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(201,169,110,0.50)")}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(201,169,110,0.25)")}
-              >
-                View pricing
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Footer ── */}
         <footer
-          className="mt-4 flex flex-wrap items-center justify-between gap-4 border-t px-1 pb-8 pt-6"
-          style={{ borderColor: "rgba(201,169,110,0.12)" }}
+          className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t px-1 pb-8 pt-6"
+          style={{ borderColor: COLORS.border }}
         >
-          <div className="font-serif-display text-sm font-normal" style={{ color: "rgba(245,240,232,0.35)" }}>
+          <div className="font-serif-display text-sm font-normal" style={{ color: COLORS.whiteMuted }}>
             Ascend
           </div>
           <div className="flex flex-wrap gap-6">
             {[
-              { label: "joinascend.com",  href: "https://www.joinascend.com/" },
-              { label: "Case studies",   href: "https://www.joinascend.com/#ac-proven-result" },
+              { label: "joinascend.com", href: "https://www.joinascend.com/" },
+              { label: "Case studies", href: "https://www.joinascend.com/#ac-proven-result" },
               { label: "Privacy policy", href: "https://www.joinascend.com/privacy-policy" },
               { label: "Terms of service", href: "https://www.joinascend.com/terms-of-service" },
             ].map(({ label, href }) => (
@@ -1880,19 +1867,16 @@ export default function HomePage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[10px] font-medium uppercase tracking-[0.14em] transition-colors duration-200"
-                style={{ color: "rgba(245,240,232,0.30)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(245,240,232,0.70)")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(245,240,232,0.30)")}
+                style={{ color: COLORS.whiteFaint }}
               >
                 {label}
               </a>
             ))}
           </div>
-          <span className="text-[10px]" style={{ color: "rgba(245,240,232,0.20)" }}>
+          <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.22)" }}>
             © 2025 Ascend. All rights reserved.
           </span>
         </footer>
-
       </div>
     </main>
   );
