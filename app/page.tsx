@@ -117,12 +117,14 @@ const COLORS = {
   borderStrong: "rgba(108, 99, 230, 0.38)",
   indigo: "#6C63E6",
   indigoSoft: "rgba(108, 99, 230, 0.10)",
-  indigoMid: "rgba(108, 99, 230, 0.18)",
   white: "#FFFFFF",
   whiteSoft: "rgba(255,255,255,0.72)",
   whiteMuted: "rgba(255,255,255,0.52)",
   whiteFaint: "rgba(255,255,255,0.32)",
 };
+
+const BRAND_LOGO =
+  "data:image/jpeg;base64,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";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -964,8 +966,6 @@ export default function HomePage() {
     });
   }, [productsMatchingNonPlaceFilters, outboundPlace, returnPlace]);
 
-  const topThree = filteredProducts.slice(0, 3);
-
   function toggleTag(tag: string) {
     setSelectedTags((current) =>
       current.includes(tag) ? current.filter((value) => value !== tag) : [...current, tag]
@@ -1158,7 +1158,7 @@ export default function HomePage() {
                   borderRight: i < 3 ? `1px solid ${COLORS.border}` : undefined,
                 }}
               >
-                <span className="font-serif-display text-2xl font-normal" style={{ color: COLORS.indigo }}>
+                <span className="font-serif-display text-2xl font-normal" style={{ color: COLORS.white }}>
                   {n}
                 </span>
                 <span
@@ -1180,93 +1180,32 @@ export default function HomePage() {
             background: "linear-gradient(160deg, rgba(18,25,51,0.95) 0%, rgba(11,16,32,0.92) 100%)",
           }}
         >
-          <div className="grid gap-0 lg:grid-cols-[1.3fr_0.7fr]">
-            <div className="p-8 lg:p-10" style={{ borderRight: `1px solid ${COLORS.border}` }}>
-              <div
-                className="mb-6 inline-flex items-center gap-2 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em]"
-                style={{
-                  border: `1px solid ${COLORS.borderStrong}`,
-                  background: COLORS.indigoSoft,
-                  color: COLORS.indigo,
-                  borderRadius: 2,
-                }}
-              >
-                <StarIcon />
-                Ascend Cabin Optimizer
-              </div>
-              <h2
-                className="font-serif-display text-3xl font-normal leading-tight tracking-[-0.02em] sm:text-4xl"
-                style={{ color: COLORS.white }}
-              >
-                Compare Business &amp; First Class
-              </h2>
-              <p className="mt-4 text-base font-light leading-7" style={{ color: COLORS.whiteSoft }}>
-                Compare cabins across airlines, aircraft, and layouts — with AeroLOPA and seat maps all in
-                one place.
-              </p>
-
-              <div
-                className="mt-8 grid grid-cols-3 gap-px overflow-hidden"
-                style={{ border: `1px solid ${COLORS.border}`, borderRadius: 2 }}
-              >
-                {[
-                  { n: premiumProducts.length, l: "Curated cabins" },
-                  { n: airlineOptions.length, l: "Global airlines" },
-                  { n: placeCatalog.length, l: "Route points" },
-                ].map(({ n, l }, i) => (
+          <div className="p-8 lg:p-10">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              <div className="flex items-center gap-4">
+                <img
+                  src={BRAND_LOGO}
+                  alt="Ascend Cabin Optimizer"
+                  className="h-16 w-16 rounded-2xl object-cover shadow-lg shadow-[#6C63E6]/20"
+                />
+                <div>
                   <div
-                    key={l}
-                    className="flex flex-col items-center justify-center px-3 py-4 text-center"
-                    style={{ background: i % 2 === 0 ? "rgba(11,16,32,0.8)" : "rgba(18,25,51,0.8)" }}
+                    className="font-serif-display text-3xl font-normal leading-none tracking-[-0.02em]"
+                    style={{ color: COLORS.white }}
                   >
-                    <span className="font-serif-display text-xl font-normal" style={{ color: COLORS.indigo }}>
-                      {n}
-                    </span>
-                    <span
-                      className="mt-1 text-[9px] uppercase tracking-[0.14em]"
-                      style={{ color: COLORS.whiteFaint }}
-                    >
-                      {l}
-                    </span>
+                    Ascend
                   </div>
-                ))}
+                  <div
+                    className="mt-2 text-[11px] font-medium uppercase tracking-[0.28em]"
+                    style={{ color: COLORS.indigo }}
+                  >
+                    Cabin Optimizer
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div className="flex flex-col p-8 lg:p-10" style={{ background: "rgba(11,16,32,0.5)" }}>
-              <div
-                className="mb-5 inline-flex items-center gap-2 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em]"
-                style={{
-                  border: `1px solid ${COLORS.borderStrong}`,
-                  background: COLORS.indigoSoft,
-                  color: COLORS.indigo,
-                  borderRadius: 2,
-                }}
-              >
-                <DiamondIcon />
-                Explore products
-              </div>
-              <h3
-                className="font-serif-display text-2xl font-normal leading-tight tracking-[-0.02em]"
-                style={{ color: COLORS.white }}
-              >
-                Search premium cabins with clarity
-              </h3>
-              <p className="mt-4 flex-1 text-sm font-light leading-6" style={{ color: COLORS.whiteMuted }}>
-                Filter by airline, aircraft, cabin, route, and trip type to narrow down the strongest
-                Business and First Class options quickly.
-              </p>
-              <div
-                className="mt-6 p-4 text-sm font-light leading-6"
-                style={{
-                  border: `1px solid ${COLORS.border}`,
-                  background: COLORS.indigoSoft,
-                  color: COLORS.whiteSoft,
-                  borderRadius: 2,
-                }}
-              >
-                Use the route filters below to surface products that fit your exact origin and destination
-                pairing.
+              <div className="max-w-xl text-sm leading-6" style={{ color: COLORS.whiteSoft }}>
+                Search by route, aircraft, airline, and cabin to compare premium products in one clean view.
               </div>
             </div>
           </div>
@@ -1474,118 +1413,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
-        {filteredProducts.length > 0 && (
-          <section className="mb-8">
-            <div className="mb-5 flex items-center justify-between gap-4">
-              <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.22em]" style={{ color: COLORS.indigo }}>
-                  Top matches
-                </p>
-                <h2
-                  className="font-serif-display mt-1 text-2xl font-normal tracking-[-0.02em]"
-                  style={{ color: COLORS.white }}
-                >
-                  Best shortlist right now
-                </h2>
-              </div>
-              <p className="text-sm" style={{ color: COLORS.whiteMuted }}>
-                Showing {filteredProducts.length} product{filteredProducts.length === 1 ? "" : "s"}
-              </p>
-            </div>
-
-            <div className="grid gap-4 lg:grid-cols-3">
-              {topThree.map((item) => {
-                const matchingRoutes = item.routePairs.filter((pair) => {
-                  const outOk =
-                    !outboundPlace.trim() || normalizeText(pair.from).includes(normalizeText(outboundPlace));
-                  const retOk =
-                    !returnPlace.trim() || normalizeText(pair.to).includes(normalizeText(returnPlace));
-                  return outOk && retOk;
-                });
-
-                return (
-                  <article
-                    key={`${item.id}-featured`}
-                    className="cabin-card overflow-hidden"
-                    style={{
-                      border: `1px solid ${COLORS.borderStrong}`,
-                      borderRadius: 2,
-                      background: "linear-gradient(180deg, rgba(18,25,51,0.96) 0%, rgba(11,16,32,0.92) 100%)",
-                    }}
-                  >
-                    <div className="relative h-56 overflow-hidden">
-                      <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B1020]/70 to-transparent" />
-                      <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
-                        <span
-                          className="text-xs font-medium uppercase tracking-[0.12em]"
-                          style={{
-                            background: COLORS.indigo,
-                            color: COLORS.white,
-                            padding: "4px 10px",
-                            borderRadius: 2,
-                          }}
-                        >
-                          #{item.rank}
-                        </span>
-                        <span
-                          className={`text-xs font-medium ${cabinAccentFeatured[item.cabinType]}`}
-                          style={{ padding: "4px 10px", borderRadius: 2 }}
-                        >
-                          {item.cabinType}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="p-5">
-                      <div
-                        className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em]"
-                        style={{ color: COLORS.indigo }}
-                      >
-                        <span>{item.airlineCode}</span>
-                        <span style={{ color: "rgba(255,255,255,0.25)" }}>·</span>
-                        <span>{item.airline}</span>
-                      </div>
-                      <h3
-                        className="font-serif-display mt-2 text-xl font-normal leading-tight tracking-[-0.01em]"
-                        style={{ color: COLORS.white }}
-                      >
-                        {item.productName}
-                      </h3>
-                      <p className="mt-1 text-sm" style={{ color: COLORS.whiteMuted }}>
-                        {item.aircraft}
-                      </p>
-                      <p className="mt-2 text-sm" style={{ color: COLORS.indigo }}>
-                        {matchingRoutes[0] ? formatRoute(matchingRoutes[0]) : formatRoute(item.routePairs[0])}
-                      </p>
-                      <p className="mt-3 text-sm font-light leading-6" style={{ color: COLORS.whiteSoft }}>
-                        {item.description}
-                      </p>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {item.bestFor.map((value) => (
-                          <span
-                            key={value}
-                            className="text-[10px] font-medium uppercase tracking-[0.10em]"
-                            style={{
-                              border: `1px solid ${COLORS.border}`,
-                              background: COLORS.indigoSoft,
-                              color: COLORS.white,
-                              padding: "3px 10px",
-                              borderRadius: 2,
-                            }}
-                          >
-                            {value}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-        )}
 
         <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {filteredProducts.map((item) => {
@@ -1873,9 +1700,6 @@ export default function HomePage() {
               </a>
             ))}
           </div>
-          <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.22)" }}>
-            © 2025 Ascend. All rights reserved.
-          </span>
         </footer>
       </div>
     </main>
