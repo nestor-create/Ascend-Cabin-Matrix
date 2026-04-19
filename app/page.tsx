@@ -30,6 +30,9 @@ type RawProduct = Omit<Product, "routePairs"> & {
   routes: string[];
 };
 
+const ASCEND_LOGO =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALUAAAAlCAYAAAAENajqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAc9SURBVHhe7Z1rbBRFGMf3zhYEvBVQBG0Q0WjFh5jGQ4JAEpA0xGQQE6PR5EATjQY8Qh5i0MbY4mjpIY0mJgglQqOY0Z8V0WQxQeK2V1AIBH6iB4FVEQ6K0S0IuL3q9/t4m7N3d3f3zuzs7M7s7v7v5mZ2d2Z2dnZ2dkhEISL8N7gDkR0B0p9H7QJwJ8C8C7gQk0m1m3wG8BvgE8B4wJ0a8R0mVgN8F3gH8APgM8C7gTqv6l5I4m1r4AmgB9G9C3gW4D1gL9P0V3M2c2V0Q7gM8KkP0mJ4S0m9Jm4BfA24F2gQ6bPz8n3vW8m8q0kq1R8m6mG1lCwW2b5u8Hn0mGgA2b+1wG8B7QF8B7QF8A7QH8mY2mJq7Y7n+gP2xWb2S+7wq3qf4Jm4A/BvwN8B7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8C0m9V8y8mS0r3x1VfQb4FvAN4K+gH6S8mL8m3m7m2l8h5F6n2F1m7QK6D3gA8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8C5wB8D3gF8A7QH8K5W7t0aYf6zv1i8v2Uqf2+6xZ7v7o6zqgkHjYfF9d0cQm3z8vKk0Nf1L9uQ8wT8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8A7QH8AzgN8FPAI8C/AH8DPAe0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AO4D3gY8CjwL8AfwM8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A7gPeBjwKPAfwB/AzwHtAfwDeA/wHtAfwDeA/wHtAfwDeA/wHtAfwDeA/wHtAfwDeA/wHtAfwDuA94GPAo8B/AH8DPAe0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AO4D3gY8CjwL8AfwM8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A7gPeBjwKPAfwB/AzwHtAfwDeA/wHtAfwDeA/wHtAfwDeA/wHtAfwDeA/wHtAfwDeA/wHtAfwDuA94GPAo8B/AH8DPAe0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AN4D/Ae0B/AO4D3gY8CjwL8AfwM8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8A3gP8B7QH8C6m2oQk8Y3AAAAAElFTkSuQmCC";
+
 function SearchIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -94,14 +97,6 @@ function RouteIcon() {
   );
 }
 
-function DiamondIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-3 w-3" fill="currentColor">
-      <path d="M12 2l10 10-10 10L2 12 12 2Z" />
-    </svg>
-  );
-}
-
 const boardRows = [
   "LH 410  MUNICH            NEW YORK JFK      08:35   G12   BOARDING",
   "QR 701  DOHA              NEW YORK JFK      09:20   A04   ON TIME ",
@@ -126,16 +121,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "LH",
     aircraft: "A350-900",
     cabinType: "First",
-    routes: [
-      "Munich → New York JFK",
-      "Munich → Newark",
-      "Munich → Chicago",
-      "Munich → Miami",
-      "Munich → San Diego",
-      "Munich → Tokyo Haneda",
-      "Munich → Shanghai",
-      "Munich → Bengaluru",
-    ],
+    routes: ["Munich → New York JFK", "Munich → Newark", "Munich → Chicago", "Munich → Miami", "Munich → San Diego", "Munich → Tokyo Haneda", "Munich → Shanghai", "Munich → Bengaluru"],
     bestFor: ["Privacy", "Luxury"],
     seatInsight: "Private suite with closing doors and a fully lie-flat bed, engineered for maximum privacy on long-haul routes.",
     description: "Lufthansa's newest flagship First Class suite under the Allegris product family — the most refined hard product the airline has ever offered.",
@@ -151,37 +137,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "LH",
     aircraft: "A350-900 / 787-9",
     cabinType: "Business",
-    routes: [
-      "Munich → New York JFK",
-      "Munich → Newark",
-      "Munich → Chicago",
-      "Munich → Miami",
-      "Munich → San Diego",
-      "Munich → Tokyo Haneda",
-      "Munich → Shanghai",
-      "Munich → Bengaluru",
-      "Frankfurt → New York JFK",
-      "Frankfurt → Los Angeles",
-      "Frankfurt → Austin",
-      "Frankfurt → Toronto",
-      "Frankfurt → Montreal",
-      "Frankfurt → Rio de Janeiro",
-      "Frankfurt → Bogota",
-      "Frankfurt → Lagos",
-      "Frankfurt → Malabo",
-      "Frankfurt → Cape Town",
-      "Frankfurt → Shanghai",
-      "Frankfurt → Hyderabad",
-      "Frankfurt → Hong Kong",
-      "Frankfurt → Delhi",
-      "Frankfurt → Nairobi",
-      "Frankfurt → Mumbai",
-      "Frankfurt → Detroit",
-      "Frankfurt → Dallas/Fort Worth",
-      "Frankfurt → Atlanta",
-      "Frankfurt → Raleigh-Durham",
-      "Frankfurt → Kuala Lumpur",
-    ],
+    routes: ["Munich → New York JFK", "Munich → Newark", "Munich → Chicago", "Munich → Miami", "Munich → San Diego", "Munich → Tokyo Haneda", "Munich → Shanghai", "Munich → Bengaluru", "Frankfurt → New York JFK", "Frankfurt → Los Angeles", "Frankfurt → Austin", "Frankfurt → Toronto", "Frankfurt → Montreal", "Frankfurt → Rio de Janeiro", "Frankfurt → Bogota", "Frankfurt → Lagos", "Frankfurt → Malabo", "Frankfurt → Cape Town", "Frankfurt → Shanghai", "Frankfurt → Hyderabad", "Frankfurt → Hong Kong", "Frankfurt → Delhi", "Frankfurt → Nairobi", "Frankfurt → Mumbai", "Frankfurt → Detroit", "Frankfurt → Dallas/Fort Worth", "Frankfurt → Atlanta", "Frankfurt → Raleigh-Durham", "Frankfurt → Kuala Lumpur"],
     bestFor: ["Privacy", "Choice"],
     seatInsight: "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
     description: "Lufthansa's new Allegris Business Class offers more seat variety than any other carrier — a genuine upgrade to the cabin experience.",
@@ -197,14 +153,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "NH",
     aircraft: "777-300ER",
     cabinType: "Business",
-    routes: [
-      "Tokyo Haneda → London Heathrow",
-      "Tokyo Haneda → New York JFK",
-      "Tokyo Haneda → Chicago",
-      "Tokyo Narita → Chicago",
-      "Tokyo Haneda → San Francisco",
-      "Tokyo Narita → San Francisco",
-    ],
+    routes: ["Tokyo Haneda → London Heathrow", "Tokyo Haneda → New York JFK", "Tokyo Haneda → Chicago", "Tokyo Narita → Chicago", "Tokyo Haneda → San Francisco", "Tokyo Narita → San Francisco"],
     bestFor: ["Space", "Solo"],
     seatInsight: "Extra-wide 1-2-1 business class suite with direct aisle access, a sliding door, and exceptional personal space throughout.",
     description: "ANA's flagship business class suite, widely regarded as one of the world's best for solo travellers seeking space and privacy.",
@@ -220,14 +169,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "QR",
     aircraft: "A350-1000 / 777-300ER / 787-9",
     cabinType: "Business",
-    routes: [
-      "Doha → New York JFK",
-      "Doha → London Heathrow",
-      "Doha → Paris",
-      "Doha → Singapore",
-      "Doha → Sydney",
-      "Doha → Los Angeles",
-    ],
+    routes: ["Doha → New York JFK", "Doha → London Heathrow", "Doha → Paris", "Doha → Singapore", "Doha → Sydney", "Doha → Los Angeles"],
     bestFor: ["Couples", "Privacy"],
     seatInsight: "Enclosed suite with closing doors and innovative double-bed configuration — centre pairs convert to a shared space for couples.",
     description: "Qatar Airways' award-winning flagship business class, setting the benchmark for privacy and flexibility in the cabin.",
@@ -243,11 +185,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "SQ",
     aircraft: "A380-800",
     cabinType: "First",
-    routes: [
-      "Singapore → London Heathrow",
-      "Singapore → Sydney",
-      "Singapore → Shanghai",
-    ],
+    routes: ["Singapore → London Heathrow", "Singapore → Sydney", "Singapore → Shanghai"],
     bestFor: ["Luxury", "Space"],
     seatInsight: "One of the largest private suites in commercial aviation, with a separate ottoman, wardrobe, and convertible double bed.",
     description: "Singapore Airlines' Suites product on the A380 is widely considered the pinnacle of commercial aviation luxury.",
@@ -263,12 +201,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "EY",
     aircraft: "A380-800",
     cabinType: "First",
-    routes: [
-      "Abu Dhabi → London Heathrow",
-      "Abu Dhabi → Toronto",
-      "Abu Dhabi → Paris",
-      "Abu Dhabi → Singapore",
-    ],
+    routes: ["Abu Dhabi → London Heathrow", "Abu Dhabi → Toronto", "Abu Dhabi → Paris", "Abu Dhabi → Singapore"],
     bestFor: ["Space", "Luxury"],
     seatInsight: "A380 first class with a separate armchair and fully flat bed in a distinct suite — truly apartment-scale dimensions in the sky.",
     description: "Etihad's iconic A380 First Apartment remains one of the most spacious first class experiences available on any airline.",
@@ -284,10 +217,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "NH",
     aircraft: "777-300ER",
     cabinType: "First",
-    routes: [
-      "Tokyo Haneda → New York JFK",
-      "Tokyo Haneda → London Heathrow",
-    ],
+    routes: ["Tokyo Haneda → New York JFK", "Tokyo Haneda → London Heathrow"],
     bestFor: ["Privacy", "Luxury"],
     seatInsight: "Enclosed suite with strong acoustic and visual privacy, a residential-style design, and a wide fully flat bed.",
     description: "ANA's flagship first class suite on selected 777-300ER flights — the quietest and most residential first class in its class.",
@@ -303,11 +233,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "EK",
     aircraft: "777-300ER",
     cabinType: "First",
-    routes: [
-      "Dubai → Brussels",
-      "Dubai → Geneva",
-      "Dubai → Tokyo Haneda",
-    ],
+    routes: ["Dubai → Brussels", "Dubai → Geneva", "Dubai → Tokyo Haneda"],
     bestFor: ["Privacy", "Solo"],
     seatInsight: "Fully enclosed suite with floor-to-ceiling privacy walls, zero-gravity seating, and a premium personal minibar.",
     description: "Emirates' newest first class product, delivering complete visual privacy and a futuristic design language unlike anything else in the sky.",
@@ -323,22 +249,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "AF",
     aircraft: "777-300ER",
     cabinType: "First",
-    routes: [
-      "Paris CDG → Abidjan",
-      "Paris CDG → Atlanta",
-      "Paris CDG → Boston",
-      "Paris CDG → Dubai",
-      "Paris CDG → Houston",
-      "Paris CDG → Los Angeles",
-      "Paris CDG → Miami",
-      "Paris CDG → New York JFK",
-      "Paris CDG → San Francisco",
-      "Paris CDG → Sao Paulo",
-      "Paris CDG → Singapore",
-      "Paris CDG → Tel Aviv",
-      "Paris CDG → Tokyo Haneda",
-      "Paris CDG → Washington D.C.",
-    ],
+    routes: ["Paris CDG → Abidjan", "Paris CDG → Atlanta", "Paris CDG → Boston", "Paris CDG → Dubai", "Paris CDG → Houston", "Paris CDG → Los Angeles", "Paris CDG → Miami", "Paris CDG → New York JFK", "Paris CDG → San Francisco", "Paris CDG → Sao Paulo", "Paris CDG → Singapore", "Paris CDG → Tel Aviv", "Paris CDG → Tokyo Haneda", "Paris CDG → Washington D.C."],
     bestFor: ["Luxury", "Exclusivity"],
     seatInsight: "Highly exclusive first class with just four suites per aircraft, refined French service, and a spacious fully flat bed.",
     description: "Air France's La Première is one of the most exclusive first class products available — only four seats per flight.",
@@ -354,12 +265,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "BA",
     aircraft: "A350-1000 / 777-300ER / 787-10",
     cabinType: "Business",
-    routes: [
-      "London Heathrow → New York JFK",
-      "London Heathrow → Los Angeles",
-      "London Heathrow → Dubai",
-      "London Heathrow → San Francisco",
-    ],
+    routes: ["London Heathrow → New York JFK", "London Heathrow → Los Angeles", "London Heathrow → Dubai", "London Heathrow → San Francisco"],
     bestFor: ["Privacy", "Network"],
     seatInsight: "1-2-1 layout with closing doors and direct aisle access for every seat — a substantial improvement over older Club World.",
     description: "British Airways' modern Club Suite is a strong option for LHR-routed itineraries on an unrivalled global network.",
@@ -375,12 +281,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "DL",
     aircraft: "A350-900 / A330-900neo",
     cabinType: "Business",
-    routes: [
-      "Los Angeles → Sydney",
-      "New York JFK → London Heathrow",
-      "Detroit → Tokyo Haneda",
-      "Atlanta → Johannesburg",
-    ],
+    routes: ["Los Angeles → Sydney", "New York JFK → London Heathrow", "Detroit → Tokyo Haneda", "Atlanta → Johannesburg"],
     bestFor: ["Privacy", "Consistency"],
     seatInsight: "Suite-style seat with a sliding door and direct aisle access — Delta's most private business class product.",
     description: "Delta One Suite is the most consistent enclosed business class product on US carriers for transatlantic and transpacific routes.",
@@ -396,12 +297,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "CX",
     aircraft: "777-300ER",
     cabinType: "Business",
-    routes: [
-      "Hong Kong → London Heathrow",
-      "Hong Kong → Sydney",
-      "Hong Kong → Vancouver",
-      "Hong Kong → San Francisco",
-    ],
+    routes: ["Hong Kong → London Heathrow", "Hong Kong → Sydney", "Hong Kong → Vancouver", "Hong Kong → San Francisco"],
     bestFor: ["Privacy", "Storage"],
     seatInsight: "Next-generation suite with a closing door, generous storage throughout, and Cathay's signature attention to ergonomics.",
     description: "Cathay Pacific's newest flagship business class suite — a significant upgrade in privacy and material quality over the prior product.",
@@ -417,12 +313,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "JL",
     aircraft: "777-300ER / 787-9",
     cabinType: "Business",
-    routes: [
-      "Tokyo Haneda → San Francisco",
-      "Tokyo Haneda → New York JFK",
-      "Tokyo Haneda → London Heathrow",
-      "Tokyo Haneda → Dallas/Fort Worth",
-    ],
+    routes: ["Tokyo Haneda → San Francisco", "Tokyo Haneda → New York JFK", "Tokyo Haneda → London Heathrow", "Tokyo Haneda → Dallas/Fort Worth"],
     bestFor: ["Comfort", "Solo"],
     seatInsight: "Direct aisle access for every seat with a thoughtful 1-2-1 layout and Japan Airlines' renowned soft product.",
     description: "JAL's Sky Suite is consistently rated among the best business class experiences for comfort and service quality.",
@@ -438,13 +329,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "BR",
     aircraft: "777-300ER",
     cabinType: "Business",
-    routes: [
-      "Taipei → New York JFK",
-      "Taipei → Los Angeles",
-      "Taipei → San Francisco",
-      "Taipei → Paris",
-      "Taipei → London Heathrow",
-    ],
+    routes: ["Taipei → New York JFK", "Taipei → Los Angeles", "Taipei → San Francisco", "Taipei → Paris", "Taipei → London Heathrow"],
     bestFor: ["Comfort", "Sleep"],
     seatInsight: "Reverse herringbone seating with direct aisle access, exceptional bed length, and a strong reputation for sleep quality.",
     description: "EVA Air's Royal Laurel is among the highest-rated business class cabins for sleep, particularly on Pacific routes.",
@@ -460,14 +345,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "KE",
     aircraft: "747-8",
     cabinType: "First",
-    routes: [
-      "Seoul Incheon → New York JFK",
-      "Seoul Incheon → Los Angeles",
-      "Seoul Incheon → Atlanta",
-      "Seoul Incheon → Paris CDG",
-      "Seoul Incheon → London Heathrow",
-      "Seoul Incheon → Frankfurt",
-    ],
+    routes: ["Seoul Incheon → New York JFK", "Seoul Incheon → Los Angeles", "Seoul Incheon → Atlanta", "Seoul Incheon → Paris CDG", "Seoul Incheon → London Heathrow", "Seoul Incheon → Frankfurt"],
     bestFor: ["Privacy", "Luxury"],
     seatInsight: "Fully enclosed next-generation first class suite with strong visual and acoustic privacy and highly refined finishes.",
     description: "Korean Air's Kosmo Suites 2.0 is a flagship first class product that outperforms many European equivalents in hard product quality.",
@@ -483,21 +361,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "KE",
     aircraft: "787-10 / 777-300ER / A350-900",
     cabinType: "Business",
-    routes: [
-      "Seoul Incheon → New York JFK",
-      "Seoul Incheon → Los Angeles",
-      "Seoul Incheon → San Francisco",
-      "Seoul Incheon → Seattle",
-      "Seoul Incheon → Vancouver",
-      "Seoul Incheon → London Heathrow",
-      "Seoul Incheon → Paris CDG",
-      "Seoul Incheon → Frankfurt",
-      "Seoul Incheon → Rome",
-      "Seoul Incheon → Madrid",
-      "Seoul Incheon → Sydney",
-      "Seoul Incheon → Singapore",
-      "Seoul Incheon → Tokyo Haneda",
-    ],
+    routes: ["Seoul Incheon → New York JFK", "Seoul Incheon → Los Angeles", "Seoul Incheon → San Francisco", "Seoul Incheon → Seattle", "Seoul Incheon → Vancouver", "Seoul Incheon → London Heathrow", "Seoul Incheon → Paris CDG", "Seoul Incheon → Frankfurt", "Seoul Incheon → Rome", "Seoul Incheon → Madrid", "Seoul Incheon → Sydney", "Seoul Incheon → Singapore", "Seoul Incheon → Tokyo Haneda"],
     bestFor: ["Privacy", "Solo"],
     seatInsight: "Suite-style business class with a sliding door, direct aisle access, and the most private layout in Korean Air's fleet.",
     description: "Korean Air's Prestige Suite 2.0 is an underrated business class product available across a wide global network.",
@@ -513,12 +377,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "VS",
     aircraft: "A330-900neo / A350-1000",
     cabinType: "Business",
-    routes: [
-      "London Heathrow → New York JFK",
-      "London Heathrow → Los Angeles",
-      "London Heathrow → San Francisco",
-      "London Heathrow → Delhi",
-    ],
+    routes: ["London Heathrow → New York JFK", "London Heathrow → Los Angeles", "London Heathrow → San Francisco", "London Heathrow → Delhi"],
     bestFor: ["Couples", "Social"],
     seatInsight: "1-2-1 layout with direct aisle access and a unique social lounge (The Loft) at the rear of the upper class cabin.",
     description: "Virgin Atlantic's Upper Class Suite stands apart for its social design and distinctive cabin atmosphere on transatlantic routes.",
@@ -534,12 +393,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "B6",
     aircraft: "A321LR / A321XLR",
     cabinType: "Business",
-    routes: [
-      "New York JFK → Paris CDG",
-      "New York JFK → London Heathrow",
-      "New York JFK → Amsterdam",
-      "Boston → Paris CDG",
-    ],
+    routes: ["New York JFK → Paris CDG", "New York JFK → London Heathrow", "New York JFK → Amsterdam", "Boston → Paris CDG"],
     bestFor: ["Space", "Solo"],
     seatInsight: "The front-row Mint Studio offers a larger enclosed suite with more storage and a distinctly premium feel over standard Mint seats.",
     description: "JetBlue's Mint Studio is the best value premium transatlantic product for solo travellers on core North Atlantic routes.",
@@ -555,12 +409,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "QF",
     aircraft: "A380-800 / 787-9",
     cabinType: "Business",
-    routes: [
-      "Sydney → Singapore",
-      "Sydney → London Heathrow",
-      "Melbourne → Dallas/Fort Worth",
-      "Perth → London Heathrow",
-    ],
+    routes: ["Sydney → Singapore", "Sydney → London Heathrow", "Melbourne → Dallas/Fort Worth", "Perth → London Heathrow"],
     bestFor: ["Comfort", "Practicality"],
     seatInsight: "Direct aisle access 1-2-1 layout with a practical design, generous storage, and Qantas' well-regarded service.",
     description: "Qantas' Business Suite is a reliable, comfortable choice on key Australia–Europe and Australia–North America routes.",
@@ -576,12 +425,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "TK",
     aircraft: "787-9 / A350-900",
     cabinType: "Business",
-    routes: [
-      "Istanbul → San Francisco",
-      "Istanbul → New York JFK",
-      "Istanbul → Los Angeles",
-      "Istanbul → Tokyo Haneda",
-    ],
+    routes: ["Istanbul → San Francisco", "Istanbul → New York JFK", "Istanbul → Los Angeles", "Istanbul → Tokyo Haneda"],
     bestFor: ["Network", "Value"],
     seatInsight: "Modern long-haul seat with direct aisle access and improved privacy, backed by Turkish Airlines' extensive hub connections.",
     description: "Turkish Airlines' preferred long-haul business product — a strong value option on one of the world's widest networks.",
@@ -597,12 +441,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "AA",
     aircraft: "787-9",
     cabinType: "Business",
-    routes: [
-      "Chicago O'Hare → London Heathrow",
-      "Philadelphia → London Heathrow",
-      "Dallas/Fort Worth → Brisbane",
-      "Dallas/Fort Worth → Auckland",
-    ],
+    routes: ["Chicago O'Hare → London Heathrow", "Philadelphia → London Heathrow", "Dallas/Fort Worth → Brisbane", "Dallas/Fort Worth → Auckland"],
     bestFor: ["Privacy", "New Product"],
     seatInsight: "New suite-style business class with closing doors, a wider seat, and a significantly improved hard product over older Flagship Business.",
     description: "American Airlines' newest Flagship Suite is a material upgrade, expanding to more routes through 2025–26.",
@@ -618,12 +457,7 @@ const rawProducts: RawProduct[] = [
     airlineCode: "UA",
     aircraft: "787-9 / 787-10 / 777-300ER",
     cabinType: "Business",
-    routes: [
-      "San Francisco → Singapore",
-      "Newark → London Heathrow",
-      "Washington Dulles → Tokyo Haneda",
-      "San Francisco → Sydney",
-    ],
+    routes: ["San Francisco → Singapore", "Newark → London Heathrow", "Washington Dulles → Tokyo Haneda", "San Francisco → Sydney"],
     bestFor: ["Consistency", "Network"],
     seatInsight: "Direct aisle access 1-2-1 layout with a consistent product across a large widebody fleet and extensive global network.",
     description: "United's Polaris is the most consistent premium long-haul product on US carriers, particularly for Star Alliance routing.",
@@ -634,13 +468,13 @@ const rawProducts: RawProduct[] = [
 ];
 
 const cabinAccent: Record<CabinType, string> = {
-  First: "bg-[#2D220D]/95 text-[#D8B372] ring-1 ring-inset ring-[#D8B372]/30",
-  Business: "bg-[#102031]/95 text-[#9FC9DC] ring-1 ring-inset ring-[#9FC9DC]/20",
+  First: "bg-[#241F4D]/95 text-white ring-1 ring-inset ring-[#6C63E6]/40",
+  Business: "bg-[#161338]/95 text-[#D9D7FF] ring-1 ring-inset ring-[#6C63E6]/25",
 };
 
 const cabinAccentFeatured: Record<CabinType, string> = {
-  First: "bg-[#D8B372] text-[#081728]",
-  Business: "bg-[#102031] text-[#9FC9DC] ring-1 ring-[#9FC9DC]/30",
+  First: "bg-[#6C63E6] text-white",
+  Business: "bg-[#161338] text-[#D9D7FF] ring-1 ring-[#6C63E6]/35",
 };
 
 const curatedBestForOptions = ["Privacy", "Couples", "Space", "Luxury", "Sleep", "Network"];
@@ -737,7 +571,7 @@ function PlaceAutosuggest({
 
   return (
     <div ref={wrapperRef} className="relative">
-      <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]/70">
+      <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#6C63E6]/80">
         <RouteIcon />
         {label}
       </label>
@@ -750,12 +584,12 @@ function PlaceAutosuggest({
           onChange(e.target.value);
           setOpen(true);
         }}
-        className="w-full border border-[#D8B372]/15 bg-[#081728]/80 px-4 py-3 text-sm text-[#F4EFE7] outline-none placeholder:text-[#F4EFE7]/25 focus:border-[#D8B372]/40 transition-colors duration-200"
+        className="w-full border border-[#6C63E6]/20 bg-[#0B0F24]/85 px-4 py-3 text-sm text-white outline-none placeholder:text-white/25 focus:border-[#6C63E6]/50 transition-colors duration-200"
         style={{ borderRadius: 2 }}
       />
       {shouldShow && (
         <div
-          className="absolute z-30 mt-1 max-h-72 w-full overflow-auto border border-[#D8B372]/20 bg-[#081728]/98 p-1.5 shadow-2xl shadow-black/60"
+          className="absolute z-30 mt-1 max-h-72 w-full overflow-auto border border-[#6C63E6]/25 bg-[#0B0F24]/98 p-1.5 shadow-2xl shadow-black/60"
           style={{ borderRadius: 2 }}
         >
           {suggestions.map((suggestion) => (
@@ -766,11 +600,11 @@ function PlaceAutosuggest({
                 onSelect(suggestion);
                 setOpen(false);
               }}
-              className="flex w-full items-center justify-between px-3 py-2.5 text-left text-sm text-[#F4EFE7]/80 transition-colors hover:bg-[#D8B372]/10 hover:text-[#F4EFE7]"
+              className="flex w-full items-center justify-between px-3 py-2.5 text-left text-sm text-white/85 transition-colors hover:bg-[#6C63E6]/12 hover:text-white"
               style={{ borderRadius: 2 }}
             >
               <span>{suggestion}</span>
-              <span className="text-[10px] uppercase tracking-[0.16em] text-[#D8B372]/50">Available</span>
+              <span className="text-[10px] uppercase tracking-[0.16em] text-[#6C63E6]/55">Available</span>
             </button>
           ))}
         </div>
@@ -903,25 +737,23 @@ export default function HomePage() {
 
   return (
     <main
-      className="min-h-screen overflow-hidden text-[#F4EFE7]"
+      className="min-h-screen overflow-hidden text-white"
       style={{
-        background: "#081728",
-        fontFamily: "'Manrope', 'Inter', ui-sans-serif, system-ui, sans-serif",
+        background: "#080B18",
+        fontFamily: "'Inter', sans-serif",
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@300;400;500;600&display=swap');
-
-        .font-serif-display { font-family: 'Cormorant Garamond', Georgia, serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
         .board-bg {
           position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
         }
         .board-track {
           position: absolute; left: 0; right: 0;
-          font-family: 'Courier New', Courier, monospace;
-          font-size: 11px; letter-spacing: 0.06em;
-          color: rgba(216,179,114,0.06);
+          font-family: 'Inter', sans-serif;
+          font-size: 11px; letter-spacing: 0.08em;
+          color: rgba(108,99,230,0.08);
           white-space: pre; line-height: 2.4;
           user-select: none;
         }
@@ -934,15 +766,15 @@ export default function HomePage() {
         .board-glow {
           position: absolute; inset: 0;
           background:
-            radial-gradient(ellipse 70% 50% at 50% 0%, rgba(216,179,114,0.05) 0%, transparent 60%),
-            radial-gradient(circle at 20% 20%, rgba(34,70,118,0.18), transparent 28%);
+            radial-gradient(ellipse 70% 50% at 50% 0%, rgba(108,99,230,0.10) 0%, transparent 60%),
+            radial-gradient(circle at 20% 20%, rgba(108,99,230,0.12), transparent 28%);
         }
 
         .board-vignette {
           position: absolute; inset: 0;
           background:
-            linear-gradient(to bottom, #081728 0%, transparent 14%, transparent 86%, #081728 100%),
-            linear-gradient(to right, #081728 0%, transparent 7%, transparent 93%, #081728 100%);
+            linear-gradient(to bottom, #080B18 0%, transparent 14%, transparent 86%, #080B18 100%),
+            linear-gradient(to right, #080B18 0%, transparent 7%, transparent 93%, #080B18 100%);
         }
 
         .cabin-card { transition: transform 0.25s cubic-bezier(.22,.68,0,1.2), border-color 0.2s; }
@@ -951,7 +783,7 @@ export default function HomePage() {
         .cabin-card:hover img { transform: scale(1.04); }
 
         .ascend-select {
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23D8B372' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236C63E6' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
           background-repeat: no-repeat;
           background-position: right 12px center;
           -webkit-appearance: none; appearance: none;
@@ -981,40 +813,46 @@ export default function HomePage() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         <header className="pb-4">
-          <div className="flex items-start gap-4">
+          <div className="flex items-center gap-3">
+            <img src={ASCEND_LOGO} alt="Ascend logo" className="h-8 w-auto object-contain" />
             <div>
-              <div className="font-serif-display text-[36px] font-medium leading-none text-[#F4EFE7]">
-                Ascend
+              <div className="text-[26px] font-semibold leading-none text-white">
+                Ascend Cabin Optimizer
               </div>
-              <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-[#D8B372]">
-                Cabin Optimizer
+              <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-[#6C63E6]">
+                Ascend Cabin Optimizer
               </div>
             </div>
           </div>
         </header>
 
-        <div className="border-t border-[#D8B372]/15" />
+        <div className="border-t border-[#6C63E6]/20" />
 
         <section className="py-12 sm:py-16 lg:py-20">
           <div className="max-w-3xl">
-            <div className="mb-8 inline-flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-[#D8B372]">
-              <span className="block h-px w-6 bg-[#D8B372]" />
+            <div className="mb-8 inline-flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-[#6C63E6]">
+              <span className="block h-px w-6 bg-[#6C63E6]" />
               Premium cabin intelligence
             </div>
 
-            <h1 className="font-serif-display text-5xl font-medium leading-[0.95] tracking-[-0.03em] text-[#F4EFE7] sm:text-6xl lg:text-[78px]">
-              Find your <em className="italic text-[#DFC393]">perfect</em>
+            <div className="mb-6 flex items-center gap-3">
+              <img src={ASCEND_LOGO} alt="Ascend logo" className="h-10 w-auto object-contain" />
+              <span className="text-lg font-medium text-white/90">Ascend Cabin Optimizer</span>
+            </div>
+
+            <h1 className="text-5xl font-semibold leading-[0.95] tracking-[-0.04em] text-white sm:text-6xl lg:text-[74px]">
+              Find your perfect
               <br />
               seat in the sky
             </h1>
 
-            <p className="mt-8 max-w-2xl text-lg leading-8 text-[#F4EFE7]/78">
+            <p className="mt-8 max-w-2xl text-lg leading-8 text-white/78">
               Compare Business and First Class cabin products across airlines, aircraft, and layouts — with AeroLOPA and seat maps in one view. Curated by Ascend's concierge team.
             </p>
           </div>
         </section>
 
-        <div className="border-t border-[#D8B372]/15" />
+        <div className="border-t border-[#6C63E6]/20" />
 
         <section className="grid grid-cols-3 gap-8 py-10 sm:max-w-xl">
           {[
@@ -1023,8 +861,8 @@ export default function HomePage() {
             { n: filteredProducts.length, l: "Showing" },
           ].map(({ n, l }) => (
             <div key={l}>
-              <div className="font-serif-display text-5xl font-medium text-[#D8B372]">{n}</div>
-              <div className="mt-2 text-[11px] uppercase tracking-[0.18em] text-[#D8B372]/60">{l}</div>
+              <div className="text-5xl font-semibold text-[#6C63E6]">{n}</div>
+              <div className="mt-2 text-[11px] uppercase tracking-[0.18em] text-[#6C63E6]/65">{l}</div>
             </div>
           ))}
         </section>
@@ -1032,14 +870,14 @@ export default function HomePage() {
         <section
           className="mb-8 p-6 lg:p-8"
           style={{
-            border: "1px solid rgba(216,179,114,0.15)",
-            background: "linear-gradient(180deg, rgba(13,30,49,0.92) 0%, rgba(8,23,40,0.88) 100%)",
+            border: "1px solid rgba(108,99,230,0.20)",
+            background: "linear-gradient(180deg, rgba(13,16,35,0.92) 0%, rgba(8,11,24,0.88) 100%)",
             borderRadius: 2,
           }}
         >
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
             <div className="xl:col-span-2">
-              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]/70">
+              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#6C63E6]/80">
                 <SearchIcon />
                 Search cabins
               </label>
@@ -1050,18 +888,18 @@ export default function HomePage() {
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
                 style={{
-                  border: "1px solid rgba(216,179,114,0.15)",
-                  background: "rgba(8,23,40,0.8)",
-                  color: "#F4EFE7",
+                  border: "1px solid rgba(108,99,230,0.20)",
+                  background: "rgba(11,15,36,0.88)",
+                  color: "#FFFFFF",
                   borderRadius: 2,
                 }}
-                onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(216,179,114,0.40)")}
-                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(216,179,114,0.15)")}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(108,99,230,0.55)")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(108,99,230,0.20)")}
               />
             </div>
 
             <div>
-              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]/70">
+              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#6C63E6]/80">
                 <PlaneIcon />
                 Airline
               </label>
@@ -1070,15 +908,15 @@ export default function HomePage() {
                 onChange={(e) => setAirline(e.target.value)}
                 className="ascend-select w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
                 style={{
-                  border: "1px solid rgba(216,179,114,0.15)",
-                  background: "rgba(8,23,40,0.8)",
-                  color: "#F4EFE7",
+                  border: "1px solid rgba(108,99,230,0.20)",
+                  background: "rgba(11,15,36,0.88)",
+                  color: "#FFFFFF",
                   borderRadius: 2,
                 }}
               >
                 <option value="">All airlines</option>
                 {airlineOptions.map((option) => (
-                  <option key={option} value={option} style={{ background: "#081728" }}>
+                  <option key={option} value={option} style={{ background: "#0B0F24" }}>
                     {option}
                   </option>
                 ))}
@@ -1086,7 +924,7 @@ export default function HomePage() {
             </div>
 
             <div>
-              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]/70">
+              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#6C63E6]/80">
                 <PlaneIcon />
                 Aircraft
               </label>
@@ -1095,15 +933,15 @@ export default function HomePage() {
                 onChange={(e) => setAircraft(e.target.value)}
                 className="ascend-select w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
                 style={{
-                  border: "1px solid rgba(216,179,114,0.15)",
-                  background: "rgba(8,23,40,0.8)",
-                  color: "#F4EFE7",
+                  border: "1px solid rgba(108,99,230,0.20)",
+                  background: "rgba(11,15,36,0.88)",
+                  color: "#FFFFFF",
                   borderRadius: 2,
                 }}
               >
                 <option value="">All aircraft</option>
                 {aircraftOptions.map((option) => (
-                  <option key={option} value={option} style={{ background: "#081728" }}>
+                  <option key={option} value={option} style={{ background: "#0B0F24" }}>
                     {option}
                   </option>
                 ))}
@@ -1111,7 +949,7 @@ export default function HomePage() {
             </div>
 
             <div>
-              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]/70">
+              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#6C63E6]/80">
                 <SeatIcon />
                 Cabin
               </label>
@@ -1120,15 +958,15 @@ export default function HomePage() {
                 onChange={(e) => setCabin(e.target.value)}
                 className="ascend-select w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
                 style={{
-                  border: "1px solid rgba(216,179,114,0.15)",
-                  background: "rgba(8,23,40,0.8)",
-                  color: "#F4EFE7",
+                  border: "1px solid rgba(108,99,230,0.20)",
+                  background: "rgba(11,15,36,0.88)",
+                  color: "#FFFFFF",
                   borderRadius: 2,
                 }}
               >
                 <option value="">All cabins</option>
-                <option value="Business" style={{ background: "#081728" }}>Business</option>
-                <option value="First" style={{ background: "#081728" }}>First</option>
+                <option value="Business" style={{ background: "#0B0F24" }}>Business</option>
+                <option value="First" style={{ background: "#0B0F24" }}>First</option>
               </select>
             </div>
           </div>
@@ -1154,7 +992,7 @@ export default function HomePage() {
 
           <div className="mt-5 grid gap-3 xl:grid-cols-[1fr_auto]">
             <div>
-              <label className="mb-3 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]/70">
+              <label className="mb-3 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#6C63E6]/80">
                 <StarIcon />
                 Best for
               </label>
@@ -1165,9 +1003,9 @@ export default function HomePage() {
                   className="px-4 py-2 text-xs font-medium uppercase tracking-[0.10em] transition-all duration-150"
                   style={{
                     borderRadius: 2,
-                    background: selectedTags.length === 0 ? "#D8B372" : "rgba(216,179,114,0.06)",
-                    color: selectedTags.length === 0 ? "#081728" : "rgba(244,239,231,0.55)",
-                    border: selectedTags.length === 0 ? "1px solid #D8B372" : "1px solid rgba(216,179,114,0.20)",
+                    background: selectedTags.length === 0 ? "#6C63E6" : "rgba(108,99,230,0.08)",
+                    color: "#FFFFFF",
+                    border: selectedTags.length === 0 ? "1px solid #6C63E6" : "1px solid rgba(108,99,230,0.22)",
                   }}
                 >
                   All
@@ -1182,9 +1020,9 @@ export default function HomePage() {
                       className="px-4 py-2 text-xs font-medium uppercase tracking-[0.10em] transition-all duration-150"
                       style={{
                         borderRadius: 2,
-                        background: isActive ? "#D8B372" : "rgba(216,179,114,0.06)",
-                        color: isActive ? "#081728" : "rgba(244,239,231,0.55)",
-                        border: isActive ? "1px solid #D8B372" : "1px solid rgba(216,179,114,0.20)",
+                        background: isActive ? "#6C63E6" : "rgba(108,99,230,0.08)",
+                        color: "#FFFFFF",
+                        border: isActive ? "1px solid #6C63E6" : "1px solid rgba(108,99,230,0.22)",
                       }}
                     >
                       {option}
@@ -1192,16 +1030,16 @@ export default function HomePage() {
                   );
                 })}
               </div>
-              <p className="mt-2 text-xs text-[#F4EFE7]/30">You can select multiple options at once.</p>
+              <p className="mt-2 text-xs text-white/30">You can select multiple options at once.</p>
             </div>
             <div className="flex items-end">
               <button
                 onClick={resetFilters}
                 className="w-full px-5 py-3 text-xs font-medium uppercase tracking-[0.12em] transition-colors duration-150 xl:w-auto"
                 style={{
-                  border: "1px solid rgba(216,179,114,0.20)",
-                  background: "rgba(216,179,114,0.04)",
-                  color: "rgba(244,239,231,0.50)",
+                  border: "1px solid rgba(108,99,230,0.22)",
+                  background: "rgba(108,99,230,0.06)",
+                  color: "rgba(255,255,255,0.65)",
                   borderRadius: 2,
                 }}
               >
@@ -1215,14 +1053,14 @@ export default function HomePage() {
           <section className="mb-8">
             <div className="mb-5 flex items-center justify-between gap-4">
               <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]">
+                <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#6C63E6]">
                   Top matches
                 </p>
-                <h2 className="font-serif-display mt-1 text-2xl font-medium tracking-[-0.02em] text-[#F4EFE7]">
+                <h2 className="mt-1 text-2xl font-semibold tracking-[-0.02em] text-white">
                   Best shortlist right now
                 </h2>
               </div>
-              <p className="text-sm text-[#F4EFE7]/45">
+              <p className="text-sm text-white/45">
                 Showing {filteredProducts.length} product{filteredProducts.length === 1 ? "" : "s"}
               </p>
             </div>
@@ -1240,20 +1078,20 @@ export default function HomePage() {
                     key={`${item.id}-featured`}
                     className="cabin-card overflow-hidden"
                     style={{
-                      border: "1px solid rgba(216,179,114,0.20)",
+                      border: "1px solid rgba(108,99,230,0.24)",
                       borderRadius: 2,
-                      background: "linear-gradient(180deg, rgba(13,30,49,0.96) 0%, rgba(8,23,40,0.92) 100%)",
+                      background: "linear-gradient(180deg, rgba(16,19,46,0.96) 0%, rgba(8,11,24,0.92) 100%)",
                     }}
                   >
                     <div className="relative h-56 overflow-hidden">
                       <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#081728]/60 to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#080B18]/60 to-transparent pointer-events-none" />
                       <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
                         <span
                           className="text-xs font-medium uppercase tracking-[0.12em]"
                           style={{
-                            background: "#D8B372",
-                            color: "#081728",
+                            background: "#6C63E6",
+                            color: "#FFFFFF",
                             padding: "4px 10px",
                             borderRadius: 2,
                           }}
@@ -1270,19 +1108,19 @@ export default function HomePage() {
                     </div>
 
                     <div className="p-5">
-                      <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-[#D8B372]">
+                      <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-[#6C63E6]">
                         <span>{item.airlineCode}</span>
-                        <span className="text-[#D8B372]/35">·</span>
+                        <span className="text-[#6C63E6]/35">·</span>
                         <span>{item.airline}</span>
                       </div>
-                      <h3 className="font-serif-display mt-2 text-xl font-medium leading-tight tracking-[-0.01em] text-[#F4EFE7]">
+                      <h3 className="mt-2 text-xl font-semibold leading-tight tracking-[-0.01em] text-white">
                         {item.productName}
                       </h3>
-                      <p className="mt-1 text-sm text-[#F4EFE7]/45">{item.aircraft}</p>
-                      <p className="mt-2 text-sm text-[#D8B372]">
+                      <p className="mt-1 text-sm text-white/45">{item.aircraft}</p>
+                      <p className="mt-2 text-sm text-[#B9B4FF]">
                         {matchingRoutes[0] ? formatRoute(matchingRoutes[0]) : formatRoute(item.routePairs[0])}
                       </p>
-                      <p className="mt-3 text-sm leading-6 text-[#F4EFE7]/60">
+                      <p className="mt-3 text-sm leading-6 text-white/60">
                         {item.description}
                       </p>
                       <div className="mt-4 flex flex-wrap gap-2">
@@ -1291,9 +1129,9 @@ export default function HomePage() {
                             key={value}
                             className="text-[10px] font-medium uppercase tracking-[0.10em]"
                             style={{
-                              border: "1px solid rgba(216,179,114,0.20)",
-                              background: "rgba(216,179,114,0.06)",
-                              color: "#D8B372",
+                              border: "1px solid rgba(108,99,230,0.22)",
+                              background: "rgba(108,99,230,0.08)",
+                              color: "#D9D7FF",
                               padding: "3px 10px",
                               borderRadius: 2,
                             }}
@@ -1328,20 +1166,20 @@ export default function HomePage() {
                 key={item.id}
                 className="cabin-card group overflow-hidden"
                 style={{
-                  border: "1px solid rgba(216,179,114,0.13)",
+                  border: "1px solid rgba(108,99,230,0.18)",
                   borderRadius: 2,
-                  background: "linear-gradient(180deg, rgba(10,26,43,0.94) 0%, rgba(8,23,40,0.90) 100%)",
+                  background: "linear-gradient(180deg, rgba(12,16,37,0.94) 0%, rgba(8,11,24,0.90) 100%)",
                 }}
               >
                 <div className="relative h-52 overflow-hidden">
                   <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#081728]/50 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#080B18]/50 to-transparent pointer-events-none" />
                   <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
                     <span
                       className="text-[10px] font-medium uppercase tracking-[0.12em]"
                       style={{
-                        background: "rgba(8,23,40,0.85)",
-                        color: "rgba(244,239,231,0.70)",
+                        background: "rgba(8,11,24,0.85)",
+                        color: "rgba(255,255,255,0.70)",
                         padding: "4px 9px",
                         borderRadius: 2,
                         backdropFilter: "blur(4px)",
@@ -1361,18 +1199,18 @@ export default function HomePage() {
                 <div className="p-5">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <h3 className="font-serif-display text-lg font-medium leading-tight tracking-[-0.01em] text-[#F4EFE7]">
+                      <h3 className="text-lg font-semibold leading-tight tracking-[-0.01em] text-white">
                         {item.productName}
                       </h3>
-                      <p className="mt-1 text-xs text-[#F4EFE7]/45">
+                      <p className="mt-1 text-xs text-white/45">
                         {item.airline} · {item.aircraft}
                       </p>
                     </div>
                     <span
                       className="flex-shrink-0 text-[10px] font-medium uppercase tracking-[0.14em]"
                       style={{
-                        border: "1px solid rgba(216,179,114,0.20)",
-                        color: "#D8B372",
+                        border: "1px solid rgba(108,99,230,0.22)",
+                        color: "#6C63E6",
                         padding: "3px 8px",
                         borderRadius: 2,
                       }}
@@ -1384,15 +1222,15 @@ export default function HomePage() {
                   <div
                     className="mt-4 p-4"
                     style={{
-                      border: "1px solid rgba(216,179,114,0.12)",
-                      background: "rgba(8,23,40,0.50)",
+                      border: "1px solid rgba(108,99,230,0.16)",
+                      background: "rgba(11,15,36,0.55)",
                       borderRadius: 2,
                     }}
                   >
                     <div className="flex items-start gap-3">
-                      <span className="mt-0.5 shrink-0 text-[#D8B372]"><RouteIcon /></span>
+                      <span className="mt-0.5 shrink-0 text-[#6C63E6]"><RouteIcon /></span>
                       <div className="w-full">
-                        <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-[#F4EFE7]/35">
+                        <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-white/35">
                           Route pairs
                         </p>
                         <div className="mt-2 flex flex-wrap gap-1.5">
@@ -1401,9 +1239,9 @@ export default function HomePage() {
                               key={formatRoute(pair)}
                               className="text-[11px]"
                               style={{
-                                border: "1px solid rgba(216,179,114,0.15)",
-                                background: "rgba(216,179,114,0.04)",
-                                color: "rgba(244,239,231,0.60)",
+                                border: "1px solid rgba(108,99,230,0.16)",
+                                background: "rgba(108,99,230,0.06)",
+                                color: "rgba(255,255,255,0.68)",
                                 padding: "3px 9px",
                                 borderRadius: 2,
                               }}
@@ -1422,8 +1260,8 @@ export default function HomePage() {
                         key={value}
                         className="text-[10px] font-medium uppercase tracking-[0.10em]"
                         style={{
-                          border: "1px solid rgba(216,179,114,0.18)",
-                          color: "rgba(244,239,231,0.50)",
+                          border: "1px solid rgba(108,99,230,0.20)",
+                          color: "rgba(255,255,255,0.55)",
                           padding: "3px 9px",
                           borderRadius: 2,
                         }}
@@ -1437,18 +1275,18 @@ export default function HomePage() {
                     <div
                       className="p-4"
                       style={{
-                        border: "1px solid rgba(216,179,114,0.12)",
-                        background: "rgba(8,23,40,0.50)",
+                        border: "1px solid rgba(108,99,230,0.16)",
+                        background: "rgba(11,15,36,0.55)",
                         borderRadius: 2,
                       }}
                     >
                       <div className="flex items-start gap-3">
-                        <span className="mt-0.5 shrink-0 text-[#D8B372]"><SeatIcon /></span>
+                        <span className="mt-0.5 shrink-0 text-[#6C63E6]"><SeatIcon /></span>
                         <div>
-                          <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-[#F4EFE7]/35">
+                          <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-white/35">
                             Seat insight
                           </p>
-                          <p className="mt-2 text-sm leading-6 text-[#F4EFE7]/70">
+                          <p className="mt-2 text-sm leading-6 text-white/72">
                             {item.seatInsight}
                           </p>
                         </div>
@@ -1458,18 +1296,18 @@ export default function HomePage() {
                     <div
                       className="p-4"
                       style={{
-                        border: "1px solid rgba(216,179,114,0.12)",
-                        background: "rgba(8,23,40,0.50)",
+                        border: "1px solid rgba(108,99,230,0.16)",
+                        background: "rgba(11,15,36,0.55)",
                         borderRadius: 2,
                       }}
                     >
                       <div className="flex items-start gap-3">
-                        <span className="mt-0.5 shrink-0 text-[#D8B372]"><NoteIcon /></span>
+                        <span className="mt-0.5 shrink-0 text-[#6C63E6]"><NoteIcon /></span>
                         <div>
-                          <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-[#F4EFE7]/35">
+                          <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-white/35">
                             Why it stands out
                           </p>
-                          <p className="mt-2 text-sm leading-6 text-[#F4EFE7]/60">
+                          <p className="mt-2 text-sm leading-6 text-white/60">
                             {item.description}
                           </p>
                         </div>
@@ -1483,7 +1321,7 @@ export default function HomePage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-[0.10em] transition-colors duration-200"
-                      style={{ background: "#D8B372", color: "#081728", padding: "11px 16px", borderRadius: 2 }}
+                      style={{ background: "#6C63E6", color: "#FFFFFF", padding: "11px 16px", borderRadius: 2 }}
                     >
                       <MapIcon />
                       AeroLOPA
@@ -1494,9 +1332,9 @@ export default function HomePage() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-[0.10em] transition-colors duration-200"
                       style={{
-                        border: "1px solid rgba(216,179,114,0.25)",
-                        background: "rgba(216,179,114,0.04)",
-                        color: "rgba(244,239,231,0.65)",
+                        border: "1px solid rgba(108,99,230,0.26)",
+                        background: "rgba(108,99,230,0.06)",
+                        color: "rgba(255,255,255,0.70)",
                         padding: "11px 16px",
                         borderRadius: 2,
                       }}
@@ -1515,21 +1353,21 @@ export default function HomePage() {
           <section
             className="mt-2 px-6 py-16 text-center"
             style={{
-              border: "1px dashed rgba(216,179,114,0.20)",
-              background: "rgba(216,179,114,0.03)",
+              border: "1px dashed rgba(108,99,230,0.24)",
+              background: "rgba(108,99,230,0.04)",
               borderRadius: 2,
             }}
           >
-            <h2 className="font-serif-display text-2xl font-medium tracking-[-0.02em] text-[#F4EFE7]">
+            <h2 className="text-2xl font-semibold tracking-[-0.02em] text-white">
               No cabins matched those filters
             </h2>
-            <p className="mt-3 text-sm text-[#F4EFE7]/50">
+            <p className="mt-3 text-sm text-white/50">
               Try broader place text like Atlanta, Amsterdam, Paris CDG, or New York JFK — or remove a selected tag.
             </p>
             <button
               onClick={resetFilters}
               className="mt-6 text-sm font-medium uppercase tracking-[0.12em] transition-colors duration-200"
-              style={{ background: "#D8B372", color: "#081728", padding: "12px 24px", borderRadius: 2 }}
+              style={{ background: "#6C63E6", color: "#FFFFFF", padding: "12px 24px", borderRadius: 2 }}
             >
               Reset and show all cabins
             </button>
