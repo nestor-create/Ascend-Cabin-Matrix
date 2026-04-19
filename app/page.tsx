@@ -32,7 +32,7 @@ type RawProduct = Omit<Product, "routePairs"> & {
 
 function SearchIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
       <circle cx="11" cy="11" r="7" />
       <path d="m20 20-3.5-3.5" />
     </svg>
@@ -41,7 +41,7 @@ function SearchIcon() {
 
 function PlaneIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
       <path d="M2 16l20-4-20-4 5 4-5 4Z" />
       <path d="M7 12h9" />
     </svg>
@@ -50,7 +50,7 @@ function PlaneIcon() {
 
 function SeatIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
       <path d="M7 13V6a2 2 0 1 1 4 0v7" />
       <path d="M7 13h8a2 2 0 0 1 2 2v3" />
       <path d="M5 21v-4a2 2 0 0 1 2-2h10" />
@@ -60,8 +60,8 @@ function SeatIcon() {
 
 function NoteIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M4 4h16v16H4z" />
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <rect x="4" y="4" width="16" height="16" rx="2" />
       <path d="M8 9h8M8 13h8M8 17h5" />
     </svg>
   );
@@ -69,7 +69,7 @@ function NoteIcon() {
 
 function MapIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
       <path d="m3 6 6-2 6 2 6-2v14l-6 2-6-2-6 2V6Z" />
       <path d="M9 4v14M15 6v14" />
     </svg>
@@ -78,25 +78,15 @@ function MapIcon() {
 
 function StarIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
       <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9L12 3Z" />
-    </svg>
-  );
-}
-
-function SparklesIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8L12 3Z" />
-      <path d="M5 16l.9 2.1L8 19l-2.1.9L5 22l-.9-2.1L2 19l2.1-.9L5 16Z" />
-      <path d="M19 14l1.1 2.4L22.5 17l-2.4 1.1L19 20.5l-1.1-2.4L15.5 17l2.4-1.1L19 14Z" />
     </svg>
   );
 }
 
 function RouteIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
       <path d="M3 17h6" />
       <path d="M15 7h6" />
       <path d="M9 17a4 4 0 1 0 0-8h6a4 4 0 1 1 0 8" />
@@ -104,15 +94,28 @@ function RouteIcon() {
   );
 }
 
-function FilterIcon() {
+function DiamondIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M4 6h16" />
-      <path d="M7 12h10" />
-      <path d="M10 18h4" />
+    <svg viewBox="0 0 24 24" className="h-3 w-3" fill="currentColor">
+      <path d="M12 2l10 10-10 10L2 12 12 2Z" />
     </svg>
   );
 }
+
+const boardRows = [
+  "LH 410  MUNICH            NEW YORK JFK      08:35   G12   BOARDING",
+  "QR 701  DOHA              NEW YORK JFK      09:20   A04   ON TIME ",
+  "SQ 322  SINGAPORE         LONDON LHR        10:05   C19   FINAL   ",
+  "EY 011  ABU DHABI         LONDON LHR        11:10   B07   GATE OPEN",
+  "AF 022  PARIS CDG         LOS ANGELES       11:35   D21   ON TIME ",
+  "VS 003  LONDON LHR        NEW YORK JFK      12:15   E09   BOARDING",
+  "CX 251  HONG KONG         LONDON LHR        12:55   F11   ON TIME ",
+  "NH 211  TOKYO HND         LONDON LHR        13:40   G03   FINAL   ",
+  "UA 001  SAN FRANCISCO     SINGAPORE         14:20   H05   ON TIME ",
+  "AA 098  CHICAGO ORD       LONDON LHR        15:00   J16   GATE OPEN",
+  "TK 079  ISTANBUL          SAN FRANCISCO     15:45   K08   ON TIME ",
+  "QF 001  SYDNEY            SINGAPORE         16:20   L14   BOARDING",
+];
 
 const rawProducts: RawProduct[] = [
   {
@@ -134,8 +137,8 @@ const rawProducts: RawProduct[] = [
       "Munich → Bengaluru",
     ],
     bestFor: ["Privacy", "Luxury"],
-    seatInsight: "Private suite with doors and a fully lie-flat bed, designed for maximum privacy.",
-    description: "Lufthansa’s newest flagship First Class suite under Allegris.",
+    seatInsight: "Private suite with closing doors and a fully lie-flat bed, engineered for maximum privacy on long-haul routes.",
+    description: "Lufthansa's newest flagship First Class suite under the Allegris product family — the most refined hard product the airline has ever offered.",
     image: "/images/allegris-first.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
     aerolopaUrl: "https://www.aerolopa.com/lh",
@@ -181,7 +184,7 @@ const rawProducts: RawProduct[] = [
     ],
     bestFor: ["Privacy", "Choice"],
     seatInsight: "1-2-1 layout with multiple seat types including suites, extra privacy seats, and extra-long bed options.",
-    description: "Lufthansa’s new Allegris Business Class.",
+    description: "Lufthansa's new Allegris Business Class offers more seat variety than any other carrier — a genuine upgrade to the cabin experience.",
     image: "/images/allegris-business.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/lh-lufthansa/",
     aerolopaUrl: "https://www.aerolopa.com/lh",
@@ -203,8 +206,8 @@ const rawProducts: RawProduct[] = [
       "Tokyo Narita → San Francisco",
     ],
     bestFor: ["Space", "Solo"],
-    seatInsight: "Extra-wide 1-2-1 business class seat with direct aisle access and exceptional personal space.",
-    description: "ANA’s flagship business class suite.",
+    seatInsight: "Extra-wide 1-2-1 business class suite with direct aisle access, a sliding door, and exceptional personal space throughout.",
+    description: "ANA's flagship business class suite, widely regarded as one of the world's best for solo travellers seeking space and privacy.",
     image: "/images/the-room.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/nh-ana/",
     aerolopaUrl: "https://www.aerolopa.com/nh",
@@ -226,8 +229,8 @@ const rawProducts: RawProduct[] = [
       "Doha → Los Angeles",
     ],
     bestFor: ["Couples", "Privacy"],
-    seatInsight: "Enclosed suite with doors and flexible seating for couples or groups.",
-    description: "Qatar Airways’ flagship business class product.",
+    seatInsight: "Enclosed suite with closing doors and innovative double-bed configuration — centre pairs convert to a shared space for couples.",
+    description: "Qatar Airways' award-winning flagship business class, setting the benchmark for privacy and flexibility in the cabin.",
     image: "/images/qsuite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/qr-qatar-airways/",
     aerolopaUrl: "https://www.aerolopa.com/qr",
@@ -240,10 +243,14 @@ const rawProducts: RawProduct[] = [
     airlineCode: "SQ",
     aircraft: "A380-800",
     cabinType: "First",
-    routes: ["Singapore → London Heathrow", "Singapore → Sydney", "Singapore → Shanghai"],
+    routes: [
+      "Singapore → London Heathrow",
+      "Singapore → Sydney",
+      "Singapore → Shanghai",
+    ],
     bestFor: ["Luxury", "Space"],
-    seatInsight: "Large private suite concept on the A380 with one of the most spacious first class products in the sky.",
-    description: "Singapore Airlines flagship Suites product.",
+    seatInsight: "One of the largest private suites in commercial aviation, with a separate ottoman, wardrobe, and convertible double bed.",
+    description: "Singapore Airlines' Suites product on the A380 is widely considered the pinnacle of commercial aviation luxury.",
     image: "/images/singapore-suites.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/sq-singapore-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/sq",
@@ -263,8 +270,8 @@ const rawProducts: RawProduct[] = [
       "Abu Dhabi → Singapore",
     ],
     bestFor: ["Space", "Luxury"],
-    seatInsight: "A380 first class with a separate seat and bed concept, offering exceptional personal space.",
-    description: "Etihad’s iconic A380 First Apartment experience.",
+    seatInsight: "A380 first class with a separate armchair and fully flat bed in a distinct suite — truly apartment-scale dimensions in the sky.",
+    description: "Etihad's iconic A380 First Apartment remains one of the most spacious first class experiences available on any airline.",
     image: "/images/etihad-apartment.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ey-etihad-airways/",
     aerolopaUrl: "https://www.aerolopa.com/ey",
@@ -277,10 +284,13 @@ const rawProducts: RawProduct[] = [
     airlineCode: "NH",
     aircraft: "777-300ER",
     cabinType: "First",
-    routes: ["Tokyo Haneda → New York JFK", "Tokyo Haneda → London Heathrow"],
+    routes: [
+      "Tokyo Haneda → New York JFK",
+      "Tokyo Haneda → London Heathrow",
+    ],
     bestFor: ["Privacy", "Luxury"],
-    seatInsight: "Wide enclosed suite with strong privacy and a modern residential-style design.",
-    description: "ANA’s premium first class suite on selected flagship 777-300ER flights.",
+    seatInsight: "Enclosed suite with strong acoustic and visual privacy, a residential-style design, and a wide fully flat bed.",
+    description: "ANA's flagship first class suite on selected 777-300ER flights — the quietest and most residential first class in its class.",
     image: "/images/the-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/nh-ana/boeing-777-300er/",
     aerolopaUrl: "https://www.aerolopa.com/nh",
@@ -288,15 +298,19 @@ const rawProducts: RawProduct[] = [
   {
     id: "8",
     rank: 8,
-    productName: "Emirates Game Changer First",
+    productName: "Game Changer First",
     airline: "Emirates",
     airlineCode: "EK",
     aircraft: "777-300ER",
     cabinType: "First",
-    routes: ["Dubai → Brussels", "Dubai → Geneva", "Dubai → Tokyo Haneda"],
+    routes: [
+      "Dubai → Brussels",
+      "Dubai → Geneva",
+      "Dubai → Tokyo Haneda",
+    ],
     bestFor: ["Privacy", "Solo"],
-    seatInsight: "Fully enclosed suite with very high privacy and a more futuristic first class feel.",
-    description: "Emirates’ newest fully enclosed first class suite on selected 777-300ER aircraft.",
+    seatInsight: "Fully enclosed suite with floor-to-ceiling privacy walls, zero-gravity seating, and a premium personal minibar.",
+    description: "Emirates' newest first class product, delivering complete visual privacy and a futuristic design language unlike anything else in the sky.",
     image: "/images/emirates-game-changer.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ek-emirates/",
     aerolopaUrl: "https://www.aerolopa.com/ek",
@@ -326,8 +340,8 @@ const rawProducts: RawProduct[] = [
       "Paris CDG → Washington D.C.",
     ],
     bestFor: ["Luxury", "Exclusivity"],
-    seatInsight: "Highly exclusive first class experience with a spacious personal area and refined soft product.",
-    description: "Air France’s exclusive long-haul first class product.",
+    seatInsight: "Highly exclusive first class with just four suites per aircraft, refined French service, and a spacious fully flat bed.",
+    description: "Air France's La Première is one of the most exclusive first class products available — only four seats per flight.",
     image: "/images/la-premiere.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/af-air-france/",
     aerolopaUrl: "https://www.aerolopa.com/af",
@@ -347,8 +361,8 @@ const rawProducts: RawProduct[] = [
       "London Heathrow → San Francisco",
     ],
     bestFor: ["Privacy", "Network"],
-    seatInsight: "1-2-1 layout with doors and direct aisle access across the cabin.",
-    description: "British Airways’ modern suite-style business class.",
+    seatInsight: "1-2-1 layout with closing doors and direct aisle access for every seat — a substantial improvement over older Club World.",
+    description: "British Airways' modern Club Suite is a strong option for LHR-routed itineraries on an unrivalled global network.",
     image: "/images/club-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ba-british-airways/",
     aerolopaUrl: "https://www.aerolopa.com/ba",
@@ -368,8 +382,8 @@ const rawProducts: RawProduct[] = [
       "Atlanta → Johannesburg",
     ],
     bestFor: ["Privacy", "Consistency"],
-    seatInsight: "Suite-style seat with door and direct aisle access on key long-haul aircraft.",
-    description: "Delta’s enclosed suite-style long-haul business class.",
+    seatInsight: "Suite-style seat with a sliding door and direct aisle access — Delta's most private business class product.",
+    description: "Delta One Suite is the most consistent enclosed business class product on US carriers for transatlantic and transpacific routes.",
     image: "/images/delta-one-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/dl-delta-air-lines/",
     aerolopaUrl: "https://www.aerolopa.com/dl",
@@ -389,8 +403,8 @@ const rawProducts: RawProduct[] = [
       "Hong Kong → San Francisco",
     ],
     bestFor: ["Privacy", "Storage"],
-    seatInsight: "Next-generation suite with door, improved storage, and a refined Cathay design.",
-    description: "Cathay Pacific’s newest flagship business class suite.",
+    seatInsight: "Next-generation suite with a closing door, generous storage throughout, and Cathay's signature attention to ergonomics.",
+    description: "Cathay Pacific's newest flagship business class suite — a significant upgrade in privacy and material quality over the prior product.",
     image: "/images/cathay-aria.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/cx-cathay-pacific/",
     aerolopaUrl: "https://www.aerolopa.com/cx",
@@ -410,8 +424,8 @@ const rawProducts: RawProduct[] = [
       "Tokyo Haneda → Dallas/Fort Worth",
     ],
     bestFor: ["Comfort", "Solo"],
-    seatInsight: "Direct aisle access layout with a strong balance of privacy and comfort.",
-    description: "Japan Airlines’ well-known Sky Suite business class product.",
+    seatInsight: "Direct aisle access for every seat with a thoughtful 1-2-1 layout and Japan Airlines' renowned soft product.",
+    description: "JAL's Sky Suite is consistently rated among the best business class experiences for comfort and service quality.",
     image: "/images/jal-sky-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/jl-japan-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/jl",
@@ -432,8 +446,8 @@ const rawProducts: RawProduct[] = [
       "Taipei → London Heathrow",
     ],
     bestFor: ["Comfort", "Sleep"],
-    seatInsight: "Reverse herringbone seat with direct aisle access and a strong comfort reputation.",
-    description: "EVA Air’s highly rated long-haul business class cabin.",
+    seatInsight: "Reverse herringbone seating with direct aisle access, exceptional bed length, and a strong reputation for sleep quality.",
+    description: "EVA Air's Royal Laurel is among the highest-rated business class cabins for sleep, particularly on Pacific routes.",
     image: "/images/eva-royal-laurel.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/br-eva-air/",
     aerolopaUrl: "https://www.aerolopa.com/br",
@@ -455,8 +469,8 @@ const rawProducts: RawProduct[] = [
       "Seoul Incheon → Frankfurt",
     ],
     bestFor: ["Privacy", "Luxury"],
-    seatInsight: "Fully enclosed next-generation first class suite with strong privacy, refined finishes, and a flagship long-haul experience.",
-    description: "Korean Air’s Kosmo Suites 2.0 flagship First Class product.",
+    seatInsight: "Fully enclosed next-generation first class suite with strong visual and acoustic privacy and highly refined finishes.",
+    description: "Korean Air's Kosmo Suites 2.0 is a flagship first class product that outperforms many European equivalents in hard product quality.",
     image: "/images/korean-kosmo-suites-2.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ke-korean-air/",
     aerolopaUrl: "https://www.aerolopa.com/ke",
@@ -485,8 +499,8 @@ const rawProducts: RawProduct[] = [
       "Seoul Incheon → Tokyo Haneda",
     ],
     bestFor: ["Privacy", "Solo"],
-    seatInsight: "Suite-style business class seat with door, direct aisle access, and a more private next-generation Korean Air layout.",
-    description: "Korean Air’s newer Prestige Suite 2.0 Business Class product.",
+    seatInsight: "Suite-style business class with a sliding door, direct aisle access, and the most private layout in Korean Air's fleet.",
+    description: "Korean Air's Prestige Suite 2.0 is an underrated business class product available across a wide global network.",
     image: "/images/korean-prestige-suite-2.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ke-korean-air/",
     aerolopaUrl: "https://www.aerolopa.com/ke",
@@ -506,8 +520,8 @@ const rawProducts: RawProduct[] = [
       "London Heathrow → Delhi",
     ],
     bestFor: ["Couples", "Social"],
-    seatInsight: "1-2-1 seat configuration with direct aisle access. Features The Loft lounge at the back of the aircraft.",
-    description: "Virgin Atlantic’s stylish and modern Upper Class suite.",
+    seatInsight: "1-2-1 layout with direct aisle access and a unique social lounge (The Loft) at the rear of the upper class cabin.",
+    description: "Virgin Atlantic's Upper Class Suite stands apart for its social design and distinctive cabin atmosphere on transatlantic routes.",
     image: "/images/virgin-upper-class.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/vs-virgin-atlantic/",
     aerolopaUrl: "https://www.aerolopa.com/vs",
@@ -527,8 +541,8 @@ const rawProducts: RawProduct[] = [
       "Boston → Paris CDG",
     ],
     bestFor: ["Space", "Solo"],
-    seatInsight: "Front-row Mint Studio offers more space and a larger suite-style experience than standard Mint seats.",
-    description: "JetBlue’s spacious front-row Mint Studio product on selected Mint-equipped transatlantic flights.",
+    seatInsight: "The front-row Mint Studio offers a larger enclosed suite with more storage and a distinctly premium feel over standard Mint seats.",
+    description: "JetBlue's Mint Studio is the best value premium transatlantic product for solo travellers on core North Atlantic routes.",
     image: "/images/jetblue-mint-studio.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/b6-jetblue-airways/",
     aerolopaUrl: "https://www.aerolopa.com/b6",
@@ -548,8 +562,8 @@ const rawProducts: RawProduct[] = [
       "Perth → London Heathrow",
     ],
     bestFor: ["Comfort", "Practicality"],
-    seatInsight: "Direct aisle access layout with a practical and comfortable long-haul design.",
-    description: "Qantas’ modern long-haul business class suite.",
+    seatInsight: "Direct aisle access 1-2-1 layout with a practical design, generous storage, and Qantas' well-regarded service.",
+    description: "Qantas' Business Suite is a reliable, comfortable choice on key Australia–Europe and Australia–North America routes.",
     image: "/images/qantas-business-suite.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/qf-qantas/",
     aerolopaUrl: "https://www.aerolopa.com/qf",
@@ -569,8 +583,8 @@ const rawProducts: RawProduct[] = [
       "Istanbul → Tokyo Haneda",
     ],
     bestFor: ["Network", "Value"],
-    seatInsight: "Modern long-haul seat with direct aisle access and improved privacy over older fleet types.",
-    description: "Turkish Airlines’ preferred long-haul business product.",
+    seatInsight: "Modern long-haul seat with direct aisle access and improved privacy, backed by Turkish Airlines' extensive hub connections.",
+    description: "Turkish Airlines' preferred long-haul business product — a strong value option on one of the world's widest networks.",
     image: "/images/turkish-business.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/tk-turkish-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/tk",
@@ -590,8 +604,8 @@ const rawProducts: RawProduct[] = [
       "Dallas/Fort Worth → Auckland",
     ],
     bestFor: ["Privacy", "New Product"],
-    seatInsight: "New suite-style business class with doors on American’s latest premium configuration.",
-    description: "American Airlines’ newest Flagship Suite product.",
+    seatInsight: "New suite-style business class with closing doors, a wider seat, and a significantly improved hard product over older Flagship Business.",
+    description: "American Airlines' newest Flagship Suite is a material upgrade, expanding to more routes through 2025–26.",
     image: "/images/american-flagship.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/aa-american-airlines/",
     aerolopaUrl: "https://www.aerolopa.com/aa",
@@ -611,32 +625,22 @@ const rawProducts: RawProduct[] = [
       "San Francisco → Sydney",
     ],
     bestFor: ["Consistency", "Network"],
-    seatInsight: "United’s flagship long-haul seat with direct aisle access and a consistent premium layout.",
-    description: "United’s Polaris long-haul business class product.",
+    seatInsight: "Direct aisle access 1-2-1 layout with a consistent product across a large widebody fleet and extensive global network.",
+    description: "United's Polaris is the most consistent premium long-haul product on US carriers, particularly for Star Alliance routing.",
     image: "/images/united-polaris.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/ua-united/",
     aerolopaUrl: "https://www.aerolopa.com/ua",
   },
 ];
 
-const boardRows = [
-  "LH 410  MUNICH            NEW YORK JFK      08:35   G12   BOARDING",
-  "QR 701  DOHA              NEW YORK JFK      09:20   A04   ON TIME ",
-  "SQ 322  SINGAPORE         LONDON LHR        10:05   C19   FINAL   ",
-  "EY 011  ABU DHABI         LONDON LHR        11:10   B07   GATE OPEN",
-  "AF 022  PARIS CDG         LOS ANGELES       11:35   D21   ON TIME ",
-  "VS 003  LONDON LHR        NEW YORK JFK      12:15   E09   BOARDING",
-  "CX 251  HONG KONG         LONDON LHR        12:55   F11   ON TIME ",
-  "NH 211  TOKYO HND         LONDON LHR        13:40   G03   FINAL   ",
-  "UA 001  SAN FRANCISCO     SINGAPORE         14:20   H05   ON TIME ",
-  "AA 098  CHICAGO ORD       LONDON LHR        15:00   J16   GATE OPEN",
-  "TK 079  ISTANBUL          SAN FRANCISCO     15:45   K08   ON TIME ",
-  "QF 001  SYDNEY            SINGAPORE         16:20   L14   BOARDING",
-];
-
 const cabinAccent: Record<CabinType, string> = {
-  Business: "border-[#39BDD0]/25 bg-[#122A33] text-[#9EE4EF]",
-  First: "border-[#C8A24A]/25 bg-[#2A2417] text-[#EDD79C]",
+  First: "bg-[#2A1F0A]/90 text-[#C9A96E] ring-1 ring-inset ring-[#C9A96E]/30",
+  Business: "bg-[#0B1829]/90 text-[#8BBDD9] ring-1 ring-inset ring-[#8BBDD9]/20",
+};
+
+const cabinAccentFeatured: Record<CabinType, string> = {
+  First: "bg-[#C9A96E] text-[#0B1829]",
+  Business: "bg-[#0B1829] text-[#8BBDD9] ring-1 ring-[#8BBDD9]/30",
 };
 
 const curatedBestForOptions = ["Privacy", "Couples", "Space", "Luxury", "Sleep", "Network"];
@@ -733,11 +737,10 @@ function PlaceAutosuggest({
 
   return (
     <div ref={wrapperRef} className="relative">
-      <label className="mb-2 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[#8DA8B1]">
+      <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
         <RouteIcon />
         {label}
       </label>
-
       <input
         type="text"
         value={value}
@@ -747,11 +750,14 @@ function PlaceAutosuggest({
           onChange(e.target.value);
           setOpen(true);
         }}
-        className="w-full rounded-xl border border-white/8 bg-[#071219] px-3 py-2.5 text-sm text-white outline-none placeholder:text-white/28 focus:border-[#53D6E8]/45"
+        className="w-full border border-[#C9A96E]/15 bg-[#0B1829]/80 px-4 py-3 text-sm text-[#F5F0E8] outline-none placeholder:text-[#F5F0E8]/25 focus:border-[#C9A96E]/40 transition-colors duration-200"
+        style={{ borderRadius: 2 }}
       />
-
       {shouldShow && (
-        <div className="absolute z-30 mt-2 max-h-80 w-full overflow-auto rounded-xl border border-white/8 bg-[#071118]/95 p-2 shadow-2xl shadow-black/50 backdrop-blur-xl">
+        <div
+          className="absolute z-30 mt-1 max-h-72 w-full overflow-auto border border-[#C9A96E]/20 bg-[#0B1829]/98 p-1.5 shadow-2xl shadow-black/60"
+          style={{ borderRadius: 2 }}
+        >
           {suggestions.map((suggestion) => (
             <button
               key={suggestion}
@@ -760,10 +766,11 @@ function PlaceAutosuggest({
                 onSelect(suggestion);
                 setOpen(false);
               }}
-              className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-white/88 transition hover:bg-white/8"
+              className="flex w-full items-center justify-between px-3 py-2.5 text-left text-sm text-[#F5F0E8]/80 transition-colors hover:bg-[#C9A96E]/10 hover:text-[#F5F0E8]"
+              style={{ borderRadius: 2 }}
             >
               <span>{suggestion}</span>
-              <span className="text-[10px] uppercase tracking-[0.18em] text-[#77D4E3]/50">Available</span>
+              <span className="text-[10px] uppercase tracking-[0.16em] text-[#C9A96E]/50">Available</span>
             </button>
           ))}
         </div>
@@ -785,7 +792,6 @@ export default function HomePage() {
   const [outboundPlace, setOutboundPlace] = useState("");
   const [returnPlace, setReturnPlace] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [selectedCompareIds, setSelectedCompareIds] = useState<string[]>([]);
 
   const airlineOptions = useMemo(
     () => Array.from(new Set(premiumProducts.map((item) => item.airline))).sort(),
@@ -806,7 +812,6 @@ export default function HomePage() {
   const productsMatchingNonPlaceFilters = useMemo(() => {
     return premiumProducts.filter((item) => {
       const query = search.trim().toLowerCase();
-
       const matchesSearch =
         query === "" ||
         item.productName.toLowerCase().includes(query) ||
@@ -837,15 +842,13 @@ export default function HomePage() {
   }, [productsMatchingNonPlaceFilters]);
 
   const filteredReturnPlaces = useMemo(() => {
-    let baseProducts = productsMatchingNonPlaceFilters;
-
+    let base = productsMatchingNonPlaceFilters;
     if (outboundPlace.trim()) {
-      baseProducts = baseProducts.filter((item) =>
+      base = base.filter((item) =>
         item.routePairs.some((pair) => normalizeText(pair.from).includes(normalizeText(outboundPlace)))
       );
     }
-
-    return dedupeStrings(baseProducts.flatMap((item) => item.routePairs.map((pair) => pair.to))).sort((a, b) =>
+    return dedupeStrings(base.flatMap((item) => item.routePairs.map((pair) => pair.to))).sort((a, b) =>
       a.localeCompare(b)
     );
   }, [productsMatchingNonPlaceFilters, outboundPlace]);
@@ -854,10 +857,7 @@ export default function HomePage() {
     const base = outboundPlace.trim() ? filteredOutboundPlaces : placeCatalog;
     return [...base]
       .filter((place) => (outboundPlace.trim() ? scoreSuggestion(outboundPlace, place) > 0 : true))
-      .sort(
-        (a, b) =>
-          scoreSuggestion(outboundPlace, b) - scoreSuggestion(outboundPlace, a) || a.localeCompare(b)
-      );
+      .sort((a, b) => scoreSuggestion(outboundPlace, b) - scoreSuggestion(outboundPlace, a) || a.localeCompare(b));
   }, [outboundPlace, filteredOutboundPlaces, placeCatalog]);
 
   const returnPlaceOptions = useMemo(() => {
@@ -866,13 +866,9 @@ export default function HomePage() {
       : filteredReturnPlaces.length
       ? filteredReturnPlaces
       : placeCatalog;
-
     return [...base]
       .filter((place) => (returnPlace.trim() ? scoreSuggestion(returnPlace, place) > 0 : true))
-      .sort(
-        (a, b) =>
-          scoreSuggestion(returnPlace, b) - scoreSuggestion(returnPlace, a) || a.localeCompare(b)
-      );
+      .sort((a, b) => scoreSuggestion(returnPlace, b) - scoreSuggestion(returnPlace, a) || a.localeCompare(b));
   }, [returnPlace, filteredReturnPlaces, placeCatalog]);
 
   const filteredProducts = useMemo(() => {
@@ -880,18 +876,14 @@ export default function HomePage() {
       const matchesOutbound =
         !outboundPlace.trim() ||
         item.routePairs.some((pair) => normalizeText(pair.from).includes(normalizeText(outboundPlace)));
-
       const matchesReturn =
         !returnPlace.trim() ||
         item.routePairs.some((pair) => normalizeText(pair.to).includes(normalizeText(returnPlace)));
-
       return matchesOutbound && matchesReturn;
     });
   }, [productsMatchingNonPlaceFilters, outboundPlace, returnPlace]);
 
-  const compareProducts = useMemo(() => {
-    return filteredProducts.filter((p) => selectedCompareIds.includes(p.id)).slice(0, 3);
-  }, [filteredProducts, selectedCompareIds]);
+  const topThree = filteredProducts.slice(0, 3);
 
   function toggleTag(tag: string) {
     setSelectedTags((current) =>
@@ -909,511 +901,630 @@ export default function HomePage() {
     setSelectedTags([]);
   }
 
-  function toggleCompare(id: string) {
-    setSelectedCompareIds((current) => {
-      if (current.includes(id)) return current.filter((value) => value !== id);
-      if (current.length >= 3) return [...current.slice(1), id];
-      return [...current, id];
-    });
-  }
-
   return (
-    <main className="min-h-screen overflow-hidden bg-[#051019] text-white [font-family:Inter,ui-sans-serif,system-ui,sans-serif]">
-      <div className="airport-board-bg" aria-hidden="true">
+    <main
+      className="min-h-screen overflow-hidden text-[#F5F0E8]"
+      style={{
+        background: "#0B1829",
+        fontFamily: "'DM Sans', 'Inter', ui-sans-serif, system-ui, sans-serif",
+      }}
+    >
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+        .font-serif-display { font-family: 'Playfair Display', Georgia, serif; }
+        .board-bg {
+          position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+        }
+        .board-track {
+          position: absolute; left: 0; right: 0;
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 11px; letter-spacing: 0.06em;
+          color: rgba(201,169,110,0.07);
+          white-space: pre; line-height: 2.4;
+          user-select: none;
+        }
+        .board-track-one { top: 8%; animation: boardScroll1 80s linear infinite; }
+        .board-track-two { top: 45%; animation: boardScroll2 95s linear infinite; }
+        .board-track-three { top: 75%; animation: boardScroll1 110s linear infinite reverse; }
+        @keyframes boardScroll1 { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+        @keyframes boardScroll2 { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+        .board-glow {
+          position: absolute; inset: 0;
+          background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,169,110,0.04) 0%, transparent 60%);
+        }
+        .board-vignette {
+          position: absolute; inset: 0;
+          background:
+            linear-gradient(to bottom, #0B1829 0%, transparent 15%, transparent 85%, #0B1829 100%),
+            linear-gradient(to right, #0B1829 0%, transparent 8%, transparent 92%, #0B1829 100%);
+        }
+        .cabin-card { transition: transform 0.25s cubic-bezier(.22,.68,0,1.2), border-color 0.2s; }
+        .cabin-card:hover { transform: translateY(-3px); }
+        .cabin-card img { transition: transform 0.5s cubic-bezier(.22,.68,0,1.2); }
+        .cabin-card:hover img { transform: scale(1.04); }
+        .ascend-select {
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C9A96E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 12px center;
+          -webkit-appearance: none; appearance: none;
+          padding-right: 32px;
+        }
+      `}</style>
+
+      <div className="board-bg" aria-hidden="true">
         <div className="board-glow" />
-        <div className="board-flicker" />
-        <div className="board-vignette" />
         <div className="board-track board-track-one">
-          {[...boardRows, ...boardRows].map((row, index) => (
-            <div key={`one-${index}`} className="board-row">
-              {row}
-            </div>
+          {[...boardRows, ...boardRows, ...boardRows].map((row, i) => (
+            <div key={`t1-${i}`}>{row}</div>
           ))}
         </div>
         <div className="board-track board-track-two">
-          {[...boardRows.slice().reverse(), ...boardRows.slice().reverse()].map((row, index) => (
-            <div key={`two-${index}`} className="board-row">
-              {row}
-            </div>
+          {[...boardRows.slice().reverse(), ...boardRows.slice().reverse(), ...boardRows.slice().reverse()].map((row, i) => (
+            <div key={`t2-${i}`}>{row}</div>
           ))}
         </div>
+        <div className="board-track board-track-three">
+          {[...boardRows, ...boardRows, ...boardRows].map((row, i) => (
+            <div key={`t3-${i}`}>{row}</div>
+          ))}
+        </div>
+        <div className="board-vignette" />
       </div>
 
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(31,138,157,0.18),transparent_28%),radial-gradient(circle_at_top_right,rgba(31,59,140,0.14),transparent_26%)]" />
-
-      <div className="relative z-10">
-        <header className="sticky top-0 z-40 border-b border-white/8 bg-[#07131a]/80 backdrop-blur-xl">
-          <div className="mx-auto flex max-w-[1600px] items-center justify-between px-4 py-3 sm:px-6">
-            <div className="flex items-center gap-3">
-              <img
-                src="/images/ascend-logo.png"
-                alt="Ascend Logo"
-                width={40}
-                height={40}
-                className="h-10 w-10 object-contain"
-              />
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.32em] text-[#8BA4AF]">Ascend</p>
-                <h1 className="text-lg font-semibold tracking-[-0.03em] sm:text-xl">
-                  Cabin Optimizer
-                </h1>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+        <header className="pb-4">
+          <div className="flex items-start gap-4">
+            <div>
+              <div className="font-serif-display text-[34px] leading-none text-[#F5F0E8]">Ascend</div>
+              <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-[#C9A96E]">
+                Cabin Optimizer
               </div>
-            </div>
-
-            <div className="hidden items-center gap-3 md:flex">
-              <div className="rounded-full border border-white/8 bg-white/5 px-3 py-1.5 text-xs text-white/70">
-                Compare premium cabins faster
-              </div>
-              <a
-                href="https://joinascend.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center rounded-full bg-[#59D4E7] px-4 py-2 text-sm font-semibold text-[#041019] transition hover:brightness-110"
-              >
-                Apply
-              </a>
             </div>
           </div>
         </header>
 
-        <div className="mx-auto grid max-w-[1600px] gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[300px_minmax(0,1fr)]">
-          <aside className="h-fit rounded-3xl border border-white/8 bg-[linear-gradient(180deg,rgba(10,20,29,0.88),rgba(8,17,25,0.82))] p-4 shadow-xl shadow-black/20 backdrop-blur-md lg:sticky lg:top-[84px]">
-            <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[#9ADFEA]">
-              <FilterIcon />
-              Filters
+        <div className="border-t border-[#C9A96E]/15" />
+
+        <section className="py-12 sm:py-16 lg:py-20">
+          <div className="max-w-3xl">
+            <div className="mb-8 inline-flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-[#C9A96E]">
+              <span className="block h-px w-6 bg-[#C9A96E]" />
+              Premium cabin intelligence
             </div>
 
-            <div className="mt-4 space-y-4">
-              <div>
-                <label className="mb-2 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[#8BA4AF]">
-                  <SearchIcon />
-                  Search
-                </label>
-                <input
-                  type="text"
-                  placeholder="Product, airline, aircraft..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="w-full rounded-xl border border-white/8 bg-[#071219] px-3 py-2.5 text-sm text-white outline-none placeholder:text-white/28 focus:border-[#53D6E8]/45"
-                />
-              </div>
+            <h1 className="font-serif-display text-5xl font-normal leading-[0.95] tracking-[-0.03em] text-[#F5F0E8] sm:text-6xl lg:text-[76px]">
+              Find your <em className="italic text-[#D6BE91]">perfect</em>
+              <br />
+              seat in the sky
+            </h1>
 
-              <div>
-                <label className="mb-2 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[#8BA4AF]">
-                  <PlaneIcon />
-                  Airline
-                </label>
-                <select
-                  value={airline}
-                  onChange={(e) => setAirline(e.target.value)}
-                  className="w-full rounded-xl border border-white/8 bg-[#071219] px-3 py-2.5 text-sm text-white outline-none focus:border-[#53D6E8]/45"
-                >
-                  <option value="">All airlines</option>
-                  {airlineOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <p className="mt-8 max-w-2xl text-lg font-light leading-8 text-[#F5F0E8]/78">
+              Compare Business and First Class cabin products across airlines, aircraft, and layouts — with AeroLOPA and seat maps in one view. Curated by Ascend's concierge team.
+            </p>
+          </div>
+        </section>
 
-              <div>
-                <label className="mb-2 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[#8BA4AF]">
-                  <PlaneIcon />
-                  Aircraft
-                </label>
-                <select
-                  value={aircraft}
-                  onChange={(e) => setAircraft(e.target.value)}
-                  className="w-full rounded-xl border border-white/8 bg-[#071219] px-3 py-2.5 text-sm text-white outline-none focus:border-[#53D6E8]/45"
-                >
-                  <option value="">All aircraft</option>
-                  {aircraftOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
+        <div className="border-t border-[#C9A96E]/15" />
 
-              <div>
-                <label className="mb-2 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[#8BA4AF]">
-                  <SeatIcon />
-                  Cabin
-                </label>
-                <select
-                  value={cabin}
-                  onChange={(e) => setCabin(e.target.value)}
-                  className="w-full rounded-xl border border-white/8 bg-[#071219] px-3 py-2.5 text-sm text-white outline-none focus:border-[#53D6E8]/45"
-                >
-                  <option value="">All cabins</option>
-                  <option value="Business">Business</option>
-                  <option value="First">First</option>
-                </select>
-              </div>
+        <section className="grid grid-cols-3 gap-8 py-10 sm:max-w-xl">
+          {[
+            { n: premiumProducts.length, l: "Curated products" },
+            { n: airlineOptions.length, l: "Airlines" },
+            { n: filteredProducts.length, l: "Showing" },
+          ].map(({ n, l }) => (
+            <div key={l}>
+              <div className="font-serif-display text-5xl font-normal text-[#C9A96E]">{n}</div>
+              <div className="mt-2 text-[11px] uppercase tracking-[0.18em] text-[#C9A96E]/60">{l}</div>
+            </div>
+          ))}
+        </section>
 
-              <PlaceAutosuggest
-                label="Outbound"
-                placeholder="e.g. Abu Dhabi, Atlanta"
-                value={outboundPlace}
-                onChange={setOutboundPlace}
-                suggestions={outboundPlaceOptions}
-                onSelect={setOutboundPlace}
+        <section
+          className="mb-8 p-6 lg:p-8"
+          style={{
+            border: "1px solid rgba(201,169,110,0.15)",
+            background: "linear-gradient(180deg, rgba(15,32,53,0.92) 0%, rgba(11,24,41,0.88) 100%)",
+            borderRadius: 2,
+          }}
+        >
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+            <div className="xl:col-span-2">
+              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
+                <SearchIcon />
+                Search cabins
+              </label>
+              <input
+                type="text"
+                placeholder="Product, airline, aircraft, route, best for…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
+                style={{
+                  border: "1px solid rgba(201,169,110,0.15)",
+                  background: "rgba(11,24,41,0.8)",
+                  color: "#F5F0E8",
+                  borderRadius: 2,
+                }}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(201,169,110,0.40)")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(201,169,110,0.15)")}
               />
+            </div>
 
-              <PlaceAutosuggest
-                label="Return"
-                placeholder="e.g. London Heathrow, Singapore"
-                value={returnPlace}
-                onChange={setReturnPlace}
-                suggestions={returnPlaceOptions}
-                onSelect={setReturnPlace}
-              />
+            <div>
+              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
+                <PlaneIcon />
+                Airline
+              </label>
+              <select
+                value={airline}
+                onChange={(e) => setAirline(e.target.value)}
+                className="ascend-select w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
+                style={{
+                  border: "1px solid rgba(201,169,110,0.15)",
+                  background: "rgba(11,24,41,0.8)",
+                  color: "#F5F0E8",
+                  borderRadius: 2,
+                }}
+              >
+                <option value="">All airlines</option>
+                {airlineOptions.map((option) => (
+                  <option key={option} value={option} style={{ background: "#0B1829" }}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-              <div>
-                <label className="mb-2 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[#8BA4AF]">
-                  <StarIcon />
-                  Best for
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedTags([])}
-                    className={`rounded-full px-3 py-1.5 text-xs transition ${
-                      selectedTags.length === 0
-                        ? "bg-[#59D4E7] text-[#041019]"
-                        : "border border-white/8 bg-white/5 text-white/72 hover:bg-white/10"
-                    }`}
-                  >
-                    All
-                  </button>
+            <div>
+              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
+                <PlaneIcon />
+                Aircraft
+              </label>
+              <select
+                value={aircraft}
+                onChange={(e) => setAircraft(e.target.value)}
+                className="ascend-select w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
+                style={{
+                  border: "1px solid rgba(201,169,110,0.15)",
+                  background: "rgba(11,24,41,0.8)",
+                  color: "#F5F0E8",
+                  borderRadius: 2,
+                }}
+              >
+                <option value="">All aircraft</option>
+                {aircraftOptions.map((option) => (
+                  <option key={option} value={option} style={{ background: "#0B1829" }}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-                  {curatedBestForOptions.map((option) => {
-                    const isActive = selectedTags.includes(option);
-                    return (
-                      <button
-                        key={option}
-                        type="button"
-                        onClick={() => toggleTag(option)}
-                        className={`rounded-full px-3 py-1.5 text-xs transition ${
-                          isActive
-                            ? "bg-[#42C4D8] text-[#041019]"
-                            : "border border-white/8 bg-white/5 text-white/72 hover:bg-white/10"
-                        }`}
-                      >
-                        {option}
-                      </button>
-                    );
-                  })}
-                </div>
+            <div>
+              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
+                <SeatIcon />
+                Cabin
+              </label>
+              <select
+                value={cabin}
+                onChange={(e) => setCabin(e.target.value)}
+                className="ascend-select w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
+                style={{
+                  border: "1px solid rgba(201,169,110,0.15)",
+                  background: "rgba(11,24,41,0.8)",
+                  color: "#F5F0E8",
+                  borderRadius: 2,
+                }}
+              >
+                <option value="">All cabins</option>
+                <option value="Business" style={{ background: "#0B1829" }}>Business</option>
+                <option value="First" style={{ background: "#0B1829" }}>First</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mt-3 grid gap-3 lg:grid-cols-2">
+            <PlaceAutosuggest
+              label="Outbound"
+              placeholder="e.g. Abu Dhabi, Atlanta, Paris CDG, Dallas/Fort Worth"
+              value={outboundPlace}
+              onChange={setOutboundPlace}
+              suggestions={outboundPlaceOptions}
+              onSelect={setOutboundPlace}
+            />
+            <PlaceAutosuggest
+              label="Return"
+              placeholder="e.g. Amsterdam, London Heathrow, New York JFK, Singapore"
+              value={returnPlace}
+              onChange={setReturnPlace}
+              suggestions={returnPlaceOptions}
+              onSelect={setReturnPlace}
+            />
+          </div>
+
+          <div className="mt-5 grid gap-3 xl:grid-cols-[1fr_auto]">
+            <div>
+              <label className="mb-3 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
+                <StarIcon />
+                Best for
+              </label>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSelectedTags([])}
+                  className="px-4 py-2 text-xs font-medium uppercase tracking-[0.10em] transition-all duration-150"
+                  style={{
+                    borderRadius: 2,
+                    background: selectedTags.length === 0 ? "#C9A96E" : "rgba(201,169,110,0.06)",
+                    color: selectedTags.length === 0 ? "#0B1829" : "rgba(245,240,232,0.55)",
+                    border: selectedTags.length === 0 ? "1px solid #C9A96E" : "1px solid rgba(201,169,110,0.20)",
+                  }}
+                >
+                  All
+                </button>
+                {curatedBestForOptions.map((option) => {
+                  const isActive = selectedTags.includes(option);
+                  return (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => toggleTag(option)}
+                      className="px-4 py-2 text-xs font-medium uppercase tracking-[0.10em] transition-all duration-150"
+                      style={{
+                        borderRadius: 2,
+                        background: isActive ? "#C9A96E" : "rgba(201,169,110,0.06)",
+                        color: isActive ? "#0B1829" : "rgba(245,240,232,0.55)",
+                        border: isActive ? "1px solid #C9A96E" : "1px solid rgba(201,169,110,0.20)",
+                      }}
+                    >
+                      {option}
+                    </button>
+                  );
+                })}
               </div>
-
+              <p className="mt-2 text-xs text-[#F5F0E8]/30">You can select multiple options at once.</p>
+            </div>
+            <div className="flex items-end">
               <button
                 onClick={resetFilters}
-                className="w-full rounded-xl border border-white/8 bg-white/5 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/10"
+                className="w-full px-5 py-3 text-xs font-medium uppercase tracking-[0.12em] transition-colors duration-150 xl:w-auto"
+                style={{
+                  border: "1px solid rgba(201,169,110,0.20)",
+                  background: "rgba(201,169,110,0.04)",
+                  color: "rgba(245,240,232,0.50)",
+                  borderRadius: 2,
+                }}
               >
                 Reset filters
               </button>
             </div>
-          </aside>
+          </div>
+        </section>
 
-          <section className="min-w-0 space-y-6">
-            <div className="grid gap-4 md:grid-cols-4">
-              <div className="rounded-3xl border border-white/8 bg-[linear-gradient(180deg,rgba(10,20,29,0.88),rgba(8,17,25,0.82))] p-5">
-                <p className="text-[11px] uppercase tracking-[0.28em] text-[#8BA4AF]">Products</p>
-                <p className="mt-2 text-3xl font-semibold tracking-[-0.04em]">{premiumProducts.length}</p>
-              </div>
-              <div className="rounded-3xl border border-white/8 bg-[linear-gradient(180deg,rgba(10,20,29,0.88),rgba(8,17,25,0.82))] p-5">
-                <p className="text-[11px] uppercase tracking-[0.28em] text-[#8BA4AF]">Airlines</p>
-                <p className="mt-2 text-3xl font-semibold tracking-[-0.04em]">{airlineOptions.length}</p>
-              </div>
-              <div className="rounded-3xl border border-white/8 bg-[linear-gradient(180deg,rgba(10,20,29,0.88),rgba(8,17,25,0.82))] p-5">
-                <p className="text-[11px] uppercase tracking-[0.28em] text-[#8BA4AF]">Places</p>
-                <p className="mt-2 text-3xl font-semibold tracking-[-0.04em]">{placeCatalog.length}</p>
-              </div>
-              <div className="rounded-3xl border border-white/8 bg-[linear-gradient(180deg,rgba(10,20,29,0.88),rgba(8,17,25,0.82))] p-5">
-                <p className="text-[11px] uppercase tracking-[0.28em] text-[#8BA4AF]">Matches</p>
-                <p className="mt-2 text-3xl font-semibold tracking-[-0.04em]">{filteredProducts.length}</p>
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-white/8 bg-[linear-gradient(180deg,rgba(10,20,29,0.88),rgba(8,17,25,0.82))] p-5">
-              <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
-                <div>
-                  <div className="inline-flex items-center gap-2 rounded-full border border-[#59D4E7]/20 bg-[#0E242D] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.28em] text-[#9FE5EF]">
-                    <SparklesIcon />
-                    Premium cabin intelligence
-                  </div>
-
-                  <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">
-                    Ascend Cabin Optimizer
-                  </h2>
-                  <p className="mt-3 max-w-3xl text-sm leading-6 text-white/72 sm:text-base">
-                    Compare Business &amp; First Class products across airlines, aircraft, and layouts — with AeroLOPA + seat maps all in one place.
-                  </p>
-                </div>
-
-                <a
-                  href="https://joinascend.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-11 items-center justify-center rounded-2xl bg-[#59D4E7] px-5 text-sm font-semibold text-[#041019] transition hover:brightness-110"
-                >
-                  Apply for membership
-                </a>
-              </div>
-            </div>
-
-            {compareProducts.length > 0 && (
-              <div className="rounded-3xl border border-white/8 bg-[linear-gradient(180deg,rgba(10,20,29,0.88),rgba(8,17,25,0.82))] p-5">
-                <div className="mb-4 flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-[11px] uppercase tracking-[0.28em] text-[#8BA4AF]">Compare</p>
-                    <h3 className="mt-1 text-2xl font-semibold tracking-[-0.03em]">Side by side</h3>
-                  </div>
-                  <p className="text-sm text-white/55">Up to 3 products</p>
-                </div>
-
-                <div className={`grid gap-4 ${compareProducts.length === 1 ? "md:grid-cols-1" : compareProducts.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3"}`}>
-                  {compareProducts.map((item) => (
-                    <article key={`compare-${item.id}`} className="rounded-2xl border border-white/8 bg-[#08141C]/90 p-4">
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <h4 className="text-lg font-semibold tracking-[-0.02em]">{item.productName}</h4>
-                          <p className="mt-1 text-sm text-white/56">
-                            {item.airline} · {item.aircraft}
-                          </p>
-                        </div>
-                        <span className={`rounded-full border px-2.5 py-1 text-[11px] font-medium ${cabinAccent[item.cabinType]}`}>
-                          {item.cabinType}
-                        </span>
-                      </div>
-
-                      <div className="mt-4 space-y-3 text-sm">
-                        <div>
-                          <p className="text-[11px] uppercase tracking-[0.24em] text-white/42">Best for</p>
-                          <div className="mt-2 flex flex-wrap gap-2">
-                            {item.bestFor.map((value) => (
-                              <span key={value} className="rounded-full border border-white/8 bg-white/5 px-2.5 py-1 text-xs text-white/75">
-                                {value}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div>
-                          <p className="text-[11px] uppercase tracking-[0.24em] text-white/42">Seat insight</p>
-                          <p className="mt-2 leading-6 text-white/74">{item.seatInsight}</p>
-                        </div>
-
-                        <div className="grid gap-2 sm:grid-cols-2">
-                          <a
-                            href={item.aerolopaUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#59D4E7] px-4 py-2.5 text-sm font-semibold text-[#041019] transition hover:brightness-110"
-                          >
-                            <MapIcon />
-                            AeroLOPA
-                          </a>
-                          <a
-                            href={item.seatmapsUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/8 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
-                          >
-                            <SeatIcon />
-                            SeatMaps
-                          </a>
-                        </div>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="flex items-center justify-between gap-4">
+        {filteredProducts.length > 0 && (
+          <section className="mb-8">
+            <div className="mb-5 flex items-center justify-between gap-4">
               <div>
-                <p className="text-[11px] uppercase tracking-[0.28em] text-[#8BA4AF]">Results</p>
-                <h3 className="mt-1 text-2xl font-semibold tracking-[-0.03em]">Cabin products</h3>
+                <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]">
+                  Top matches
+                </p>
+                <h2 className="font-serif-display mt-1 text-2xl font-normal tracking-[-0.02em] text-[#F5F0E8]">
+                  Best shortlist right now
+                </h2>
               </div>
-              <p className="text-sm text-white/55">
+              <p className="text-sm text-[#F5F0E8]/45">
                 Showing {filteredProducts.length} product{filteredProducts.length === 1 ? "" : "s"}
               </p>
             </div>
 
-            <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
-              {filteredProducts.map((item) => {
+            <div className="grid gap-4 lg:grid-cols-3">
+              {topThree.map((item) => {
                 const matchingRoutes = item.routePairs.filter((pair) => {
-                  const outboundOk =
-                    !outboundPlace.trim() ||
-                    normalizeText(pair.from).includes(normalizeText(outboundPlace));
-                  const returnOk =
-                    !returnPlace.trim() ||
-                    normalizeText(pair.to).includes(normalizeText(returnPlace));
-                  return outboundOk && returnOk;
+                  const outOk = !outboundPlace.trim() || normalizeText(pair.from).includes(normalizeText(outboundPlace));
+                  const retOk = !returnPlace.trim() || normalizeText(pair.to).includes(normalizeText(returnPlace));
+                  return outOk && retOk;
                 });
-
-                const visibleRoutes =
-                  matchingRoutes.length > 0
-                    ? dedupeRoutePairs(
-                        matchingRoutes.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to))
-                      )
-                    : dedupeRoutePairs(
-                        item.routePairs.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to))
-                      );
-
-                const isCompared = selectedCompareIds.includes(item.id);
 
                 return (
                   <article
-                    key={item.id}
-                    className="group overflow-hidden rounded-[24px] border border-white/8 bg-[linear-gradient(180deg,rgba(12,22,31,0.9),rgba(8,17,25,0.88))] transition duration-200 hover:-translate-y-1 hover:border-white/14"
+                    key={`${item.id}-featured`}
+                    className="cabin-card overflow-hidden"
+                    style={{
+                      border: "1px solid rgba(201,169,110,0.20)",
+                      borderRadius: 2,
+                      background: "linear-gradient(180deg, rgba(15,32,53,0.96) 0%, rgba(11,24,41,0.92) 100%)",
+                    }}
                   >
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={item.image}
-                        alt={item.productName}
-                        className="block h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                      />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#051019] via-transparent to-transparent" />
-
-                      <div className="absolute left-4 top-4 flex items-center gap-2">
-                        <span className="rounded-full bg-[#59D4E7] px-3 py-1 text-xs font-semibold text-[#041019]">
+                    <div className="relative h-56 overflow-hidden">
+                      <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1829]/60 to-transparent pointer-events-none" />
+                      <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
+                        <span
+                          className="text-xs font-medium uppercase tracking-[0.12em]"
+                          style={{
+                            background: "#C9A96E",
+                            color: "#0B1829",
+                            padding: "4px 10px",
+                            borderRadius: 2,
+                          }}
+                        >
                           #{item.rank}
                         </span>
-                        <span className={`rounded-full border px-3 py-1 text-xs font-medium ${cabinAccent[item.cabinType]}`}>
+                        <span
+                          className={`text-xs font-medium ${cabinAccentFeatured[item.cabinType]}`}
+                          style={{ padding: "4px 10px", borderRadius: 2 }}
+                        >
                           {item.cabinType}
                         </span>
                       </div>
-
-                      <button
-                        type="button"
-                        onClick={() => toggleCompare(item.id)}
-                        className={`absolute right-4 top-4 rounded-full border px-3 py-1 text-xs font-medium transition ${
-                          isCompared
-                            ? "border-[#59D4E7] bg-[#59D4E7] text-[#041019]"
-                            : "border-white/10 bg-black/40 text-white backdrop-blur hover:bg-black/55"
-                        }`}
-                      >
-                        {isCompared ? "Added" : "Compare"}
-                      </button>
                     </div>
 
                     <div className="p-5">
-                      <div className="flex items-center justify-between gap-3">
-                        <div>
-                          <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42">
-                            <span>{item.airlineCode}</span>
-                            <span>•</span>
-                            <span>{item.airline}</span>
-                          </div>
-                          <h4 className="mt-2 text-xl font-semibold leading-tight tracking-[-0.02em]">
-                            {item.productName}
-                          </h4>
-                          <p className="mt-1 text-sm text-white/55">{item.aircraft}</p>
-                        </div>
+                      <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-[#C9A96E]">
+                        <span>{item.airlineCode}</span>
+                        <span className="text-[#C9A96E]/35">·</span>
+                        <span>{item.airline}</span>
                       </div>
-
-                      <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4">
-                        <div className="flex items-start gap-3">
-                          <RouteIcon />
-                          <div className="w-full">
-                            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/42">
-                              Route pairs
-                            </p>
-                            <div className="mt-2 flex flex-wrap gap-2">
-                              {visibleRoutes.slice(0, 6).map((pair) => (
-                                <span
-                                  key={formatRoute(pair)}
-                                  className="rounded-full border border-white/8 bg-white/5 px-3 py-1 text-xs text-[#A3E6F0]"
-                                >
-                                  {pair.from} ⇄ {pair.to}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
+                      <h3 className="font-serif-display mt-2 text-xl font-normal leading-tight tracking-[-0.01em] text-[#F5F0E8]">
+                        {item.productName}
+                      </h3>
+                      <p className="mt-1 text-sm text-[#F5F0E8]/45">{item.aircraft}</p>
+                      <p className="mt-2 text-sm text-[#C9A96E]">
+                        {matchingRoutes[0] ? formatRoute(matchingRoutes[0]) : formatRoute(item.routePairs[0])}
+                      </p>
+                      <p className="mt-3 text-sm font-light leading-6 text-[#F5F0E8]/60">
+                        {item.description}
+                      </p>
                       <div className="mt-4 flex flex-wrap gap-2">
                         {item.bestFor.map((value) => (
-                          <span key={value} className="rounded-full border border-white/8 px-3 py-1 text-xs text-white/70">
+                          <span
+                            key={value}
+                            className="text-[10px] font-medium uppercase tracking-[0.10em]"
+                            style={{
+                              border: "1px solid rgba(201,169,110,0.20)",
+                              background: "rgba(201,169,110,0.06)",
+                              color: "#C9A96E",
+                              padding: "3px 10px",
+                              borderRadius: 2,
+                            }}
+                          >
                             {value}
                           </span>
                         ))}
-                      </div>
-
-                      <div className="mt-4 space-y-3">
-                        <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
-                          <div className="flex items-start gap-3">
-                            <SeatIcon />
-                            <div>
-                              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/42">
-                                Seat insight
-                              </p>
-                              <p className="mt-2 text-sm leading-6 text-white/75">{item.seatInsight}</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
-                          <div className="flex items-start gap-3">
-                            <NoteIcon />
-                            <div>
-                              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/42">
-                                Why it stands out
-                              </p>
-                              <p className="mt-2 text-sm leading-6 text-white/65">{item.description}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                        <a
-                          href={item.aerolopaUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#59D4E7] px-4 py-3 text-sm font-semibold text-[#041019] transition hover:brightness-110"
-                        >
-                          <MapIcon />
-                          Open AeroLOPA
-                        </a>
-
-                        <a
-                          href={item.seatmapsUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/8 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-                        >
-                          <SeatIcon />
-                          Open SeatMaps
-                        </a>
                       </div>
                     </div>
                   </article>
                 );
               })}
             </div>
-
-            {filteredProducts.length === 0 && (
-              <section className="rounded-[28px] border border-dashed border-white/10 bg-white/5 px-6 py-14 text-center">
-                <h2 className="text-2xl font-semibold tracking-[-0.03em]">No cabins matched those filters</h2>
-                <p className="mt-3 text-sm text-white/60">
-                  Try broader place text like Atlanta, Amsterdam, Paris CDG, New York JFK, or remove one selected tag.
-                </p>
-                <button
-                  onClick={resetFilters}
-                  className="mt-6 rounded-xl bg-[#59D4E7] px-5 py-3 text-sm font-semibold text-[#041019]"
-                >
-                  Reset and show all cabins
-                </button>
-              </section>
-            )}
           </section>
-        </div>
+        )}
+
+        <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {filteredProducts.map((item) => {
+            const matchingRoutes = item.routePairs.filter((pair) => {
+              const outOk = !outboundPlace.trim() || normalizeText(pair.from).includes(normalizeText(outboundPlace));
+              const retOk = !returnPlace.trim() || normalizeText(pair.to).includes(normalizeText(returnPlace));
+              return outOk && retOk;
+            });
+
+            const visibleRoutes =
+              matchingRoutes.length > 0
+                ? dedupeRoutePairs(matchingRoutes.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to)))
+                : dedupeRoutePairs(item.routePairs.filter((pair) => normalizeText(pair.from) <= normalizeText(pair.to)));
+
+            return (
+              <article
+                key={item.id}
+                className="cabin-card group overflow-hidden"
+                style={{
+                  border: "1px solid rgba(201,169,110,0.13)",
+                  borderRadius: 2,
+                  background: "linear-gradient(180deg, rgba(12,24,35,0.94) 0%, rgba(11,24,41,0.90) 100%)",
+                }}
+              >
+                <div className="relative h-52 overflow-hidden">
+                  <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1829]/50 to-transparent pointer-events-none" />
+                  <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
+                    <span
+                      className="text-[10px] font-medium uppercase tracking-[0.12em]"
+                      style={{
+                        background: "rgba(11,24,41,0.85)",
+                        color: "rgba(245,240,232,0.70)",
+                        padding: "4px 9px",
+                        borderRadius: 2,
+                        backdropFilter: "blur(4px)",
+                      }}
+                    >
+                      #{item.rank}
+                    </span>
+                    <span
+                      className={`text-[10px] font-medium ${cabinAccent[item.cabinType]}`}
+                      style={{ padding: "4px 9px", borderRadius: 2, backdropFilter: "blur(4px)" }}
+                    >
+                      {item.cabinType}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <h3 className="font-serif-display text-lg font-normal leading-tight tracking-[-0.01em] text-[#F5F0E8]">
+                        {item.productName}
+                      </h3>
+                      <p className="mt-1 text-xs text-[#F5F0E8]/45">
+                        {item.airline} · {item.aircraft}
+                      </p>
+                    </div>
+                    <span
+                      className="flex-shrink-0 text-[10px] font-medium uppercase tracking-[0.14em]"
+                      style={{
+                        border: "1px solid rgba(201,169,110,0.20)",
+                        color: "#C9A96E",
+                        padding: "3px 8px",
+                        borderRadius: 2,
+                      }}
+                    >
+                      {item.airlineCode}
+                    </span>
+                  </div>
+
+                  <div
+                    className="mt-4 p-4"
+                    style={{
+                      border: "1px solid rgba(201,169,110,0.12)",
+                      background: "rgba(11,24,41,0.50)",
+                      borderRadius: 2,
+                    }}
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="mt-0.5 shrink-0 text-[#C9A96E]"><RouteIcon /></span>
+                      <div className="w-full">
+                        <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-[#F5F0E8]/35">
+                          Route pairs
+                        </p>
+                        <div className="mt-2 flex flex-wrap gap-1.5">
+                          {visibleRoutes.map((pair) => (
+                            <span
+                              key={formatRoute(pair)}
+                              className="text-[11px]"
+                              style={{
+                                border: "1px solid rgba(201,169,110,0.15)",
+                                background: "rgba(201,169,110,0.04)",
+                                color: "rgba(245,240,232,0.60)",
+                                padding: "3px 9px",
+                                borderRadius: 2,
+                              }}
+                            >
+                              {pair.from} ⇄ {pair.to}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap gap-1.5">
+                    {item.bestFor.map((value) => (
+                      <span
+                        key={value}
+                        className="text-[10px] font-medium uppercase tracking-[0.10em]"
+                        style={{
+                          border: "1px solid rgba(201,169,110,0.18)",
+                          color: "rgba(245,240,232,0.50)",
+                          padding: "3px 9px",
+                          borderRadius: 2,
+                        }}
+                      >
+                        {value}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 space-y-2.5">
+                    <div
+                      className="p-4"
+                      style={{
+                        border: "1px solid rgba(201,169,110,0.12)",
+                        background: "rgba(11,24,41,0.50)",
+                        borderRadius: 2,
+                      }}
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="mt-0.5 shrink-0 text-[#C9A96E]"><SeatIcon /></span>
+                        <div>
+                          <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-[#F5F0E8]/35">
+                            Seat insight
+                          </p>
+                          <p className="mt-2 text-sm font-light leading-6 text-[#F5F0E8]/70">
+                            {item.seatInsight}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      className="p-4"
+                      style={{
+                        border: "1px solid rgba(201,169,110,0.12)",
+                        background: "rgba(11,24,41,0.50)",
+                        borderRadius: 2,
+                      }}
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="mt-0.5 shrink-0 text-[#C9A96E]"><NoteIcon /></span>
+                        <div>
+                          <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-[#F5F0E8]/35">
+                            Why it stands out
+                          </p>
+                          <p className="mt-2 text-sm font-light leading-6 text-[#F5F0E8]/60">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
+                    <a
+                      href={item.aerolopaUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-[0.10em] transition-colors duration-200"
+                      style={{ background: "#C9A96E", color: "#0B1829", padding: "11px 16px", borderRadius: 2 }}
+                    >
+                      <MapIcon />
+                      AeroLOPA
+                    </a>
+                    <a
+                      href={item.seatmapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-[0.10em] transition-colors duration-200"
+                      style={{
+                        border: "1px solid rgba(201,169,110,0.25)",
+                        background: "rgba(201,169,110,0.04)",
+                        color: "rgba(245,240,232,0.65)",
+                        padding: "11px 16px",
+                        borderRadius: 2,
+                      }}
+                    >
+                      <SeatIcon />
+                      SeatMaps
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </section>
+
+        {filteredProducts.length === 0 && (
+          <section
+            className="mt-2 px-6 py-16 text-center"
+            style={{
+              border: "1px dashed rgba(201,169,110,0.20)",
+              background: "rgba(201,169,110,0.03)",
+              borderRadius: 2,
+            }}
+          >
+            <h2 className="font-serif-display text-2xl font-normal tracking-[-0.02em] text-[#F5F0E8]">
+              No cabins matched those filters
+            </h2>
+            <p className="mt-3 text-sm font-light text-[#F5F0E8]/50">
+              Try broader place text like Atlanta, Amsterdam, Paris CDG, or New York JFK — or remove a selected tag.
+            </p>
+            <button
+              onClick={resetFilters}
+              className="mt-6 text-sm font-medium uppercase tracking-[0.12em] transition-colors duration-200"
+              style={{ background: "#C9A96E", color: "#0B1829", padding: "12px 24px", borderRadius: 2 }}
+            >
+              Reset and show all cabins
+            </button>
+          </section>
+        )}
       </div>
     </main>
   );
