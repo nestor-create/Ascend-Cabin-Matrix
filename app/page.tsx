@@ -634,13 +634,13 @@ const rawProducts: RawProduct[] = [
 ];
 
 const cabinAccent: Record<CabinType, string> = {
-  First: "bg-[#2A1F0A]/90 text-[#C9A96E] ring-1 ring-inset ring-[#C9A96E]/30",
-  Business: "bg-[#0B1829]/90 text-[#8BBDD9] ring-1 ring-inset ring-[#8BBDD9]/20",
+  First: "bg-[#2D220D]/95 text-[#D8B372] ring-1 ring-inset ring-[#D8B372]/30",
+  Business: "bg-[#102031]/95 text-[#9FC9DC] ring-1 ring-inset ring-[#9FC9DC]/20",
 };
 
 const cabinAccentFeatured: Record<CabinType, string> = {
-  First: "bg-[#C9A96E] text-[#0B1829]",
-  Business: "bg-[#0B1829] text-[#8BBDD9] ring-1 ring-[#8BBDD9]/30",
+  First: "bg-[#D8B372] text-[#081728]",
+  Business: "bg-[#102031] text-[#9FC9DC] ring-1 ring-[#9FC9DC]/30",
 };
 
 const curatedBestForOptions = ["Privacy", "Couples", "Space", "Luxury", "Sleep", "Network"];
@@ -737,7 +737,7 @@ function PlaceAutosuggest({
 
   return (
     <div ref={wrapperRef} className="relative">
-      <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
+      <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]/70">
         <RouteIcon />
         {label}
       </label>
@@ -750,12 +750,12 @@ function PlaceAutosuggest({
           onChange(e.target.value);
           setOpen(true);
         }}
-        className="w-full border border-[#C9A96E]/15 bg-[#0B1829]/80 px-4 py-3 text-sm text-[#F5F0E8] outline-none placeholder:text-[#F5F0E8]/25 focus:border-[#C9A96E]/40 transition-colors duration-200"
+        className="w-full border border-[#D8B372]/15 bg-[#081728]/80 px-4 py-3 text-sm text-[#F4EFE7] outline-none placeholder:text-[#F4EFE7]/25 focus:border-[#D8B372]/40 transition-colors duration-200"
         style={{ borderRadius: 2 }}
       />
       {shouldShow && (
         <div
-          className="absolute z-30 mt-1 max-h-72 w-full overflow-auto border border-[#C9A96E]/20 bg-[#0B1829]/98 p-1.5 shadow-2xl shadow-black/60"
+          className="absolute z-30 mt-1 max-h-72 w-full overflow-auto border border-[#D8B372]/20 bg-[#081728]/98 p-1.5 shadow-2xl shadow-black/60"
           style={{ borderRadius: 2 }}
         >
           {suggestions.map((suggestion) => (
@@ -766,11 +766,11 @@ function PlaceAutosuggest({
                 onSelect(suggestion);
                 setOpen(false);
               }}
-              className="flex w-full items-center justify-between px-3 py-2.5 text-left text-sm text-[#F5F0E8]/80 transition-colors hover:bg-[#C9A96E]/10 hover:text-[#F5F0E8]"
+              className="flex w-full items-center justify-between px-3 py-2.5 text-left text-sm text-[#F4EFE7]/80 transition-colors hover:bg-[#D8B372]/10 hover:text-[#F4EFE7]"
               style={{ borderRadius: 2 }}
             >
               <span>{suggestion}</span>
-              <span className="text-[10px] uppercase tracking-[0.16em] text-[#C9A96E]/50">Available</span>
+              <span className="text-[10px] uppercase tracking-[0.16em] text-[#D8B372]/50">Available</span>
             </button>
           ))}
         </div>
@@ -903,15 +903,17 @@ export default function HomePage() {
 
   return (
     <main
-      className="min-h-screen overflow-hidden text-[#F5F0E8]"
+      className="min-h-screen overflow-hidden text-[#F4EFE7]"
       style={{
-        background: "#0B1829",
-        fontFamily: "'DM Sans', 'Inter', ui-sans-serif, system-ui, sans-serif",
+        background: "#081728",
+        fontFamily: "'Manrope', 'Inter', ui-sans-serif, system-ui, sans-serif",
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap');
-        .font-serif-display { font-family: 'Playfair Display', Georgia, serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@300;400;500;600&display=swap');
+
+        .font-serif-display { font-family: 'Cormorant Garamond', Georgia, serif; }
+
         .board-bg {
           position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
         }
@@ -919,7 +921,7 @@ export default function HomePage() {
           position: absolute; left: 0; right: 0;
           font-family: 'Courier New', Courier, monospace;
           font-size: 11px; letter-spacing: 0.06em;
-          color: rgba(201,169,110,0.07);
+          color: rgba(216,179,114,0.06);
           white-space: pre; line-height: 2.4;
           user-select: none;
         }
@@ -928,22 +930,28 @@ export default function HomePage() {
         .board-track-three { top: 75%; animation: boardScroll1 110s linear infinite reverse; }
         @keyframes boardScroll1 { from { transform: translateY(0); } to { transform: translateY(-50%); } }
         @keyframes boardScroll2 { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+
         .board-glow {
           position: absolute; inset: 0;
-          background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,169,110,0.04) 0%, transparent 60%);
+          background:
+            radial-gradient(ellipse 70% 50% at 50% 0%, rgba(216,179,114,0.05) 0%, transparent 60%),
+            radial-gradient(circle at 20% 20%, rgba(34,70,118,0.18), transparent 28%);
         }
+
         .board-vignette {
           position: absolute; inset: 0;
           background:
-            linear-gradient(to bottom, #0B1829 0%, transparent 15%, transparent 85%, #0B1829 100%),
-            linear-gradient(to right, #0B1829 0%, transparent 8%, transparent 92%, #0B1829 100%);
+            linear-gradient(to bottom, #081728 0%, transparent 14%, transparent 86%, #081728 100%),
+            linear-gradient(to right, #081728 0%, transparent 7%, transparent 93%, #081728 100%);
         }
+
         .cabin-card { transition: transform 0.25s cubic-bezier(.22,.68,0,1.2), border-color 0.2s; }
         .cabin-card:hover { transform: translateY(-3px); }
         .cabin-card img { transition: transform 0.5s cubic-bezier(.22,.68,0,1.2); }
         .cabin-card:hover img { transform: scale(1.04); }
+
         .ascend-select {
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C9A96E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23D8B372' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
           background-repeat: no-repeat;
           background-position: right 12px center;
           -webkit-appearance: none; appearance: none;
@@ -975,36 +983,38 @@ export default function HomePage() {
         <header className="pb-4">
           <div className="flex items-start gap-4">
             <div>
-              <div className="font-serif-display text-[34px] leading-none text-[#F5F0E8]">Ascend</div>
-              <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-[#C9A96E]">
+              <div className="font-serif-display text-[36px] font-medium leading-none text-[#F4EFE7]">
+                Ascend
+              </div>
+              <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-[#D8B372]">
                 Cabin Optimizer
               </div>
             </div>
           </div>
         </header>
 
-        <div className="border-t border-[#C9A96E]/15" />
+        <div className="border-t border-[#D8B372]/15" />
 
         <section className="py-12 sm:py-16 lg:py-20">
           <div className="max-w-3xl">
-            <div className="mb-8 inline-flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-[#C9A96E]">
-              <span className="block h-px w-6 bg-[#C9A96E]" />
+            <div className="mb-8 inline-flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-[#D8B372]">
+              <span className="block h-px w-6 bg-[#D8B372]" />
               Premium cabin intelligence
             </div>
 
-            <h1 className="font-serif-display text-5xl font-normal leading-[0.95] tracking-[-0.03em] text-[#F5F0E8] sm:text-6xl lg:text-[76px]">
-              Find your <em className="italic text-[#D6BE91]">perfect</em>
+            <h1 className="font-serif-display text-5xl font-medium leading-[0.95] tracking-[-0.03em] text-[#F4EFE7] sm:text-6xl lg:text-[78px]">
+              Find your <em className="italic text-[#DFC393]">perfect</em>
               <br />
               seat in the sky
             </h1>
 
-            <p className="mt-8 max-w-2xl text-lg font-light leading-8 text-[#F5F0E8]/78">
+            <p className="mt-8 max-w-2xl text-lg leading-8 text-[#F4EFE7]/78">
               Compare Business and First Class cabin products across airlines, aircraft, and layouts — with AeroLOPA and seat maps in one view. Curated by Ascend's concierge team.
             </p>
           </div>
         </section>
 
-        <div className="border-t border-[#C9A96E]/15" />
+        <div className="border-t border-[#D8B372]/15" />
 
         <section className="grid grid-cols-3 gap-8 py-10 sm:max-w-xl">
           {[
@@ -1013,8 +1023,8 @@ export default function HomePage() {
             { n: filteredProducts.length, l: "Showing" },
           ].map(({ n, l }) => (
             <div key={l}>
-              <div className="font-serif-display text-5xl font-normal text-[#C9A96E]">{n}</div>
-              <div className="mt-2 text-[11px] uppercase tracking-[0.18em] text-[#C9A96E]/60">{l}</div>
+              <div className="font-serif-display text-5xl font-medium text-[#D8B372]">{n}</div>
+              <div className="mt-2 text-[11px] uppercase tracking-[0.18em] text-[#D8B372]/60">{l}</div>
             </div>
           ))}
         </section>
@@ -1022,14 +1032,14 @@ export default function HomePage() {
         <section
           className="mb-8 p-6 lg:p-8"
           style={{
-            border: "1px solid rgba(201,169,110,0.15)",
-            background: "linear-gradient(180deg, rgba(15,32,53,0.92) 0%, rgba(11,24,41,0.88) 100%)",
+            border: "1px solid rgba(216,179,114,0.15)",
+            background: "linear-gradient(180deg, rgba(13,30,49,0.92) 0%, rgba(8,23,40,0.88) 100%)",
             borderRadius: 2,
           }}
         >
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
             <div className="xl:col-span-2">
-              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
+              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]/70">
                 <SearchIcon />
                 Search cabins
               </label>
@@ -1040,18 +1050,18 @@ export default function HomePage() {
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.15)",
-                  background: "rgba(11,24,41,0.8)",
-                  color: "#F5F0E8",
+                  border: "1px solid rgba(216,179,114,0.15)",
+                  background: "rgba(8,23,40,0.8)",
+                  color: "#F4EFE7",
                   borderRadius: 2,
                 }}
-                onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(201,169,110,0.40)")}
-                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(201,169,110,0.15)")}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(216,179,114,0.40)")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(216,179,114,0.15)")}
               />
             </div>
 
             <div>
-              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
+              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]/70">
                 <PlaneIcon />
                 Airline
               </label>
@@ -1060,15 +1070,15 @@ export default function HomePage() {
                 onChange={(e) => setAirline(e.target.value)}
                 className="ascend-select w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.15)",
-                  background: "rgba(11,24,41,0.8)",
-                  color: "#F5F0E8",
+                  border: "1px solid rgba(216,179,114,0.15)",
+                  background: "rgba(8,23,40,0.8)",
+                  color: "#F4EFE7",
                   borderRadius: 2,
                 }}
               >
                 <option value="">All airlines</option>
                 {airlineOptions.map((option) => (
-                  <option key={option} value={option} style={{ background: "#0B1829" }}>
+                  <option key={option} value={option} style={{ background: "#081728" }}>
                     {option}
                   </option>
                 ))}
@@ -1076,7 +1086,7 @@ export default function HomePage() {
             </div>
 
             <div>
-              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
+              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]/70">
                 <PlaneIcon />
                 Aircraft
               </label>
@@ -1085,15 +1095,15 @@ export default function HomePage() {
                 onChange={(e) => setAircraft(e.target.value)}
                 className="ascend-select w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.15)",
-                  background: "rgba(11,24,41,0.8)",
-                  color: "#F5F0E8",
+                  border: "1px solid rgba(216,179,114,0.15)",
+                  background: "rgba(8,23,40,0.8)",
+                  color: "#F4EFE7",
                   borderRadius: 2,
                 }}
               >
                 <option value="">All aircraft</option>
                 {aircraftOptions.map((option) => (
-                  <option key={option} value={option} style={{ background: "#0B1829" }}>
+                  <option key={option} value={option} style={{ background: "#081728" }}>
                     {option}
                   </option>
                 ))}
@@ -1101,7 +1111,7 @@ export default function HomePage() {
             </div>
 
             <div>
-              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
+              <label className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]/70">
                 <SeatIcon />
                 Cabin
               </label>
@@ -1110,15 +1120,15 @@ export default function HomePage() {
                 onChange={(e) => setCabin(e.target.value)}
                 className="ascend-select w-full px-4 py-3 text-sm outline-none transition-colors duration-200"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.15)",
-                  background: "rgba(11,24,41,0.8)",
-                  color: "#F5F0E8",
+                  border: "1px solid rgba(216,179,114,0.15)",
+                  background: "rgba(8,23,40,0.8)",
+                  color: "#F4EFE7",
                   borderRadius: 2,
                 }}
               >
                 <option value="">All cabins</option>
-                <option value="Business" style={{ background: "#0B1829" }}>Business</option>
-                <option value="First" style={{ background: "#0B1829" }}>First</option>
+                <option value="Business" style={{ background: "#081728" }}>Business</option>
+                <option value="First" style={{ background: "#081728" }}>First</option>
               </select>
             </div>
           </div>
@@ -1144,7 +1154,7 @@ export default function HomePage() {
 
           <div className="mt-5 grid gap-3 xl:grid-cols-[1fr_auto]">
             <div>
-              <label className="mb-3 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]/70">
+              <label className="mb-3 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]/70">
                 <StarIcon />
                 Best for
               </label>
@@ -1155,9 +1165,9 @@ export default function HomePage() {
                   className="px-4 py-2 text-xs font-medium uppercase tracking-[0.10em] transition-all duration-150"
                   style={{
                     borderRadius: 2,
-                    background: selectedTags.length === 0 ? "#C9A96E" : "rgba(201,169,110,0.06)",
-                    color: selectedTags.length === 0 ? "#0B1829" : "rgba(245,240,232,0.55)",
-                    border: selectedTags.length === 0 ? "1px solid #C9A96E" : "1px solid rgba(201,169,110,0.20)",
+                    background: selectedTags.length === 0 ? "#D8B372" : "rgba(216,179,114,0.06)",
+                    color: selectedTags.length === 0 ? "#081728" : "rgba(244,239,231,0.55)",
+                    border: selectedTags.length === 0 ? "1px solid #D8B372" : "1px solid rgba(216,179,114,0.20)",
                   }}
                 >
                   All
@@ -1172,9 +1182,9 @@ export default function HomePage() {
                       className="px-4 py-2 text-xs font-medium uppercase tracking-[0.10em] transition-all duration-150"
                       style={{
                         borderRadius: 2,
-                        background: isActive ? "#C9A96E" : "rgba(201,169,110,0.06)",
-                        color: isActive ? "#0B1829" : "rgba(245,240,232,0.55)",
-                        border: isActive ? "1px solid #C9A96E" : "1px solid rgba(201,169,110,0.20)",
+                        background: isActive ? "#D8B372" : "rgba(216,179,114,0.06)",
+                        color: isActive ? "#081728" : "rgba(244,239,231,0.55)",
+                        border: isActive ? "1px solid #D8B372" : "1px solid rgba(216,179,114,0.20)",
                       }}
                     >
                       {option}
@@ -1182,16 +1192,16 @@ export default function HomePage() {
                   );
                 })}
               </div>
-              <p className="mt-2 text-xs text-[#F5F0E8]/30">You can select multiple options at once.</p>
+              <p className="mt-2 text-xs text-[#F4EFE7]/30">You can select multiple options at once.</p>
             </div>
             <div className="flex items-end">
               <button
                 onClick={resetFilters}
                 className="w-full px-5 py-3 text-xs font-medium uppercase tracking-[0.12em] transition-colors duration-150 xl:w-auto"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.20)",
-                  background: "rgba(201,169,110,0.04)",
-                  color: "rgba(245,240,232,0.50)",
+                  border: "1px solid rgba(216,179,114,0.20)",
+                  background: "rgba(216,179,114,0.04)",
+                  color: "rgba(244,239,231,0.50)",
                   borderRadius: 2,
                 }}
               >
@@ -1205,14 +1215,14 @@ export default function HomePage() {
           <section className="mb-8">
             <div className="mb-5 flex items-center justify-between gap-4">
               <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#C9A96E]">
+                <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#D8B372]">
                   Top matches
                 </p>
-                <h2 className="font-serif-display mt-1 text-2xl font-normal tracking-[-0.02em] text-[#F5F0E8]">
+                <h2 className="font-serif-display mt-1 text-2xl font-medium tracking-[-0.02em] text-[#F4EFE7]">
                   Best shortlist right now
                 </h2>
               </div>
-              <p className="text-sm text-[#F5F0E8]/45">
+              <p className="text-sm text-[#F4EFE7]/45">
                 Showing {filteredProducts.length} product{filteredProducts.length === 1 ? "" : "s"}
               </p>
             </div>
@@ -1230,20 +1240,20 @@ export default function HomePage() {
                     key={`${item.id}-featured`}
                     className="cabin-card overflow-hidden"
                     style={{
-                      border: "1px solid rgba(201,169,110,0.20)",
+                      border: "1px solid rgba(216,179,114,0.20)",
                       borderRadius: 2,
-                      background: "linear-gradient(180deg, rgba(15,32,53,0.96) 0%, rgba(11,24,41,0.92) 100%)",
+                      background: "linear-gradient(180deg, rgba(13,30,49,0.96) 0%, rgba(8,23,40,0.92) 100%)",
                     }}
                   >
                     <div className="relative h-56 overflow-hidden">
                       <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1829]/60 to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#081728]/60 to-transparent pointer-events-none" />
                       <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
                         <span
                           className="text-xs font-medium uppercase tracking-[0.12em]"
                           style={{
-                            background: "#C9A96E",
-                            color: "#0B1829",
+                            background: "#D8B372",
+                            color: "#081728",
                             padding: "4px 10px",
                             borderRadius: 2,
                           }}
@@ -1260,19 +1270,19 @@ export default function HomePage() {
                     </div>
 
                     <div className="p-5">
-                      <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-[#C9A96E]">
+                      <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-[#D8B372]">
                         <span>{item.airlineCode}</span>
-                        <span className="text-[#C9A96E]/35">·</span>
+                        <span className="text-[#D8B372]/35">·</span>
                         <span>{item.airline}</span>
                       </div>
-                      <h3 className="font-serif-display mt-2 text-xl font-normal leading-tight tracking-[-0.01em] text-[#F5F0E8]">
+                      <h3 className="font-serif-display mt-2 text-xl font-medium leading-tight tracking-[-0.01em] text-[#F4EFE7]">
                         {item.productName}
                       </h3>
-                      <p className="mt-1 text-sm text-[#F5F0E8]/45">{item.aircraft}</p>
-                      <p className="mt-2 text-sm text-[#C9A96E]">
+                      <p className="mt-1 text-sm text-[#F4EFE7]/45">{item.aircraft}</p>
+                      <p className="mt-2 text-sm text-[#D8B372]">
                         {matchingRoutes[0] ? formatRoute(matchingRoutes[0]) : formatRoute(item.routePairs[0])}
                       </p>
-                      <p className="mt-3 text-sm font-light leading-6 text-[#F5F0E8]/60">
+                      <p className="mt-3 text-sm leading-6 text-[#F4EFE7]/60">
                         {item.description}
                       </p>
                       <div className="mt-4 flex flex-wrap gap-2">
@@ -1281,9 +1291,9 @@ export default function HomePage() {
                             key={value}
                             className="text-[10px] font-medium uppercase tracking-[0.10em]"
                             style={{
-                              border: "1px solid rgba(201,169,110,0.20)",
-                              background: "rgba(201,169,110,0.06)",
-                              color: "#C9A96E",
+                              border: "1px solid rgba(216,179,114,0.20)",
+                              background: "rgba(216,179,114,0.06)",
+                              color: "#D8B372",
                               padding: "3px 10px",
                               borderRadius: 2,
                             }}
@@ -1318,20 +1328,20 @@ export default function HomePage() {
                 key={item.id}
                 className="cabin-card group overflow-hidden"
                 style={{
-                  border: "1px solid rgba(201,169,110,0.13)",
+                  border: "1px solid rgba(216,179,114,0.13)",
                   borderRadius: 2,
-                  background: "linear-gradient(180deg, rgba(12,24,35,0.94) 0%, rgba(11,24,41,0.90) 100%)",
+                  background: "linear-gradient(180deg, rgba(10,26,43,0.94) 0%, rgba(8,23,40,0.90) 100%)",
                 }}
               >
                 <div className="relative h-52 overflow-hidden">
                   <img src={item.image} alt={item.productName} className="block h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1829]/50 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#081728]/50 to-transparent pointer-events-none" />
                   <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2">
                     <span
                       className="text-[10px] font-medium uppercase tracking-[0.12em]"
                       style={{
-                        background: "rgba(11,24,41,0.85)",
-                        color: "rgba(245,240,232,0.70)",
+                        background: "rgba(8,23,40,0.85)",
+                        color: "rgba(244,239,231,0.70)",
                         padding: "4px 9px",
                         borderRadius: 2,
                         backdropFilter: "blur(4px)",
@@ -1351,18 +1361,18 @@ export default function HomePage() {
                 <div className="p-5">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <h3 className="font-serif-display text-lg font-normal leading-tight tracking-[-0.01em] text-[#F5F0E8]">
+                      <h3 className="font-serif-display text-lg font-medium leading-tight tracking-[-0.01em] text-[#F4EFE7]">
                         {item.productName}
                       </h3>
-                      <p className="mt-1 text-xs text-[#F5F0E8]/45">
+                      <p className="mt-1 text-xs text-[#F4EFE7]/45">
                         {item.airline} · {item.aircraft}
                       </p>
                     </div>
                     <span
                       className="flex-shrink-0 text-[10px] font-medium uppercase tracking-[0.14em]"
                       style={{
-                        border: "1px solid rgba(201,169,110,0.20)",
-                        color: "#C9A96E",
+                        border: "1px solid rgba(216,179,114,0.20)",
+                        color: "#D8B372",
                         padding: "3px 8px",
                         borderRadius: 2,
                       }}
@@ -1374,15 +1384,15 @@ export default function HomePage() {
                   <div
                     className="mt-4 p-4"
                     style={{
-                      border: "1px solid rgba(201,169,110,0.12)",
-                      background: "rgba(11,24,41,0.50)",
+                      border: "1px solid rgba(216,179,114,0.12)",
+                      background: "rgba(8,23,40,0.50)",
                       borderRadius: 2,
                     }}
                   >
                     <div className="flex items-start gap-3">
-                      <span className="mt-0.5 shrink-0 text-[#C9A96E]"><RouteIcon /></span>
+                      <span className="mt-0.5 shrink-0 text-[#D8B372]"><RouteIcon /></span>
                       <div className="w-full">
-                        <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-[#F5F0E8]/35">
+                        <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-[#F4EFE7]/35">
                           Route pairs
                         </p>
                         <div className="mt-2 flex flex-wrap gap-1.5">
@@ -1391,9 +1401,9 @@ export default function HomePage() {
                               key={formatRoute(pair)}
                               className="text-[11px]"
                               style={{
-                                border: "1px solid rgba(201,169,110,0.15)",
-                                background: "rgba(201,169,110,0.04)",
-                                color: "rgba(245,240,232,0.60)",
+                                border: "1px solid rgba(216,179,114,0.15)",
+                                background: "rgba(216,179,114,0.04)",
+                                color: "rgba(244,239,231,0.60)",
                                 padding: "3px 9px",
                                 borderRadius: 2,
                               }}
@@ -1412,8 +1422,8 @@ export default function HomePage() {
                         key={value}
                         className="text-[10px] font-medium uppercase tracking-[0.10em]"
                         style={{
-                          border: "1px solid rgba(201,169,110,0.18)",
-                          color: "rgba(245,240,232,0.50)",
+                          border: "1px solid rgba(216,179,114,0.18)",
+                          color: "rgba(244,239,231,0.50)",
                           padding: "3px 9px",
                           borderRadius: 2,
                         }}
@@ -1427,18 +1437,18 @@ export default function HomePage() {
                     <div
                       className="p-4"
                       style={{
-                        border: "1px solid rgba(201,169,110,0.12)",
-                        background: "rgba(11,24,41,0.50)",
+                        border: "1px solid rgba(216,179,114,0.12)",
+                        background: "rgba(8,23,40,0.50)",
                         borderRadius: 2,
                       }}
                     >
                       <div className="flex items-start gap-3">
-                        <span className="mt-0.5 shrink-0 text-[#C9A96E]"><SeatIcon /></span>
+                        <span className="mt-0.5 shrink-0 text-[#D8B372]"><SeatIcon /></span>
                         <div>
-                          <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-[#F5F0E8]/35">
+                          <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-[#F4EFE7]/35">
                             Seat insight
                           </p>
-                          <p className="mt-2 text-sm font-light leading-6 text-[#F5F0E8]/70">
+                          <p className="mt-2 text-sm leading-6 text-[#F4EFE7]/70">
                             {item.seatInsight}
                           </p>
                         </div>
@@ -1448,18 +1458,18 @@ export default function HomePage() {
                     <div
                       className="p-4"
                       style={{
-                        border: "1px solid rgba(201,169,110,0.12)",
-                        background: "rgba(11,24,41,0.50)",
+                        border: "1px solid rgba(216,179,114,0.12)",
+                        background: "rgba(8,23,40,0.50)",
                         borderRadius: 2,
                       }}
                     >
                       <div className="flex items-start gap-3">
-                        <span className="mt-0.5 shrink-0 text-[#C9A96E]"><NoteIcon /></span>
+                        <span className="mt-0.5 shrink-0 text-[#D8B372]"><NoteIcon /></span>
                         <div>
-                          <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-[#F5F0E8]/35">
+                          <p className="text-[10px] font-medium uppercase tracking-[0.20em] text-[#F4EFE7]/35">
                             Why it stands out
                           </p>
-                          <p className="mt-2 text-sm font-light leading-6 text-[#F5F0E8]/60">
+                          <p className="mt-2 text-sm leading-6 text-[#F4EFE7]/60">
                             {item.description}
                           </p>
                         </div>
@@ -1473,7 +1483,7 @@ export default function HomePage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-[0.10em] transition-colors duration-200"
-                      style={{ background: "#C9A96E", color: "#0B1829", padding: "11px 16px", borderRadius: 2 }}
+                      style={{ background: "#D8B372", color: "#081728", padding: "11px 16px", borderRadius: 2 }}
                     >
                       <MapIcon />
                       AeroLOPA
@@ -1484,9 +1494,9 @@ export default function HomePage() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-[0.10em] transition-colors duration-200"
                       style={{
-                        border: "1px solid rgba(201,169,110,0.25)",
-                        background: "rgba(201,169,110,0.04)",
-                        color: "rgba(245,240,232,0.65)",
+                        border: "1px solid rgba(216,179,114,0.25)",
+                        background: "rgba(216,179,114,0.04)",
+                        color: "rgba(244,239,231,0.65)",
                         padding: "11px 16px",
                         borderRadius: 2,
                       }}
@@ -1505,21 +1515,21 @@ export default function HomePage() {
           <section
             className="mt-2 px-6 py-16 text-center"
             style={{
-              border: "1px dashed rgba(201,169,110,0.20)",
-              background: "rgba(201,169,110,0.03)",
+              border: "1px dashed rgba(216,179,114,0.20)",
+              background: "rgba(216,179,114,0.03)",
               borderRadius: 2,
             }}
           >
-            <h2 className="font-serif-display text-2xl font-normal tracking-[-0.02em] text-[#F5F0E8]">
+            <h2 className="font-serif-display text-2xl font-medium tracking-[-0.02em] text-[#F4EFE7]">
               No cabins matched those filters
             </h2>
-            <p className="mt-3 text-sm font-light text-[#F5F0E8]/50">
+            <p className="mt-3 text-sm text-[#F4EFE7]/50">
               Try broader place text like Atlanta, Amsterdam, Paris CDG, or New York JFK — or remove a selected tag.
             </p>
             <button
               onClick={resetFilters}
               className="mt-6 text-sm font-medium uppercase tracking-[0.12em] transition-colors duration-200"
-              style={{ background: "#C9A96E", color: "#0B1829", padding: "12px 24px", borderRadius: 2 }}
+              style={{ background: "#D8B372", color: "#081728", padding: "12px 24px", borderRadius: 2 }}
             >
               Reset and show all cabins
             </button>
