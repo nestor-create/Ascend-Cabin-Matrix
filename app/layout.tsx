@@ -104,4 +104,9 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+}export const metadata = {
+  title: "Ascend Cabin Optimizer",
+  icons: {
+    icon: "/favicon.png",
+  },
+};
