@@ -16,9 +16,9 @@ export const metadata: Metadata = {
   title: "Ascend Cabin Optimizer",
   description: "Identify the ideal premium cabin instantly.",
   icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
-    apple: "/favicon.png",
+    icon: "/images/ascend-logo.png",
+    shortcut: "/images/ascend-logo.png",
+    apple: "/images/ascend-logo.png",
   },
 };
 
@@ -33,7 +33,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-screen bg-white text-[#152533]">
-        <main className="min-h-screen">{children}</main>
+        <main className="min-h-screen">
+          {children}
+        </main>
       </body>
     </html>
   );
