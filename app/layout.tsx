@@ -12,13 +12,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Ascend Cabin Optimizer",
-  description: "Identify the ideal premium cabin instantly.",
   icons: {
-    icon: "/images/ascend-logo.png",
-    shortcut: "/images/ascend-logo.png",
-    apple: "/images/ascend-logo.png",
+    icon: [
+      { url: "/images/favicon.png", type: "image/png" },
+    ],
+    shortcut: ["/images/favicon.png"],
+    apple: ["/images/favicon.png"],
   },
 };
 
