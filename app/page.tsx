@@ -824,11 +824,17 @@ export default function HomePage() {
         }
       `}</style>
 
-      <nav className="sticky top-0 z-50 border-b border-[#E6E8EC] bg-white">
-        <div className="flex h-[72px] items-center justify-center px-8">
-          <img src="/images/ascend-logo.png" alt="Ascend" className="h-9 w-auto object-contain" />
-        </div>
-      </nav>
+<nav className="sticky top-0 z-50 border-b border-[#E6E8EC] bg-white">
+  <div className="flex h-[72px] items-center px-[56px]">
+    
+    <img
+      src="/images/ascend-logo.png"
+      alt="Ascend"
+      className="h-[32px] w-auto object-contain"
+    />
+
+  </div>
+</nav>
 
       <div className="mx-auto max-w-7xl px-8 py-10">
 <header className="mb-8 border-b border-[#E6E8EC] px-[56px] pb-8 pt-10">
