@@ -831,8 +831,6 @@ export default function HomePage() {
     className="h-[32px] w-auto object-contain"
   />
 </nav>
-
-      <div className="mx-auto max-w-7xl px-8 py-10">
 <header className="mb-8 border-b border-[#E6E8EC] px-[56px] pb-8 pt-10">
   <div className="max-w-[760px]">
 
