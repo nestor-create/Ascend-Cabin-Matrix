@@ -39,8 +39,9 @@ const COLORS = {
   text: "#152533",
   textMuted: "#667085",
   textFaint: "#98A2B3",
-  accent: "#152533",
-  accentSoft: "#EEF1F4",
+  accent: "#6C4DF6",
+  accentHover: "#5B3FEA",
+  accentSoft: "#F1EEFF",
 };
 
 function SearchIcon() {
@@ -456,7 +457,7 @@ const rawProducts: RawProduct[] = [
     cabinType: "Business",
     routes: ["London Heathrow → New York JFK", "London Heathrow → Los Angeles", "London Heathrow → San Francisco", "London Heathrow → Delhi"],
     bestFor: ["Couples", "Social"],
-    seatInsight: "1-2-1 layout with direct aisle access and a unique social lounge (The Loft) at the rear of the upper class cabin.",
+    seatInsight: "1-2-1 layout with direct aisle access and a unique social lounge at the rear of the upper class cabin.",
     description: "Virgin Atlantic's Upper Class Suite stands apart for its social design and distinctive cabin atmosphere on transatlantic routes.",
     image: "/images/virgin-upper-class.jpg",
     seatmapsUrl: "https://seatmaps.com/airlines/vs-virgin-atlantic/",
@@ -635,6 +636,7 @@ function PlaceAutosuggest({
       if (!wrapperRef.current) return;
       if (!wrapperRef.current.contains(event.target as Node)) setOpen(false);
     }
+
     document.addEventListener("mousedown", handleOutsideClick);
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
@@ -645,17 +647,19 @@ function PlaceAutosuggest({
         <RouteIcon />
         {label}
       </label>
+
       <input
         type="text"
         value={value}
         placeholder={placeholder}
         onFocus={() => setOpen(true)}
-        onChange={(e) => {
-          onChange(e.target.value);
+        onChange={(event) => {
+          onChange(event.target.value);
           setOpen(true);
         }}
         className="h-10 w-full rounded-md border border-[#E6E8EC] bg-white px-3 text-sm text-[#152533] outline-none placeholder:text-[#98A2B3] focus:border-[#D8DCE2]"
       />
+
       {open && suggestions.length > 0 && (
         <div className="absolute z-30 mt-1 max-h-72 w-full overflow-auto rounded-md border border-[#E6E8EC] bg-white p-1 shadow-lg">
           {suggestions.map((suggestion) => (
@@ -743,11 +747,13 @@ export default function HomePage() {
 
   const filteredReturnPlaces = useMemo(() => {
     let base = productsMatchingNonPlaceFilters;
+
     if (outboundPlace.trim()) {
       base = base.filter((item) =>
         item.routePairs.some((pair) => normalizeText(pair.from).includes(normalizeText(outboundPlace)))
       );
     }
+
     return dedupeStrings(base.flatMap((item) => item.routePairs.map((pair) => pair.to))).sort((a, b) =>
       a.localeCompare(b)
     );
@@ -755,6 +761,7 @@ export default function HomePage() {
 
   const outboundPlaceOptions = useMemo(() => {
     const base = outboundPlace.trim() ? filteredOutboundPlaces : placeCatalog;
+
     return [...base]
       .filter((place) => (outboundPlace.trim() ? scoreSuggestion(outboundPlace, place) > 0 : true))
       .sort((a, b) => scoreSuggestion(outboundPlace, b) - scoreSuggestion(outboundPlace, a) || a.localeCompare(b));
@@ -766,6 +773,7 @@ export default function HomePage() {
       : filteredReturnPlaces.length
       ? filteredReturnPlaces
       : placeCatalog;
+
     return [...base]
       .filter((place) => (returnPlace.trim() ? scoreSuggestion(returnPlace, place) > 0 : true))
       .sort((a, b) => scoreSuggestion(returnPlace, b) - scoreSuggestion(returnPlace, a) || a.localeCompare(b));
@@ -776,9 +784,11 @@ export default function HomePage() {
       const matchesOutbound =
         !outboundPlace.trim() ||
         item.routePairs.some((pair) => normalizeText(pair.from).includes(normalizeText(outboundPlace)));
+
       const matchesReturn =
         !returnPlace.trim() ||
         item.routePairs.some((pair) => normalizeText(pair.to).includes(normalizeText(returnPlace)));
+
       return matchesOutbound && matchesReturn;
     });
   }, [productsMatchingNonPlaceFilters, outboundPlace, returnPlace]);
@@ -800,7 +810,10 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-white text-[#152533]" style={{ fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif" }}>
+    <main
+      className="min-h-screen bg-white text-[#152533]"
+      style={{ fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif" }}
+    >
       <style>{`
         .ascend-select {
           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23152533' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -811,22 +824,35 @@ export default function HomePage() {
         }
       `}</style>
 
-      <nav className="sticky top-0 z-50 flex h-[72px] items-center justify-between border-b border-[#E6E8EC] bg-white px-8">
-        <div className="text-sm font-semibold tracking-tight text-[#152533]">Premium Cabin Search</div>
-        <img src="/images/ascend-logo.png" alt="Ascend" className="h-5 w-auto object-contain" />
+      <nav className="sticky top-0 z-50 border-b border-[#E6E8EC] bg-white">
+        <div className="flex h-[72px] items-center justify-center px-8">
+          <img src="/images/ascend-logo.png" alt="Ascend" className="h-9 w-auto object-contain" />
+        </div>
       </nav>
 
       <div className="mx-auto max-w-7xl px-8 py-10">
         <header className="mb-8 flex flex-wrap items-end justify-between gap-6 border-b border-[#E6E8EC] pb-8">
           <div>
             <p className="mb-3 text-xs font-medium text-[#667085]">Premium cabin intelligence</p>
+
             <h1 className="max-w-2xl text-4xl font-semibold tracking-[-0.03em] text-[#152533] sm:text-5xl">
               Find your perfect seat in the sky
             </h1>
+
             <p className="mt-4 max-w-xl text-base leading-7 text-[#667085]">
               Compare Business and First Class products across airlines, aircraft, and layouts with AeroLOPA
               and seat maps in one clean view.
             </p>
+
+            <a
+              href="https://www.joinascend.com/join-ascend"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex h-11 items-center justify-center rounded-md px-6 text-xs font-semibold uppercase tracking-[0.08em] text-white transition hover:bg-[#5B3FEA]"
+              style={{ background: COLORS.accent }}
+            >
+              Apply for membership
+            </a>
           </div>
 
           <div className="grid grid-cols-4 overflow-hidden rounded-lg border border-[#E6E8EC] bg-white">
@@ -855,11 +881,12 @@ export default function HomePage() {
                 <SearchIcon />
                 Search cabins
               </label>
+
               <input
                 type="text"
                 placeholder="Product, airline, aircraft, route, best for…"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(event) => setSearch(event.target.value)}
                 className="h-10 w-full rounded-md border border-[#E6E8EC] bg-white px-3 text-sm text-[#152533] outline-none placeholder:text-[#98A2B3] focus:border-[#D8DCE2]"
               />
             </div>
@@ -869,9 +896,10 @@ export default function HomePage() {
                 <PlaneIcon />
                 Airline
               </label>
+
               <select
                 value={airline}
-                onChange={(e) => setAirline(e.target.value)}
+                onChange={(event) => setAirline(event.target.value)}
                 className="ascend-select h-10 w-full rounded-md border border-[#E6E8EC] bg-white px-3 text-sm text-[#152533] outline-none"
               >
                 <option value="">All airlines</option>
@@ -888,9 +916,10 @@ export default function HomePage() {
                 <PlaneIcon />
                 Aircraft
               </label>
+
               <select
                 value={aircraft}
-                onChange={(e) => setAircraft(e.target.value)}
+                onChange={(event) => setAircraft(event.target.value)}
                 className="ascend-select h-10 w-full rounded-md border border-[#E6E8EC] bg-white px-3 text-sm text-[#152533] outline-none"
               >
                 <option value="">All aircraft</option>
@@ -907,9 +936,10 @@ export default function HomePage() {
                 <SeatIcon />
                 Cabin
               </label>
+
               <select
                 value={cabin}
-                onChange={(e) => setCabin(e.target.value)}
+                onChange={(event) => setCabin(event.target.value)}
                 className="ascend-select h-10 w-full rounded-md border border-[#E6E8EC] bg-white px-3 text-sm text-[#152533] outline-none"
               >
                 <option value="">All cabins</option>
@@ -928,6 +958,7 @@ export default function HomePage() {
               suggestions={outboundPlaceOptions}
               onSelect={setOutboundPlace}
             />
+
             <PlaceAutosuggest
               label="Return"
               placeholder="e.g. Amsterdam, London Heathrow, New York JFK, Singapore"
@@ -944,6 +975,7 @@ export default function HomePage() {
                 <StarIcon />
                 Best for
               </label>
+
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
@@ -957,8 +989,10 @@ export default function HomePage() {
                 >
                   All
                 </button>
+
                 {curatedBestForOptions.map((option) => {
                   const isActive = selectedTags.includes(option);
+
                   return (
                     <button
                       key={option}
@@ -992,8 +1026,10 @@ export default function HomePage() {
             const matchingRoutes = item.routePairs.filter((pair) => {
               const outOk =
                 !outboundPlace.trim() || normalizeText(pair.from).includes(normalizeText(outboundPlace));
+
               const retOk =
                 !returnPlace.trim() || normalizeText(pair.to).includes(normalizeText(returnPlace));
+
               return outOk && retOk;
             });
 
@@ -1009,11 +1045,15 @@ export default function HomePage() {
               >
                 <div className="relative h-48 overflow-hidden bg-[#F7F8FA]">
                   <img src={item.image} alt={item.productName} className="h-full w-full object-cover" />
+
                   <div className="absolute left-4 top-4 flex items-center gap-2">
                     <span className="rounded-md border border-[#E6E8EC] bg-white px-2 py-1 text-[11px] font-medium text-[#152533]">
                       #{item.rank}
                     </span>
-                    <span className={`rounded-md border px-2 py-1 text-[11px] font-medium ${cabinBadgeStyle[item.cabinType]}`}>
+
+                    <span
+                      className={`rounded-md border px-2 py-1 text-[11px] font-medium ${cabinBadgeStyle[item.cabinType]}`}
+                    >
                       {item.cabinType}
                     </span>
                   </div>
@@ -1025,10 +1065,12 @@ export default function HomePage() {
                       <h3 className="text-lg font-semibold tracking-[-0.01em] text-[#152533]">
                         {item.productName}
                       </h3>
+
                       <p className="mt-1 text-sm text-[#667085]">
                         {item.airline} · {item.aircraft}
                       </p>
                     </div>
+
                     <span className="rounded-md border border-[#E6E8EC] bg-[#F7F8FA] px-2 py-1 text-[11px] font-medium text-[#152533]">
                       {item.airlineCode}
                     </span>
@@ -1039,8 +1081,10 @@ export default function HomePage() {
                       <span className="mt-0.5 text-[#667085]">
                         <RouteIcon />
                       </span>
+
                       <div>
                         <p className="text-[11px] font-medium text-[#667085]">Route pairs</p>
+
                         <div className="mt-2 flex flex-wrap gap-1.5">
                           {visibleRoutes.map((pair) => (
                             <span
@@ -1072,6 +1116,7 @@ export default function HomePage() {
                         <span className="mt-0.5 text-[#667085]">
                           <SeatIcon />
                         </span>
+
                         <div>
                           <p className="text-[11px] font-medium text-[#667085]">Seat insight</p>
                           <p className="mt-2 text-sm leading-6 text-[#152533]">{item.seatInsight}</p>
@@ -1084,6 +1129,7 @@ export default function HomePage() {
                         <span className="mt-0.5 text-[#667085]">
                           <NoteIcon />
                         </span>
+
                         <div>
                           <p className="text-[11px] font-medium text-[#667085]">Why it stands out</p>
                           <p className="mt-2 text-sm leading-6 text-[#667085]">{item.description}</p>
@@ -1097,11 +1143,13 @@ export default function HomePage() {
                       href={item.aerolopaUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#152533] px-4 text-sm font-medium text-white"
+                      className="inline-flex h-10 items-center justify-center gap-2 rounded-md px-4 text-sm font-medium text-white transition hover:bg-[#5B3FEA]"
+                      style={{ background: COLORS.accent }}
                     >
                       <MapIcon />
                       AeroLOPA
                     </a>
+
                     <a
                       href={item.seatmapsUrl}
                       target="_blank"
@@ -1123,12 +1171,15 @@ export default function HomePage() {
             <h2 className="text-xl font-semibold tracking-[-0.01em] text-[#152533]">
               No cabins matched those filters
             </h2>
+
             <p className="mt-3 text-sm text-[#667085]">
               Try broader place text like Atlanta, Amsterdam, Paris CDG, or New York JFK — or remove a selected tag.
             </p>
+
             <button
               onClick={resetFilters}
-              className="mt-6 h-10 rounded-md bg-[#152533] px-4 text-sm font-medium text-white"
+              className="mt-6 h-10 rounded-md px-4 text-sm font-medium text-white transition hover:bg-[#5B3FEA]"
+              style={{ background: COLORS.accent }}
             >
               Reset and show all cabins
             </button>
@@ -1137,6 +1188,7 @@ export default function HomePage() {
 
         <footer className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-[#E6E8EC] pb-8 pt-6">
           <div className="text-sm font-medium text-[#152533]">Ascend</div>
+
           <div className="flex flex-wrap gap-5">
             {[
               { label: "joinascend.com", href: "https://www.joinascend.com/" },
