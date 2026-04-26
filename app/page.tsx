@@ -824,7 +824,7 @@ export default function HomePage() {
         }
       `}</style>
 
-<nav className="flex items-center px-[56px] h-[64px] border-b border-[#E6E8EC]">
+<nav className="flex items-center px-[56px] h-[64px]">
   <img
     src="/images/ascend-logo.png"
     alt="Ascend"
