@@ -824,16 +824,12 @@ export default function HomePage() {
         }
       `}</style>
 
-<nav className="sticky top-0 z-50 border-b border-[#E6E8EC] bg-white">
-  <div className="flex h-[72px] items-center px-[56px]">
-    
-    <img
-      src="/images/ascend-logo.png"
-      alt="Ascend"
-      className="h-[32px] w-auto object-contain"
-    />
-
-  </div>
+<nav className="flex items-center px-[56px] h-[64px] border-b border-[#E6E8EC]">
+  <img
+    src="/images/ascend-logo.png"
+    alt="Ascend"
+    className="h-[32px] w-auto object-contain"
+  />
 </nav>
 
       <div className="mx-auto max-w-7xl px-8 py-10">
