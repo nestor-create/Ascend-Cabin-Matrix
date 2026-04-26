@@ -831,20 +831,22 @@ export default function HomePage() {
       </nav>
 
       <div className="mx-auto max-w-7xl px-8 py-10">
-        <header className="mb-8 flex flex-wrap items-end justify-between gap-6 border-b border-[#E6E8EC] pb-8">
-          <div>
-            <p className="mb-3 text-xs font-medium text-[#667085]">Premium cabin intelligence</p>
+        <header className="mb-8 border-b border-[#E6E8EC] px-[56px] pb-8 pt-10">
+  <div className="max-w-[760px]">
+    <h1 className="text-[44px] font-semibold leading-[1.08] tracking-[-0.035em] text-[#152533]">
+      Find your perfect seat in the sky
+    </h1>
 
-            <h1 className="max-w-2xl text-4xl font-semibold tracking-[-0.03em] text-[#152533] sm:text-5xl">
-              Find your perfect seat in the sky
-            </h1>
+    <p className="mt-3 text-[14px] font-medium leading-5 text-[#6C4DF6]">
+      Ascend Cabin Optimizer
+    </p>
 
-            <p className="mt-4 max-w-xl text-base leading-7 text-[#667085]">
-              Compare Business and First Class products across airlines, aircraft, and layouts with AeroLOPA
-              and seat maps in one clean view.
-            </p>
-
-          </div>
+    <p className="mt-4 max-w-[680px] text-[16px] leading-7 text-[#667085]">
+      Compare Business and First Class products across airlines, aircraft, and layouts with AeroLOPA
+      and seat maps in one clean view.
+    </p>
+  </div>
+</header>
 
           <div className="grid grid-cols-4 overflow-hidden rounded-lg border border-[#E6E8EC] bg-white">
             {[
