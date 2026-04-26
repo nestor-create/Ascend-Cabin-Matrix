@@ -846,7 +846,6 @@ export default function HomePage() {
       and seat maps in one clean view.
     </p>
   </div>
-</header>
 
           <div className="grid grid-cols-4 overflow-hidden rounded-lg border border-[#E6E8EC] bg-white">
             {[
