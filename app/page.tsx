@@ -844,15 +844,6 @@ export default function HomePage() {
               and seat maps in one clean view.
             </p>
 
-            <a
-              href="https://www.joinascend.com/join-ascend"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-6 inline-flex h-11 items-center justify-center rounded-md px-6 text-xs font-semibold uppercase tracking-[0.08em] text-white transition hover:bg-[#5B3FEA]"
-              style={{ background: COLORS.accent }}
-            >
-              Apply for membership
-            </a>
           </div>
 
           <div className="grid grid-cols-4 overflow-hidden rounded-lg border border-[#E6E8EC] bg-white">
@@ -1139,16 +1130,16 @@ export default function HomePage() {
                   </div>
 
                   <div className="mt-5 grid gap-2 sm:grid-cols-2">
-                    <a
-                      href={item.aerolopaUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex h-10 items-center justify-center gap-2 rounded-md px-4 text-sm font-medium text-white transition hover:bg-[#5B3FEA]"
-                      style={{ background: COLORS.accent }}
-                    >
-                      <MapIcon />
-                      AeroLOPA
-                    </a>
+                   <a
+  href={item.aerolopaUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex h-10 items-center justify-center gap-2 rounded-md px-4 text-sm font-medium !text-white transition hover:bg-[#5B3FEA]"
+  style={{ background: COLORS.accent, color: "#FFFFFF" }}
+>
+  <MapIcon />
+  <span className="text-white">AeroLOPA</span>
+</a>
 
                     <a
                       href={item.seatmapsUrl}
