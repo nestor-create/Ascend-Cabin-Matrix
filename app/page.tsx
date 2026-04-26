@@ -824,33 +824,32 @@ export default function HomePage() {
         }
       `}</style>
 
-<nav className="flex items-center px-[56px] h-[64px]">
+<<nav className="flex items-center px-[56px] h-[64px]">
   <img
     src="/images/ascend-logo.png"
     alt="Ascend"
     className="h-[32px] w-auto object-contain"
   />
 </nav>
-<header className="mb-8 border-b border-[#E6E8EC] px-[56px] pb-8 pt-10">
+
+<header className="px-[56px] pt-10 pb-12">
   <div className="max-w-[760px]">
 
-    {/* PRIMARY TITLE */}
     <h1 className="text-[44px] font-semibold leading-[1.08] tracking-[-0.035em] text-[#152533]">
       Ascend Cabin Optimizer
     </h1>
 
-    {/* SECONDARY LINE */}
     <h2 className="mt-2 text-[44px] font-semibold leading-[1.08] tracking-[-0.035em] text-[#152533]">
       Find your perfect seat in the sky
     </h2>
 
-    {/* DESCRIPTION */}
     <p className="mt-4 max-w-[680px] text-[16px] leading-7 text-[#667085]">
       Compare Business and First Class products across airlines, aircraft, and layouts with AeroLOPA
       and seat maps in one clean view.
     </p>
 
   </div>
+</header>
 
           <div className="grid grid-cols-4 overflow-hidden rounded-lg border border-[#E6E8EC] bg-white">
             {[
