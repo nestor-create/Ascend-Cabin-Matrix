@@ -688,8 +688,15 @@ export default function HomePage() {
   const [returnPlace, setReturnPlace] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const airlineOptions = useMemo(() => Array.from(new Set(premiumProducts.map((item) => item.airline))).sort(), []);
-  const aircraftOptions = useMemo(() => Array.from(new Set(premiumProducts.map((item) => item.aircraft))).sort(), []);
+  const airlineOptions = useMemo(
+    () => Array.from(new Set(premiumProducts.map((item) => item.airline))).sort(),
+    []
+  );
+
+  const aircraftOptions = useMemo(
+    () => Array.from(new Set(premiumProducts.map((item) => item.aircraft))).sort(),
+    []
+  );
 
   const placeCatalog = useMemo(() => {
     return dedupeStrings(
@@ -717,7 +724,8 @@ export default function HomePage() {
       const matchesAirline = airline === "" || item.airline === airline;
       const matchesAircraft = aircraft === "" || item.aircraft === aircraft;
       const matchesCabin = cabin === "" || item.cabinType === cabin;
-      const matchesTags = selectedTags.length === 0 || selectedTags.every((tag) => item.bestFor.includes(tag));
+      const matchesTags =
+        selectedTags.length === 0 || selectedTags.every((tag) => item.bestFor.includes(tag));
 
       return matchesSearch && matchesAirline && matchesAircraft && matchesCabin && matchesTags;
     });
@@ -745,6 +753,7 @@ export default function HomePage() {
 
   const outboundPlaceOptions = useMemo(() => {
     const base = outboundPlace.trim() ? filteredOutboundPlaces : placeCatalog;
+
     return [...base]
       .filter((place) => (outboundPlace.trim() ? scoreSuggestion(outboundPlace, place) > 0 : true))
       .sort((a, b) => scoreSuggestion(outboundPlace, b) - scoreSuggestion(outboundPlace, a) || a.localeCompare(b));
@@ -811,47 +820,29 @@ export default function HomePage() {
         }
       `}</style>
 
-      <nav className="flex h-[64px] items-center px-[56px]">
-        <img src="/images/ascend-logo.png" alt="Ascend" className="h-[32px] w-auto object-contain" />
-      </nav>
+      <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+        <nav className="flex h-[64px] items-center">
+          <img src="/images/ascend-logo.png" alt="Ascend" className="h-[32px] w-auto object-contain" />
+        </nav>
 
-      <header className="px-[56px] pb-10 pt-8">
-        <div className="max-w-[760px]">
-          <h1 className="text-[42px] font-semibold leading-[1.08] tracking-[-0.035em] text-[#152533]">
-            Ascend Cabin Optimizer
-          </h1>
+        <header className="pb-8 pt-6 sm:pb-10 sm:pt-8">
+          <div className="max-w-[760px]">
+            <h1 className="text-[34px] font-semibold leading-[1.08] tracking-[-0.035em] text-[#152533] sm:text-[42px]">
+              Ascend Cabin Optimizer
+            </h1>
 
-          <h2 className="mt-3 text-[30px] font-medium leading-[1.18] tracking-[-0.025em] text-[#152533]">
-            Find your perfect seat in the sky
-          </h2>
+            <h2 className="mt-3 text-[24px] font-medium leading-[1.18] tracking-[-0.025em] text-[#152533] sm:text-[30px]">
+              Find your perfect seat in the sky
+            </h2>
 
-          <p className="mt-5 max-w-[680px] text-[16px] leading-7 text-[#667085]">
-            Compare Business and First Class products across airlines, aircraft, and layouts with AeroLOPA
-            and seat maps in one clean view.
-          </p>
-        </div>
-      </header>
+            <p className="mt-5 max-w-[680px] text-[15px] leading-7 text-[#667085] sm:text-[16px]">
+              Compare Business and First Class products across airlines, aircraft, and layouts with AeroLOPA
+              and seat maps in one clean view.
+            </p>
+          </div>
+        </header>
 
-      <div className="mx-auto max-w-7xl px-[56px] pb-12">
-        <section className="mb-8 grid grid-cols-4 overflow-hidden rounded-lg border border-[#E6E8EC] bg-white">
-          {[
-            { n: premiumProducts.length, l: "Products" },
-            { n: airlineOptions.length, l: "Airlines" },
-            { n: placeCatalog.length, l: "Places" },
-            { n: filteredProducts.length, l: "Showing" },
-          ].map(({ n, l }, index) => (
-            <div
-              key={l}
-              className="px-4 py-4 text-center"
-              style={{ borderRight: index < 3 ? "1px solid #E6E8EC" : undefined }}
-            >
-              <div className="text-xl font-semibold text-[#152533]">{n}</div>
-              <div className="mt-1 text-[11px] text-[#667085]">{l}</div>
-            </div>
-          ))}
-        </section>
-
-        <section id="filters" className="mb-8 rounded-xl border border-[#E6E8EC] bg-white p-5 shadow-sm">
+        <section id="filters" className="mb-6 rounded-xl border border-[#E6E8EC] bg-white p-4 shadow-sm sm:mb-8 sm:p-5">
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
             <div className="xl:col-span-2">
               <label className="mb-2 flex items-center gap-2 text-[11px] font-medium text-[#667085]">
@@ -996,6 +987,27 @@ export default function HomePage() {
               Reset filters
             </button>
           </div>
+        </section>
+
+        <section className="mb-8 grid grid-cols-2 overflow-hidden rounded-lg border border-[#E6E8EC] bg-white sm:grid-cols-4">
+          {[
+            { n: premiumProducts.length, l: "Products" },
+            { n: airlineOptions.length, l: "Airlines" },
+            { n: placeCatalog.length, l: "Places" },
+            { n: filteredProducts.length, l: "Showing" },
+          ].map(({ n, l }, index) => (
+            <div
+              key={l}
+              className="px-4 py-4 text-center"
+              style={{
+                borderRight: index !== 1 && index !== 3 ? "1px solid #E6E8EC" : undefined,
+                borderBottom: index < 2 ? "1px solid #E6E8EC" : undefined,
+              }}
+            >
+              <div className="text-xl font-semibold text-[#152533]">{n}</div>
+              <div className="mt-1 text-[11px] text-[#667085]">{l}</div>
+            </div>
+          ))}
         </section>
 
         <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
